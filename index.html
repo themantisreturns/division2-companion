@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Division 2 Vendor Upgrade Checker</title>
+<style>
+:root {
+  --bg:#141920; --panel:#202731; --panel2:#2a3340; --text:#eef2f7;
+  --muted:#aab4c2; --accent:#f3a712; --good:#43d17a; --border:#3a4554;
+  --blue:#55a7ff; --purple:#b67cff; --yellow:#ffd166; --danger:#ff6b6b;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+main { max-width:1180px; margin:0 auto; padding:30px 20px 60px; }
+h1 { margin:0 0 8px; font-size:30px; }
+.subtitle { color:var(--muted); margin-bottom:24px; line-height:1.5; }
+.panel {
+  background:var(--panel); border:1px solid var(--border); border-radius:12px;
+  padding:20px; margin-bottom:20px;
+}
+.top-actions { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.file-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.file-box {
+  background:var(--panel2); border:1px solid var(--border);
+  border-radius:10px; padding:14px;
+}
+.file-box label { display:block; font-weight:700; margin-bottom:8px; }
+input[type=file] { width:100%; color:var(--muted); }
+.drop-zone {
+  margin-top:16px; border:2px dashed var(--border); border-radius:10px;
+  padding:22px; text-align:center; color:var(--muted); transition:.2s ease;
+}
+.drop-zone.dragover { border-color:var(--accent); background:#2c2a20; color:var(--text); }
+.actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; align-items:center; }
+button, .link-button {
+  border:0; border-radius:8px; padding:11px 16px; font-weight:700;
+  cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+}
+.primary { background:var(--accent); color:#171717; }
+.secondary { background:#3a4554; color:var(--text); }
+.success { background:var(--good); color:#112318; }
+button:hover, .link-button:hover { filter:brightness(1.08); }
+button:disabled { opacity:.45; cursor:not-allowed; }
+.status { margin-top:14px; color:var(--muted); line-height:1.45; }
+.kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.kpi {
+  background:var(--panel); border:1px solid var(--border); border-radius:10px;
+  padding:16px;
+}
+.kpi .num { font-size:28px; font-weight:800; color:var(--good); }
+.kpi .label { color:var(--muted); font-size:13px; }
+table { width:100%; border-collapse:collapse; }
+th,td { padding:11px 10px; border-bottom:1px solid var(--border); text-align:left; }
+th { color:#dce3eb; background:var(--panel2); position:sticky; top:0; }
+td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.roll-slight { color:var(--good); font-weight:800; }
+.roll-strong { color:var(--blue); font-weight:800; }
+.roll-excellent { color:var(--purple); font-weight:800; }
+.roll-equal { color:var(--yellow); font-weight:800; }
+.small { color:var(--muted); font-size:13px; }
+.hidden { display:none; }
+details { margin-top:14px; }
+summary { cursor:pointer; font-weight:700; color:var(--accent); }
+.threshold-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px;
+}
+.threshold-card {
+  background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:14px;
+}
+.threshold-card h3 { margin:0 0 10px; font-size:16px; }
+.threshold-row {
+  display:grid; grid-template-columns:1fr 90px; align-items:center; gap:8px; margin:6px 0;
+}
+.threshold-row input {
+  width:100%; background:#161c23; color:var(--text);
+  border:1px solid var(--border); border-radius:6px; padding:7px;
+}
+.notice {
+  padding:12px 14px; border-left:4px solid var(--accent); background:#2a2d25;
+  color:#e8e2cb; border-radius:6px; margin-top:14px;
+}
+.options {
+  display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-top:14px;
+}
+.options label { display:flex; align-items:center; gap:8px; color:var(--muted); }
+.legend { display:flex; flex-wrap:wrap; gap:12px; margin:0 0 14px; color:var(--muted); font-size:13px; }
+.legend span { display:inline-flex; align-items:center; gap:6px; }
+.dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+.dot.slight { background:var(--good); }
+.dot.strong { background:var(--blue); }
+.dot.excellent { background:var(--purple); }
+.dot.equal { background:var(--yellow); }
+@media(max-width:850px){
+  .file-grid,.threshold-grid,.kpis { grid-template-columns:1fr; }
+  .table-wrap { overflow-x:auto; }
+}
+
+.progression-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.progression-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px}.progression-card h3{margin:0 0 10px}.prog-row{display:grid;grid-template-columns:1fr 76px 58px;gap:8px;align-items:center;margin:7px 0}.prog-row input{width:100%;background:#161c23;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:7px}.progbar{height:9px;background:#151b22;border-radius:99px;overflow:hidden;margin-top:8px}.progbar span{display:block;height:100%;background:var(--accent)}.priority-box{background:#171d25;border:1px solid var(--border);border-radius:8px;padding:12px;margin:8px 0}.priority-high{color:#b67cff;font-weight:800}.priority-med{color:#55a7ff;font-weight:800}.priority-low{color:#43d17a;font-weight:800}.pill{display:inline-block;padding:3px 7px;border-radius:999px;font-size:12px;font-weight:700;background:#3a4554;color:var(--text)}.item-list-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:7px 0}.item-list-row button{padding:6px 10px}.planner-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.planner-controls select,.planner-controls input{width:100%;background:#161c23;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:9px}@media(max-width:850px){.progression-grid,.planner-controls{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Division 2 Vendor Upgrade Checker</h1>
+  <div class="subtitle">
+    Load the weekly vendor files, fetch them directly when your browser allows it, or drag and drop them below.
+    The checker compares every applicable roll with your saved thresholds.
+  </div>
+
+  <section class="panel">
+    <div class="top-actions">
+      <a class="link-button primary" href="https://rubenalamina.mx/the-division-weekly-vendor-reset/" target="_blank" rel="noopener noreferrer">
+        Open Weekly Vendor Reset
+      </a>
+      <button class="success" id="fetchBtn">Fetch Latest Vendor Data</button>
+      <button class="secondary" id="chooseFolderBtn">Choose Vendor Folder</button>
+    </div>
+
+    <div class="file-grid">
+      <div class="file-box"><label for="gearFile">gear.json</label><input id="gearFile" type="file" accept=".json,application/json"></div>
+      <div class="file-box"><label for="weaponsFile">weapons.json</label><input id="weaponsFile" type="file" accept=".json,application/json"></div>
+      <div class="file-box"><label for="modsFile">mods.json</label><input id="modsFile" type="file" accept=".json,application/json"></div>
+    </div>
+
+    <div id="dropZone" class="drop-zone">
+      Drag and drop gear.json, weapons.json, and mods.json here
+    </div>
+
+    <div class="options">
+      <label><input type="checkbox" id="showTies"> Show ties</label>
+      <label><input type="checkbox" id="includeMods"> Compare recognized mod attributes</label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="compareBtn">Compare Vendor Rolls</button>
+      <button class="secondary" id="copyBtn" disabled>Copy Shopping List</button>
+      <button class="secondary" id="exportBtn" disabled>Export Results CSV</button>
+      <button class="secondary" id="resetBtn">Reset Thresholds</button>
+    </div>
+    <div id="status" class="status">No files loaded yet.</div>
+    <div class="notice">
+      Direct fetching can be blocked by browser security or the vendor site's CORS settings. When that happens, use the folder picker or drag and drop the three JSON files.
+    </div>
+  </section>
+
+  <details class="panel">
+    <summary>Edit saved thresholds</summary>
+    <div id="thresholdEditor" class="threshold-grid"></div>
+  </details>
+
+  <section id="resultsArea" class="hidden">
+    <div class="kpis">
+      <div class="kpi"><div class="num" id="upgradeCount">0</div><div class="label">Matching rolls found</div></div>
+      <div class="kpi"><div class="num" id="itemCount">0</div><div class="label">Items checked</div></div>
+      <div class="kpi"><div class="num" id="vendorCount">0</div><div class="label">Vendors to visit</div></div>
+      <div class="kpi"><div class="num" id="bestGain">0</div><div class="label">Largest gain</div></div>
+    </div>
+    <div class="panel table-wrap">
+      <div class="legend">
+        <span><i class="dot slight"></i>Slight upgrade</span>
+        <span><i class="dot strong"></i>Strong upgrade</span>
+        <span><i class="dot excellent"></i>Excellent upgrade</span>
+        <span><i class="dot equal"></i>Equal to saved value</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th><th>Item</th><th>Vendor</th><th>Attribute</th>
+            <th>Saved</th><th>Vendor Roll</th><th>Difference</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+      <p id="noResults" class="hidden">No values met your selected comparison settings.</p>
+    </div>
+  </section>
+
+<section class="panel" id="progressionCompanion">
+  <h2>Progression & Expertise Companion</h2>
+  <p class="small">Seeded from your screenshots: Expertise 6, 85/200 XP, 18/484 proficient, SHD 435. Everything below is editable and saved in this browser.</p>
+  <div class="progression-grid">
+    <div class="progression-card"><h3>Current progression</h3>
+      <div class="prog-row"><span>SHD level</span><input id="pcShd" type="number" value="435"><span></span></div>
+      <div class="prog-row"><span>Expertise level</span><input id="pcExpertise" type="number" value="6"><span></span></div>
+      <div class="prog-row"><span>Expertise XP</span><input id="pcXp" type="number" value="85"><span>/ 200</span></div>
+      <div class="prog-row"><span>Total proficient</span><input id="pcTotal" type="number" value="18"><span>/ 484</span></div>
+      <div class="progbar"><span id="pcXpBar" style="width:42.5%"></span></div>
+    </div>
+    <div class="progression-card"><h3>Fastest current priorities</h3><div id="pcPriorities"></div></div>
+    <div class="progression-card"><h3>Weekly routine</h3>
+      <ol class="small"><li>Run Challenging Countdown.</li><li>Wear six unfinished brands/sets.</li><li>Rotate an unfinished secondary weapon.</li><li>Equip two unfinished skills.</li><li>Donate junk before dismantling.</li></ol>
+    </div>
+  </div>
+
+  <details style="margin-top:16px" open><summary><strong>Category proficiency tracker</strong></summary><div id="pcCategories" class="progression-grid" style="margin-top:12px"></div></details>
+  <details style="margin-top:16px"><summary><strong>Brand and gear-set ranks</strong></summary><div id="pcBrands" class="progression-grid" style="margin-top:12px"></div></details>
+  <details style="margin-top:16px"><summary><strong>Individual proficient items</strong></summary>
+    <div class="actions" style="margin-top:12px"><input id="pcItemName" type="text" placeholder="Example: Carbine 7" style="max-width:420px;background:#161c23;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:9px"><button class="primary" id="pcAddItem">Add</button></div>
+    <div id="pcItemList" style="margin-top:10px"></div>
+  </details>
+
+  <div class="progression-card" style="margin-top:16px">
+    <h3>Generate an efficient leveling plan</h3>
+    <div class="planner-controls"><div><label>Activity</label><select id="pcActivity"><option>Countdown</option><option>Open World</option><option>Missions</option><option>Summit</option><option>Descent</option></select></div><div><label>Main build</label><select id="pcBuild"><option>Striker AR</option><option>Skill Build</option><option>Hunter's Fury</option><option>Negotiator's Dilemma</option><option>Tank/Shield</option><option>Other</option></select></div><button class="primary" id="pcGenerate">Generate plan</button></div>
+    <div id="pcPlan" style="margin-top:12px"></div>
+  </div>
+</section>
+</main>
+
+<script>
+const DEFAULT_THRESHOLDS = {
+  "Mask": {"Health":18734, "Skill Damage":8.9},
+  "Holster": {"Critical Hit Damage":11.3, "Skill Haste":11.6},
+  "Kneepads": {"Repair Skills":19.8},
+  "Shotgun": {"Health Damage":9, "Reload Speed":10.9, "Stability":11.9, "Accuracy":11.6, "Magazine Size":12, "Swap Speed":14.8},
+  "LMG": {"Health Damage":8.5, "Reload Speed":11.6, "Accuracy":11.5, "Optimal Range":22.5, "Rate of Fire":4.4},
+  "Rifle": {"Damage Out of Cover":9, "Stability":11.7, "Accuracy":9.2, "Rate of Fire":4.8},
+  "AR": {"Reload Speed":11.3, "Stability":10.8, "Accuracy":9.9, "Optimal Range":22},
+  "MMR": {"Critical Hit Chance":9, "Stability":9.5, "Rate of Fire":4.8},
+  "SMG": {"Reload Speed":10.3, "Stability":11.5, "Optimal Range":21, "Rate of Fire":4.4},
+  "Pistol": {"Damage to Armor":5, "Damage Out of Cover":9, "Critical Hit Damage":9, "Reload Speed":9.5, "Stability":9.6, "Optimal Range":20.5, "Rate of Fire":4.5},
+  "Mods": {"Critical Hit Chance":4.5, "Critical Hit Damage":10.5, "Repair Skills":17.4, "Skill Haste":10}
+};
+
+const ALIASES = {
+  "dmg ooc":"Damage Out of Cover",
+  "damage to targets out of cover":"Damage Out of Cover",
+  "damage out of cover":"Damage Out of Cover",
+  "dmg to armor":"Damage to Armor",
+  "damage to armor":"Damage to Armor",
+  "crit hit dmg":"Critical Hit Damage",
+  "critical hit damage":"Critical Hit Damage",
+  "crit hit chance":"Critical Hit Chance",
+  "critical hit chance":"Critical Hit Chance",
+  "mag size":"Magazine Size",
+  "magazine size":"Magazine Size",
+  "opt range":"Optimal Range",
+  "optimal range":"Optimal Range",
+  "health dmg":"Health Damage",
+  "health damage":"Health Damage",
+  "reload speed":"Reload Speed",
+  "stability":"Stability",
+  "accuracy":"Accuracy",
+  "rate of fire":"Rate of Fire",
+  "swap speed":"Swap Speed",
+  "skill damage":"Skill Damage",
+  "skill haste":"Skill Haste",
+  "repair skills":"Repair Skills",
+  "health":"Health"
+};
+
+let thresholds = loadThresholds();
+let currentResults = [];
+let loadedData = {gear:null, weapons:null, mods:null};
+let lastStats = {items:0};
+
+function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
+function loadThresholds(){
+  try {
+    const stored = localStorage.getItem("division2ThresholdsV3");
+    return stored ? JSON.parse(stored) : clone(DEFAULT_THRESHOLDS);
+  } catch {
+    return clone(DEFAULT_THRESHOLDS);
+  }
+}
+function saveThresholds(){
+  localStorage.setItem("division2ThresholdsV3", JSON.stringify(thresholds));
+}
+function renderThresholdEditor(){
+  const host = document.getElementById("thresholdEditor");
+  host.innerHTML = "";
+  for (const [category, attrs] of Object.entries(thresholds)){
+    const card = document.createElement("div");
+    card.className = "threshold-card";
+    const h = document.createElement("h3");
+    h.textContent = category;
+    card.appendChild(h);
+    for (const [attr, value] of Object.entries(attrs)){
+      const row = document.createElement("div");
+      row.className = "threshold-row";
+      const label = document.createElement("label");
+      label.textContent = attr;
+      const input = document.createElement("input");
+      input.type = "number";
+      input.step = "0.1";
+      input.value = value;
+      input.addEventListener("change", () => {
+        thresholds[category][attr] = Number(input.value);
+        saveThresholds();
+      });
+      row.append(label,input);
+      card.appendChild(row);
+    }
+    host.appendChild(card);
+  }
+}
+renderThresholdEditor();
+
+function stripHtml(s){
+  const d = document.createElement("div");
+  d.innerHTML = s || "";
+  return d.textContent || d.innerText || "";
+}
+function normalizeAttribute(name){
+  let n = String(name || "").trim().replace(/\s+/g," ");
+  n = n.replace(/^\d[\d,.]*%?\s*/, "").trim();
+  const key = n.toLowerCase();
+  return ALIASES[key] || n;
+}
+function parseAttribute(raw){
+  const text = stripHtml(raw).replace(/\s+/g," ").trim();
+  const m = text.match(/(-?[\d,.]+)\s*(%|m)?\s+(.+)/i);
+  if (!m) return null;
+  return {
+    value:Number(m[1].replace(/,/g,"")),
+    unit:m[2] || "",
+    attribute:normalizeAttribute(m[3])
+  };
+}
+function splitAttributes(raw){
+  return String(raw || "").split(/<br\s*\/?>/i).map(parseAttribute).filter(Boolean);
+}
+function getWeaponCategory(item){
+  const attrs = [item.attribute1,item.attribute2,item.attribute3].map(stripHtml).join(" ");
+  if (/\bPistol Damage\b/i.test(attrs)) return "Pistol";
+  if (/\bShotgun Damage\b/i.test(attrs)) return "Shotgun";
+  if (/\bLMG Damage\b/i.test(attrs)) return "LMG";
+  if (/\bRifle Damage\b/i.test(attrs)) return "Rifle";
+  if (/\bAR Damage\b/i.test(attrs)) return "AR";
+  if (/\bMMR Damage\b/i.test(attrs)) return "MMR";
+  if (/\bSMG Damage\b/i.test(attrs)) return "SMG";
+  return null;
+}
+function formatValue(value, attr){
+  return attr === "Health" ? Math.round(value).toLocaleString() : `${value}%`;
+}
+function compareOne(category,itemName,vendor,parsed){
+  const cat = thresholds[category];
+  if (!cat || !(parsed.attribute in cat)) return null;
+  const saved = Number(cat[parsed.attribute]);
+  const showTies = document.getElementById("showTies").checked;
+  if (parsed.value < saved) return null;
+  if (parsed.value === saved && !showTies) return null;
+  const gain = parsed.value-saved;
+  const ratio = saved ? gain/saved : 0;
+  let tier = "slight";
+  if (gain === 0) tier = "equal";
+  else if (ratio >= 0.25 || gain >= 5) tier = "excellent";
+  else if (ratio >= 0.10 || gain >= 2) tier = "strong";
+  return {
+    category, item:itemName, vendor, attribute:parsed.attribute,
+    saved, roll:parsed.value, gain, tier
+  };
+}
+
+async function readInputFile(input){
+  const file = input.files[0];
+  if (!file) return null;
+  const text = await file.text();
+  const parsed = JSON.parse(text);
+  if (!Array.isArray(parsed)) throw new Error(`${file.name} does not contain a JSON array.`);
+  return parsed;
+}
+async function loadFromInputs(){
+  const [gear,weapons,mods] = await Promise.all([
+    readInputFile(document.getElementById("gearFile")),
+    readInputFile(document.getElementById("weaponsFile")),
+    readInputFile(document.getElementById("modsFile"))
+  ]);
+  loadedData = {
+    gear: gear || loadedData.gear,
+    weapons: weapons || loadedData.weapons,
+    mods: mods || loadedData.mods
+  };
+}
+
+function processComparison(){
+  const gear = loadedData.gear || [];
+  const weapons = loadedData.weapons || [];
+  const mods = loadedData.mods || [];
+  if (!gear.length && !weapons.length && !mods.length) throw new Error("Load or fetch vendor data first.");
+
+  const results = [];
+  for (const item of gear){
+    const category = item.slot;
+    for (const parsed of splitAttributes(item.attributes)){
+      const hit = compareOne(category,item.name,item.vendor,parsed);
+      if (hit) results.push(hit);
+    }
+  }
+  for (const item of weapons){
+    const category = getWeaponCategory(item);
+    if (!category) continue;
+    for (const raw of [item.attribute1,item.attribute2,item.attribute3]){
+      if (!raw || raw === "-") continue;
+      const parsed = parseAttribute(raw);
+      if (!parsed) continue;
+      const hit = compareOne(category,item.name,item.vendor,parsed);
+      if (hit) results.push(hit);
+    }
+  }
+  if (document.getElementById("includeMods").checked){
+    for (const item of mods){
+      for (const parsed of splitAttributes(item.attributes)){
+        const hit = compareOne("Mods",item.name,item.vendor,parsed);
+        if (hit) results.push(hit);
+      }
+    }
+  }
+  results.sort((a,b) => b.gain-a.gain || a.vendor.localeCompare(b.vendor) || a.category.localeCompare(b.category));
+  currentResults = results;
+  lastStats = {items:gear.length+weapons.length+mods.length};
+  renderResults();
+}
+
+async function compare(){
+  const status = document.getElementById("status");
+  try {
+    status.textContent = "Reading files…";
+    await loadFromInputs();
+    processComparison();
+    status.textContent = `Checked ${lastStats.items} total vendor entries.`;
+  } catch(err){
+    status.textContent = `Error: ${err.message}`;
+  }
+}
+
+async function fetchLatest(){
+  const status = document.getElementById("status");
+  const base = "https://rubenalamina.mx/division/";
+  status.textContent = "Fetching the latest vendor data…";
+  try {
+    const urls = ["gear.json","weapons.json","mods.json"].map(x=>base+x+"?t="+Date.now());
+    const responses = await Promise.all(urls.map(url=>fetch(url,{cache:"no-store"})));
+    for (const r of responses) if (!r.ok) throw new Error(`Vendor server returned ${r.status}.`);
+    const [gear,weapons,mods] = await Promise.all(responses.map(r=>r.json()));
+    loadedData = {gear,weapons,mods};
+    processComparison();
+    status.textContent = `Fetched and checked ${lastStats.items} current vendor entries.`;
+  } catch(err){
+    status.textContent = `Direct fetch was blocked or failed: ${err.message} Use the folder picker or drag and drop the JSON files instead.`;
+  }
+}
+
+async function chooseFolder(){
+  const status = document.getElementById("status");
+  if (!window.showDirectoryPicker){
+    status.textContent = "This browser does not support folder selection. Drag and drop the files instead.";
+    return;
+  }
+  try {
+    const dir = await window.showDirectoryPicker({mode:"read"});
+    const data = {};
+    for (const name of ["gear.json","weapons.json","mods.json"]){
+      try {
+        const handle = await dir.getFileHandle(name);
+        const file = await handle.getFile();
+        data[name.replace(".json","")] = JSON.parse(await file.text());
+      } catch {}
+    }
+    loadedData = {
+      gear:data.gear || null,
+      weapons:data.weapons || null,
+      mods:data.mods || null
+    };
+    localStorage.setItem("division2LastFolderName", dir.name || "Selected folder");
+    processComparison();
+    status.textContent = `Loaded vendor files from “${dir.name}” and checked ${lastStats.items} entries.`;
+  } catch(err){
+    if (err.name !== "AbortError") status.textContent = `Could not read that folder: ${err.message}`;
+  }
+}
+
+async function handleDrop(files){
+  const status = document.getElementById("status");
+  try {
+    const map = {};
+    for (const file of files){
+      const lower = file.name.toLowerCase();
+      if (["gear.json","weapons.json","mods.json"].includes(lower)){
+        map[lower.replace(".json","")] = JSON.parse(await file.text());
+      }
+    }
+    loadedData = {
+      gear:map.gear || loadedData.gear,
+      weapons:map.weapons || loadedData.weapons,
+      mods:map.mods || loadedData.mods
+    };
+    processComparison();
+    status.textContent = `Loaded dropped files and checked ${lastStats.items} entries.`;
+  } catch(err){
+    status.textContent = `Could not read dropped files: ${err.message}`;
+  }
+}
+
+function renderResults(){
+  const area = document.getElementById("resultsArea");
+  const body = document.getElementById("resultsBody");
+  const no = document.getElementById("noResults");
+  area.classList.remove("hidden");
+  body.innerHTML = "";
+  for (const r of currentResults){
+    const tr = document.createElement("tr");
+    const rollClass = `roll-${r.tier}`;
+    const diff = r.gain === 0 ? "Equal" : `+${r.attribute==="Health" ? Math.round(r.gain).toLocaleString() : r.gain.toFixed(1)+"%"}`;
+    tr.innerHTML = `
+      <td>${r.category}</td>
+      <td><strong>${escapeHtml(r.item)}</strong></td>
+      <td>${escapeHtml(r.vendor)}</td>
+      <td>${r.attribute}</td>
+      <td class="num">${formatValue(r.saved,r.attribute)}</td>
+      <td class="num ${rollClass}">${formatValue(r.roll,r.attribute)}</td>
+      <td class="num ${rollClass}">${diff}</td>`;
+    body.appendChild(tr);
+  }
+  no.classList.toggle("hidden", currentResults.length !== 0);
+  document.getElementById("upgradeCount").textContent = currentResults.length;
+  document.getElementById("itemCount").textContent = lastStats.items;
+  document.getElementById("vendorCount").textContent = new Set(currentResults.map(r=>r.vendor)).size;
+  const max = currentResults.length ? Math.max(...currentResults.map(r=>r.gain)) : 0;
+  document.getElementById("bestGain").textContent = max ? `+${max.toFixed(max>=100?0:1)}` : "0";
+  document.getElementById("exportBtn").disabled = currentResults.length === 0;
+  document.getElementById("copyBtn").disabled = currentResults.length === 0;
+}
+
+function buildShoppingList(){
+  const grouped = {};
+  for (const r of currentResults){
+    (grouped[r.vendor] ||= []).push(r);
+  }
+  const lines = [];
+  for (const vendor of Object.keys(grouped).sort()){
+    lines.push(vendor);
+    for (const r of grouped[vendor]){
+      const diff = r.gain === 0 ? "ties saved value" : `+${r.attribute==="Health" ? Math.round(r.gain).toLocaleString() : r.gain.toFixed(1)+"%"}`;
+      lines.push(`  • ${r.item} (${r.category}) — ${r.attribute}: ${formatValue(r.roll,r.attribute)} (${diff})`);
+    }
+    lines.push("");
+  }
+  return lines.join("\n").trim();
+}
+
+async function copyShoppingList(){
+  const status = document.getElementById("status");
+  try {
+    await navigator.clipboard.writeText(buildShoppingList());
+    status.textContent = "Shopping list copied to your clipboard.";
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = buildShoppingList();
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+    status.textContent = "Shopping list copied to your clipboard.";
+  }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+function exportCsv(){
+  const rows = [["Category","Item","Vendor","Attribute","Saved Value","Vendor Roll","Difference","Tier"]];
+  for (const r of currentResults) rows.push([r.category,r.item,r.vendor,r.attribute,r.saved,r.roll,r.gain,r.tier]);
+  const csv = rows.map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href=url; a.download="division2_vendor_upgrades.csv"; a.click();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("compareBtn").addEventListener("click",compare);
+document.getElementById("fetchBtn").addEventListener("click",fetchLatest);
+document.getElementById("chooseFolderBtn").addEventListener("click",chooseFolder);
+document.getElementById("copyBtn").addEventListener("click",copyShoppingList);
+document.getElementById("exportBtn").addEventListener("click",exportCsv);
+document.getElementById("showTies").addEventListener("change",()=>{ if(lastStats.items) processComparison(); });
+document.getElementById("includeMods").addEventListener("change",()=>{ if(lastStats.items) processComparison(); });
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  thresholds=clone(DEFAULT_THRESHOLDS);
+  saveThresholds(); renderThresholdEditor();
+  document.getElementById("status").textContent="Thresholds reset to the original tracker values.";
+});
+
+const dropZone = document.getElementById("dropZone");
+["dragenter","dragover"].forEach(type=>dropZone.addEventListener(type,e=>{
+  e.preventDefault(); dropZone.classList.add("dragover");
+}));
+["dragleave","drop"].forEach(type=>dropZone.addEventListener(type,e=>{
+  e.preventDefault(); dropZone.classList.remove("dragover");
+}));
+dropZone.addEventListener("drop",e=>handleDrop([...e.dataTransfer.files]));
+
+const lastFolder = localStorage.getItem("division2LastFolderName");
+if (lastFolder) document.getElementById("status").textContent = `Last selected folder: ${lastFolder}. Choose it again to reload this week's files.`;
+
+const PC_DEFAULT_CATEGORIES={
+"Weapons":{"Rifles":[1,36],"Assault Rifles":[1,55],"Marksman Rifles":[2,32],"Shotguns":[1,32],"SMGs":[0,44],"LMGs":[1,38],"Pistols":[1,31],"Specialization":[0,6]},
+"Named & Exotic Gear":{"Masks":[1,12],"Body Armor":[0,28],"Backpacks":[0,27],"Gloves":[0,11],"Holsters":[0,13],"Kneepads":[0,12]},
+"Skills":{"Sticky Bomb":[0,3],"Trap":[0,3],"Decoy":[0,1],"Pulse":[0,5],"Turret":[1,4],"Hive":[1,5],"Chem Launcher":[0,4],"Firefly":[0,3],"Seeker Mine":[0,4],"Drone":[2,5],"Ballistic Shield":[1,4],"Smart Cover":[0,2]}}
+;
+const PC_DEFAULT_BRANDS={
+"Brands":{"Electrique":3,"Habsburg Guard":6,"Brazos de Arcabuz":4,"Uzina Getica":6,"Empress International":4,"Belstone Armory":4,"Walker, Harris & Co.":5,"Murakami Industries":6,"Hana-U Corporation":4,"Sokolov Concern":4,"Grupo Sombra S.A.":5,"Ceska Vyroba":5,"Edelweiss GPz":5,"Douglas & Harding":5,"Royal Works":5,"Badger Tuff":5,"Unit Alloys":0,"Providence Defense":7,"Urban Lookout":5,"Overlord Armaments":6,"Eminence Armaments":5,"Light Industries":5,"Shiny Monkey Gear":6,"Yaahl Gear":0,"Legatus S.p.A.":4,"Richter & Kaiser":7,"Wiadówka":5,"Gila Guard":7,"Palisade Steelworks":4,"Golan Gear Ltd":6,"Lengmo":5,"Wyvern Wear":6,"Fenris Group AB":8,"Airaldi Holdings":0,"Petrov Defense Group":5,"Alps Summit Armaments":7,"5.11 Tactical":9},
+"Gear Sets":{"Core Strength":0,"Concentrated Company":0,"Tipping Scales":3,"Measured Assembly":1,"Refactor":3,"Virtuoso":3,"Breaking Point":0,"Aegis":2,"Cavalier":0,"Ortiz: Exuro":0,"Hotshot":1,"Umbra Initiative":0,"Heartbreaker":0,"Rigger":7,"Hunter's Fury":0,"Eclipse Protocol":1,"Striker's Battlegear":0,"Future Initiative":0,"Foundry Bulwark":2,"System Corruption":0,"Ortiz: Reficere":0,"Aces & Eights":1,"Tip of the Spear":3,"Negotiator's Dilemma":2,"Hard Wired":1,"True Patriot":3,"Ongoing Directive":2}}
+;
+function pcClone(x){return JSON.parse(JSON.stringify(x))}
+function pcLoad(k,d){try{return JSON.parse(localStorage.getItem(k))||pcClone(d)}catch{return pcClone(d)}}
+let pcCategories=pcLoad('d2PcCategories',PC_DEFAULT_CATEGORIES),pcBrands=pcLoad('d2PcBrands',PC_DEFAULT_BRANDS),pcItems=pcLoad('d2PcItems',[]);
+function pcSave(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function pcRenderCategories(){const host=document.getElementById('pcCategories');host.innerHTML='';for(const[g,items]of Object.entries(pcCategories)){const c=document.createElement('div');c.className='progression-card';c.innerHTML=`<h3>${g}</h3>`;for(const[n,v]of Object.entries(items)){const r=document.createElement('div');r.className='prog-row';r.innerHTML=`<span>${n}</span><input type="number" min="0" max="${v[1]}" value="${v[0]}"><span>/ ${v[1]}</span>`;r.querySelector('input').onchange=e=>{pcCategories[g][n][0]=Number(e.target.value);pcSave('d2PcCategories',pcCategories);pcUpdate()};c.appendChild(r)}host.appendChild(c)}}
+function pcRenderBrands(){const host=document.getElementById('pcBrands');host.innerHTML='';for(const[g,items]of Object.entries(pcBrands)){const c=document.createElement('div');c.className='progression-card';c.innerHTML=`<h3>${g}</h3>`;for(const[n,v]of Object.entries(items)){const r=document.createElement('div');r.className='prog-row';r.innerHTML=`<span>${n}</span><input type="number" min="0" max="10" value="${v}"><span>/ 10</span>`;r.querySelector('input').onchange=e=>{pcBrands[g][n]=Number(e.target.value);pcSave('d2PcBrands',pcBrands);pcUpdate()};c.appendChild(r)}host.appendChild(c)}}
+function pcRenderItems(){const h=document.getElementById('pcItemList');h.innerHTML='';pcItems.sort().forEach((x,i)=>{const r=document.createElement('div');r.className='item-list-row';r.innerHTML=`<span class="pill">${x}</span><button class="secondary">Remove</button>`;r.querySelector('button').onclick=()=>{pcItems.splice(i,1);pcSave('d2PcItems',pcItems);pcRenderItems()};h.appendChild(r)});if(!pcItems.length)h.innerHTML='<div class="small">No individual items marked proficient yet.</div>'}
+function pcUpdate(){const xp=Number(document.getElementById('pcXp').value||0);document.getElementById('pcXpBar').style.width=Math.min(100,xp/200*100)+'%';const p=[];for(const[g,it]of Object.entries(pcCategories))for(const[n,v]of Object.entries(it)){const pct=v[0]/v[1];if(pct<=.15)p.push({n,g,rem:v[1]-v[0]})}p.sort((a,b)=>b.rem-a.rem);const lows=[];for(const[g,it]of Object.entries(pcBrands))for(const[n,v]of Object.entries(it))if(v<=2)lows.push(`${n} (${v}/10)`);document.getElementById('pcPriorities').innerHTML=`<div class="priority-box"><span class="priority-high">Weapon/category:</span><br>${p.slice(0,3).map(x=>`${x.n}: ${x.rem} left`).join('<br>')}</div><div class="priority-box"><span class="priority-med">Brands/sets:</span><br>${lows.slice(0,5).join('<br>')}</div><div class="priority-box"><span class="priority-low">Rule:</span><br>Donate first, dismantle second.</div>`;pcSave('d2PcCore',{shd:+pcShd.value,expertise:+pcExpertise.value,xp:+pcXp.value,total:+pcTotal.value})}
+['pcShd','pcExpertise','pcXp','pcTotal'].forEach(id=>document.getElementById(id).oninput=pcUpdate);
+const pcCore=pcLoad('d2PcCore',{shd:435,expertise:6,xp:85,total:18});pcShd.value=pcCore.shd;pcExpertise.value=pcCore.expertise;pcXp.value=pcCore.xp;pcTotal.value=pcCore.total;
+document.getElementById('pcAddItem').onclick=()=>{const i=document.getElementById('pcItemName'),v=i.value.trim();if(v&&!pcItems.some(x=>x.toLowerCase()===v.toLowerCase())){pcItems.push(v);pcSave('d2PcItems',pcItems);i.value='';pcRenderItems()}};
+document.getElementById('pcGenerate').onclick=()=>{const act=pcActivity.value,build=pcBuild.value,unfinished=[];for(const[g,it]of Object.entries(pcCategories))for(const[n,v]of Object.entries(it))if(v[0]<v[1])unfinished.push({g,n,a:v[0],b:v[1],pct:v[0]/v[1]});unfinished.sort((a,b)=>a.pct-b.pct||b.b-a.b);const brands=[];for(const[g,it]of Object.entries(pcBrands))for(const[n,v]of Object.entries(it))if(v<10)brands.push({g,n,v});brands.sort((a,b)=>a.v-b.v);pcPlan.innerHTML=`<ol><li><strong>${act}:</strong> equip six unfinished brands/sets: ${brands.slice(0,6).map(x=>`${x.n} (${x.v}/10)`).join(', ')}.</li><li><strong>${build}:</strong> keep your preferred primary, but rotate a secondary from ${unfinished.filter(x=>x.g==='Weapons').slice(0,3).map(x=>`${x.n} (${x.a}/${x.b})`).join(', ')}.</li><li><strong>Skills:</strong> equip two unfinished skills: ${unfinished.filter(x=>x.g==='Skills').slice(0,4).map(x=>`${x.n} (${x.a}/${x.b})`).join(', ')}.</li><li><strong>Loot:</strong> mark all unwanted drops as junk, donate at the Expertise station, then dismantle leftovers.</li><li><strong>Resources:</strong> use printer filament on named/exotic items or skills you dislike; preserve exotic components for upgrading favorites.</li></ol>`};
+pcRenderCategories();pcRenderBrands();pcRenderItems();pcUpdate();document.getElementById('pcGenerate').click();
+
+</script>
+</body>
+</html>
