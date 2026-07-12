@@ -181,6 +181,14 @@ summary { cursor:pointer; font-weight:700; color:var(--accent); }
 <section class="panel" id="progressionCompanion">
   <h2>Progression & Expertise Companion</h2>
   <p class="small">Seeded from your screenshots: Expertise 6, 85/200 XP, 18/484 proficient, SHD 435. Everything below is editable and saved in this browser.</p>
+  <div class="actions" style="margin:12px 0 16px">
+    <button class="success" id="exportProfileBtn">Export Profile</button>
+    <label class="secondary" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer">
+      Import Profile
+      <input id="importProfileInput" type="file" accept=".json,application/json" style="display:none">
+    </label>
+  </div>
+
   <div class="progression-grid">
     <div class="progression-card"><h3>Current progression</h3>
       <div class="prog-row"><span>SHD level</span><input id="pcShd" type="number" value="435"><span></span></div>
@@ -617,6 +625,63 @@ const pcCore=pcLoad('d2PcCore',{shd:435,expertise:6,xp:85,total:18});pcShd.value
 document.getElementById('pcAddItem').onclick=()=>{const i=document.getElementById('pcItemName'),v=i.value.trim();if(v&&!pcItems.some(x=>x.toLowerCase()===v.toLowerCase())){pcItems.push(v);pcSave('d2PcItems',pcItems);i.value='';pcRenderItems()}};
 document.getElementById('pcGenerate').onclick=()=>{const act=pcActivity.value,build=pcBuild.value,unfinished=[];for(const[g,it]of Object.entries(pcCategories))for(const[n,v]of Object.entries(it))if(v[0]<v[1])unfinished.push({g,n,a:v[0],b:v[1],pct:v[0]/v[1]});unfinished.sort((a,b)=>a.pct-b.pct||b.b-a.b);const brands=[];for(const[g,it]of Object.entries(pcBrands))for(const[n,v]of Object.entries(it))if(v<10)brands.push({g,n,v});brands.sort((a,b)=>a.v-b.v);pcPlan.innerHTML=`<ol><li><strong>${act}:</strong> equip six unfinished brands/sets: ${brands.slice(0,6).map(x=>`${x.n} (${x.v}/10)`).join(', ')}.</li><li><strong>${build}:</strong> keep your preferred primary, but rotate a secondary from ${unfinished.filter(x=>x.g==='Weapons').slice(0,3).map(x=>`${x.n} (${x.a}/${x.b})`).join(', ')}.</li><li><strong>Skills:</strong> equip two unfinished skills: ${unfinished.filter(x=>x.g==='Skills').slice(0,4).map(x=>`${x.n} (${x.a}/${x.b})`).join(', ')}.</li><li><strong>Loot:</strong> mark all unwanted drops as junk, donate at the Expertise station, then dismantle leftovers.</li><li><strong>Resources:</strong> use printer filament on named/exotic items or skills you dislike; preserve exotic components for upgrading favorites.</li></ol>`};
 pcRenderCategories();pcRenderBrands();pcRenderItems();pcUpdate();document.getElementById('pcGenerate').click();
+
+
+function exportDivision2Profile(){
+  const keys=[
+    "division2ThresholdsV3",
+    "d2PcCategories",
+    "d2PcBrands",
+    "d2PcItems",
+    "d2PcCore",
+    "division2LastFolderName"
+  ];
+  const data={
+    app:"Division 2 Progression Companion",
+    version:1,
+    exportedAt:new Date().toISOString(),
+    localStorage:{}
+  };
+  for(const key of keys){
+    const value=localStorage.getItem(key);
+    if(value!==null)data.localStorage[key]=value;
+  }
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="division2-profile.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Profile exported. Keep the JSON file somewhere safe.";
+}
+
+async function importDivision2Profile(file){
+  const text=await file.text();
+  const data=JSON.parse(text);
+  if(!data || data.app!=="Division 2 Progression Companion" || !data.localStorage){
+    throw new Error("That file is not a valid Division 2 profile export.");
+  }
+  for(const [key,value] of Object.entries(data.localStorage)){
+    if(typeof value==="string")localStorage.setItem(key,value);
+  }
+  alert("Profile imported successfully. The page will now reload.");
+  location.reload();
+}
+
+document.getElementById("exportProfileBtn").addEventListener("click",exportDivision2Profile);
+document.getElementById("importProfileInput").addEventListener("change",async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    await importDivision2Profile(file);
+  }catch(err){
+    alert("Import failed: "+err.message);
+    e.target.value="";
+  }
+});
 
 </script>
 </body>
