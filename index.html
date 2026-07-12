@@ -189,6 +189,10 @@ summary { cursor:pointer; font-weight:700; color:var(--accent); }
     </label>
   </div>
 
+  <div class="notice" style="margin-bottom:16px">
+    Complete profiles include every saved Division 2 setting currently used by the app, plus space for future wishlists, builds, notes, vendor history, and shopping lists.
+  </div>
+
   <div class="progression-grid">
     <div class="progression-card"><h3>Current progression</h3>
       <div class="prog-row"><span>SHD level</span><input id="pcShd" type="number" value="435"><span></span></div>
@@ -627,35 +631,42 @@ document.getElementById('pcGenerate').onclick=()=>{const act=pcActivity.value,bu
 pcRenderCategories();pcRenderBrands();pcRenderItems();pcUpdate();document.getElementById('pcGenerate').click();
 
 
-function exportDivision2Profile(){
-  const keys=[
-    "division2ThresholdsV3",
-    "d2PcCategories",
-    "d2PcBrands",
-    "d2PcItems",
-    "d2PcCore",
-    "division2LastFolderName"
-  ];
-  const data={
-    app:"Division 2 Progression Companion",
-    version:1,
-    exportedAt:new Date().toISOString(),
-    localStorage:{}
-  };
-  for(const key of keys){
-    const value=localStorage.getItem(key);
-    if(value!==null)data.localStorage[key]=value;
+function collectDivision2Profile(){
+  const storage={};
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key && (key.startsWith("d2") || key.startsWith("division2"))){
+      storage[key]=localStorage.getItem(key);
+    }
   }
+  return {
+    app:"Division 2 Progression Companion",
+    schemaVersion:2,
+    exportedAt:new Date().toISOString(),
+    profile:{
+      name:"Jay",
+      notes:"",
+      favoriteBuilds:[],
+      wishlist:[],
+      vendorHistory:[],
+      countdownShoppingList:[]
+    },
+    localStorage:storage
+  };
+}
+
+function exportDivision2Profile(){
+  const data=collectDivision2Profile();
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   a.href=url;
-  a.download="division2-profile.json";
+  a.download="division2-complete-profile.json";
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  document.getElementById("status").textContent="Profile exported. Keep the JSON file somewhere safe.";
+  document.getElementById("status").textContent="Complete profile exported.";
 }
 
 async function importDivision2Profile(file){
@@ -664,10 +675,32 @@ async function importDivision2Profile(file){
   if(!data || data.app!=="Division 2 Progression Companion" || !data.localStorage){
     throw new Error("That file is not a valid Division 2 profile export.");
   }
+
+  const shouldReplace=confirm(
+    "Press OK to replace this site's saved Division 2 data with the imported profile.
+
+" +
+    "Press Cancel to merge the imported profile with the current data."
+  );
+
+  if(shouldReplace){
+    const toRemove=[];
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);
+      if(key && (key.startsWith("d2") || key.startsWith("division2")))toRemove.push(key);
+    }
+    toRemove.forEach(key=>localStorage.removeItem(key));
+  }
+
   for(const [key,value] of Object.entries(data.localStorage)){
     if(typeof value==="string")localStorage.setItem(key,value);
   }
-  alert("Profile imported successfully. The page will now reload.");
+
+  if(data.profile){
+    localStorage.setItem("d2CompleteProfileMeta",JSON.stringify(data.profile));
+  }
+
+  alert("Profile imported successfully. The page will reload now.");
   location.reload();
 }
 
