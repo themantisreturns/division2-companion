@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Division 2 Vendor Upgrade Checker</title>
+<title>Division 2 Vendor Upgrade Checker - Fixed Profile Import</title>
 <style>
 :root {
   --bg:#141920; --panel:#202731; --panel2:#2a3340; --text:#eef2f7;
@@ -677,9 +677,7 @@ async function importDivision2Profile(file){
   }
 
   const shouldReplace=confirm(
-    "Press OK to replace this site's saved Division 2 data with the imported profile.
-
-" +
+    "Press OK to replace this site's saved Division 2 data with the imported profile.\n\n" +
     "Press Cancel to merge the imported profile with the current data."
   );
 
