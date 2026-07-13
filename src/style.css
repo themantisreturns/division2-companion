@@ -533,3 +533,245 @@ h2 {
     text-align: left;
   }
 }
+
+.feature-page {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+
+.save-status {
+  padding: 10px 14px;
+  color: #aeb3ba;
+  font-size: 12px;
+  background: #111317;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.save-status.saving {
+  color: #f1b84b;
+}
+
+.save-status.saved {
+  color: #49d17d;
+}
+
+.save-status.error {
+  color: #ff6b6b;
+}
+
+.expertise-level-editor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: auto;
+}
+
+.expertise-level-input {
+  width: 100px;
+  padding: 12px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 800;
+  text-align: center;
+  background: #090a0c;
+  border: 1px solid rgba(255, 106, 0, 0.5);
+  border-radius: 8px;
+}
+
+.expertise-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.expertise-section {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.expertise-section:last-child {
+  grid-column: 1 / -1;
+}
+
+.expertise-table {
+  display: grid;
+  gap: 2px;
+}
+
+.expertise-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 51px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.expertise-entry:first-child {
+  border-top: 0;
+}
+
+.expertise-entry > strong {
+  font-size: 13px;
+}
+
+.fraction-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.expertise-number {
+  width: 68px;
+  padding: 8px 7px;
+  color: #fff;
+  font-weight: 800;
+  text-align: center;
+  background: #090a0c;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.expertise-number:focus,
+.expertise-level-input:focus {
+  outline: 2px solid rgba(255, 106, 0, 0.35);
+  border-color: var(--orange);
+}
+
+@media (max-width: 900px) {
+  .expertise-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expertise-section:last-child {
+    grid-column: auto;
+  }
+}
+
+.vendor-source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.vendor-controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 240px;
+  gap: 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.vendor-search {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vendor-search input,
+.vendor-controls select {
+  width: 100%;
+  padding: 11px 12px;
+  color: #fff;
+  background: #090a0c;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.vendor-search input:focus,
+.vendor-controls select:focus {
+  outline: 2px solid rgba(255, 106, 0, 0.25);
+  border-color: var(--orange);
+}
+
+#vendor-results {
+  display: grid;
+  gap: 16px;
+}
+
+.vendor-count {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.vendor-inventory-list {
+  display: grid;
+}
+
+.vendor-inventory-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid var(--border);
+}
+
+.vendor-inventory-item:first-child {
+  border-top: 0;
+}
+
+.vendor-inventory-item[hidden],
+.vendor-group[hidden] {
+  display: none;
+}
+
+.vendor-inventory-item strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.vendor-inventory-item p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.vendor-item-kind {
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.vendor-item-category {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .vendor-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .vendor-inventory-item {
+    grid-template-columns: 1fr;
+  }
+
+  .vendor-item-category {
+    text-align: left;
+  }
+}

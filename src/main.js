@@ -1,5 +1,12 @@
 import './style.css'
 
+import { loadVendorData } from './features/vendors/vendorData.js'
+
+import {
+  connectVendorFilters,
+  renderVendorPage,
+} from './features/vendors/vendors.js'
+
 import {
   mergeExpertiseProgress,
   readExpertiseForm,
@@ -228,15 +235,46 @@ async function initializeApp() {
   renderDashboard()
   startResetCountdown()
 
-  connectNavigation({
-    openDashboard,
-    openExpertise: openExpertisePage,
-  })
+connectNavigation({
+  openDashboard,
+  openExpertise: openExpertisePage,
+  openVendors: openVendorPage,
+})
 
   await initializeAuthentication({
     onSignedIn: configureSignedInDashboard,
     onSignedOut: configureSignedOutDashboard,
   })
+}
+
+async function openVendorPage() {
+  const mainContent = document.querySelector('.main-content')
+
+  mainContent.innerHTML = `
+    <section class="feature-page">
+      <div class="panel empty-state">
+        <strong>Loading weekly vendor data…</strong>
+      </div>
+    </section>
+  `
+
+  try {
+    const vendorData = await loadVendorData()
+
+    mainContent.innerHTML = renderVendorPage(vendorData)
+    connectVendorFilters()
+  } catch (error) {
+    console.error(error)
+
+    mainContent.innerHTML = `
+      <section class="feature-page">
+        <div class="panel empty-state">
+          <strong>Could not load vendor data</strong>
+          <p>${error.message}</p>
+        </div>
+      </section>
+    `
+  }
 }
 
 initializeApp()
