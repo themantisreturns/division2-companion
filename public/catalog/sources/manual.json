@@ -1,7 +1,253 @@
 {
   "weapons": [],
   "namedGear": [],
-  "exotics": [],
+  "exotics": [
+    {
+      "name": "Acosta's Go-Bag",
+      "category": "Backpack",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Backfire",
+      "category": "SMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "The Bighorn",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Bloody Knuckles",
+      "category": "Gloves",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Bluescreen",
+      "category": "LMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "BTSU Datagloves",
+      "category": "Gloves",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Bullet King",
+      "category": "LMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Busy Little Bee",
+      "category": "Pistol",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Capacitor",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Catharsis",
+      "category": "Mask",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Centurion's Scabbard",
+      "category": "Holster",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Chameleon",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "The Chatterbox",
+      "category": "SMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Collector",
+      "category": "Chest",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Coyote's Mask",
+      "category": "Mask",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Diamondback",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Doctor Home",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Dodge City Gunslinger's Holster",
+      "category": "Holster",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Dread Edict",
+      "category": "Marksman Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Eagle Bearer",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Imperial Dynasty",
+      "category": "Holster",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Iron Lung",
+      "category": "LMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Lady Death",
+      "category": "SMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Liberty",
+      "category": "Pistol",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Lullaby",
+      "category": "Shotgun",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Mantis",
+      "category": "Marksman Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Memento",
+      "category": "Backpack",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Merciless",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Mosquito",
+      "category": "Pistol",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Nemesis",
+      "category": "Marksman Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "NinjaBike Messenger Bag",
+      "category": "Backpack",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "NinjaBike Kneepads",
+      "category": "Kneepads",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Ouroboros",
+      "category": "SMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Pestilence",
+      "category": "LMG",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "The Ravenous",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Regulus",
+      "category": "Pistol",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Ridgeway's Pride",
+      "category": "Chest",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Ruthless",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Sacrum Imperium",
+      "category": "Marksman Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Sawyer's Kneepads",
+      "category": "Kneepads",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Scorpio",
+      "category": "Shotgun",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Shocker Punch",
+      "category": "Holster",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "St. Elmo's Engine",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Strega",
+      "category": "Assault Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Sweet Dreams",
+      "category": "Shotgun",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Tardigrade Armor System",
+      "category": "Chest",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Vile",
+      "category": "Mask",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Vindicator",
+      "category": "Rifle",
+      "reviewStatus": "seed"
+    },
+    {
+      "name": "Waveform",
+      "category": "Holster",
+      "reviewStatus": "seed"
+    }
+  ],
   "mods": [],
   "brands": [
     "5.11 Tactical",

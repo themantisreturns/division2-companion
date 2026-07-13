@@ -1,41 +1,33 @@
-# Division 2 V3 Catalog Foundation
+# Catalog Search + Exotics Patch
 
-This bundle moves game data out of the weekly vendor feature and into a
-generated, versioned catalog.
+This patch does two things:
+
+1. Adds search boxes to Brands and Gear Sets.
+2. Seeds the Exotics section so it is no longer empty.
 
 ## Install
 
-1. Copy the folders in this bundle into the root of your project.
-2. Replace the matching files when Finder asks.
-3. Apply the script changes from `PACKAGE_JSON_CHANGES.txt`.
-4. In the VS Code terminal run:
+Copy these two replacement files into your project:
 
-   npm run catalog:build
-   npm run dev
-
-5. Open Expertise and confirm weapons, named gear, skills, brands, gear
-   sets, specializations, and exotics render.
-
-## Important limitation
-
-The generator can only know about exact weapons, named gear, and exotics
-that are present in your weekly JSON files or added to
-`public/catalog/sources/manual.json`.
-
-That means this is the production-quality catalog pipeline, not a claim
-that the first generated catalog is already a complete copy of every item
-currently in The Division 2.
-
-## Adding reviewed catalog data
-
-Add objects or names to the arrays in:
-
-public/catalog/sources/manual.json
+- `src/features/expertise/expertise.js`
+- `public/catalog/sources/manual.json`
 
 Then run:
 
+```bash
 npm run catalog:build
+npm run dev
+```
 
-The generated file is:
+Open Expertise and verify:
 
-public/catalog/catalog.json
+- Brands has a search box.
+- Gear Sets has a search box.
+- Exotics contains entries.
+- Changes still save to Supabase.
+
+## Data note
+
+The exotic list is a reviewed starter seed, not a guarantee that every
+live-service addition is represented. The catalog pipeline now has a usable
+source list and can be extended without changing app code.
