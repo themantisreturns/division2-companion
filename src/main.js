@@ -20,7 +20,11 @@ import {
   serializeExpertiseProgress,
 } from './features/expertise/expertise.js'
 import { fallbackExpertiseCatalog } from './features/expertise/expertiseData.js'
-import { getExpertiseCatalog, loadCatalog } from './services/catalog.js'
+import {
+  clearCatalogCache,
+  getExpertiseCatalog,
+  loadCatalog,
+} from './services/catalog.js'
 import {
   getDashboardElements,
   renderDashboard,
@@ -36,6 +40,16 @@ import {
   signOut,
 } from './services/auth.js'
 import { loadUserProfile, saveUserProfile } from './services/profile.js'
+import { renderCatalogHealthPage } from './features/catalog/catalogHealth.js'
+import {
+  connectCatalogBrowser,
+  renderCatalogBrowser,
+} from './features/catalog/catalogBrowser.js'
+import {
+  connectInventoryPage,
+  normalizeInventory,
+  renderInventoryPage,
+} from './features/inventory/inventory.js'
 
 let currentVendorData = null
 let currentRecommendations = []
@@ -292,6 +306,285 @@ async function openVendorPage() {
   }
 }
 
+
+async function openLibraryPage() {
+  const mainContent = document.querySelector('.main-content')
+
+  mainContent.innerHTML = `
+    <section class="feature-page">
+      <div class="panel empty-state">
+        <strong>Loading item library…</strong>
+      </div>
+    </section>
+  `
+
+  try {
+    const catalog = await ensureGameCatalog()
+
+    if (!catalog) {
+      throw new Error(
+        'The generated catalog could not be loaded.',
+      )
+    }
+
+    const expertiseProgress = appState.activeProfile
+      ? mergeExpertiseProgress(
+          appState.activeProfile.expertise_progress,
+        )
+      : null
+
+    mainContent.innerHTML = renderCatalogBrowser({
+      catalog,
+      expertiseProgress,
+    })
+
+    if (!expertiseProgress) {
+      return
+    }
+
+    appState.expertiseProgress = expertiseProgress
+
+    connectCatalogBrowser({
+      expertiseProgress,
+      onProgressChange: scheduleLibrarySave,
+    })
+  } catch (error) {
+    console.error(error)
+
+    mainContent.innerHTML = `
+      <section class="feature-page">
+        <div class="panel empty-state">
+          <strong>Could not load item library</strong>
+          <p>${error.message}</p>
+        </div>
+      </section>
+    `
+  }
+}
+
+function scheduleLibrarySave() {
+  const status = document.querySelector('#library-save-status')
+
+  if (status) {
+    status.textContent = 'Saving changes…'
+    status.className = 'save-status saving'
+  }
+
+  window.clearTimeout(appState.saveTimer)
+
+  appState.saveTimer = window.setTimeout(
+    saveLibraryProgress,
+    700,
+  )
+}
+
+async function saveLibraryProgress() {
+  const status = document.querySelector('#library-save-status')
+
+  if (!appState.activeUser || !appState.activeProfile) {
+    return
+  }
+
+  try {
+    const savedProfile = await saveUserProfile(
+      appState.activeUser.id,
+      {
+        expertise_progress: serializeExpertiseProgress(
+          appState.expertiseProgress,
+        ),
+      },
+    )
+
+    appState.activeProfile = savedProfile
+
+    if (status) {
+      status.textContent = 'Saved to cloud'
+      status.className = 'save-status saved'
+    }
+  } catch (error) {
+    console.error(error)
+
+    if (status) {
+      status.textContent = 'Could not save'
+      status.className = 'save-status error'
+    }
+  }
+}
+
+
+async function openInventoryPage() {
+  if (!appState.activeUser || !appState.activeProfile) {
+    window.alert(
+      'Sign in with GitHub before editing inventory.',
+    )
+    return
+  }
+
+  const mainContent = document.querySelector('.main-content')
+
+  mainContent.innerHTML = `
+    <section class="feature-page">
+      <div class="panel empty-state">
+        <strong>Loading inventory…</strong>
+      </div>
+    </section>
+  `
+
+  try {
+    const catalog = await ensureGameCatalog()
+
+    if (!catalog) {
+      throw new Error(
+        'The generated catalog could not be loaded.',
+      )
+    }
+
+    const inventory = normalizeInventory(
+      appState.activeProfile.app_settings?.inventory,
+    )
+
+    appState.inventory = inventory
+
+    mainContent.innerHTML = renderInventoryPage({
+      catalog,
+      inventory,
+    })
+
+    connectInventoryPage({
+      inventory,
+      onInventoryChange:
+        scheduleInventorySave,
+    })
+  } catch (error) {
+    console.error(error)
+
+    mainContent.innerHTML = `
+      <section class="feature-page">
+        <div class="panel empty-state">
+          <strong>Could not load inventory</strong>
+          <p>${error.message}</p>
+        </div>
+      </section>
+    `
+  }
+}
+
+function scheduleInventorySave() {
+  const status = document.querySelector(
+    '#inventory-save-status',
+  )
+
+  if (status) {
+    status.textContent = 'Saving changes…'
+    status.className = 'save-status saving'
+  }
+
+  window.clearTimeout(appState.saveTimer)
+
+  appState.saveTimer = window.setTimeout(
+    saveInventory,
+    700,
+  )
+}
+
+async function saveInventory() {
+  const status = document.querySelector(
+    '#inventory-save-status',
+  )
+
+  if (
+    !appState.activeUser ||
+    !appState.activeProfile ||
+    !appState.inventory
+  ) {
+    return
+  }
+
+  try {
+    appState.inventory.updatedAt =
+      new Date().toISOString()
+
+    const nextSettings = {
+      ...(appState.activeProfile.app_settings ?? {}),
+      inventory: appState.inventory,
+    }
+
+    const savedProfile = await saveUserProfile(
+      appState.activeUser.id,
+      {
+        app_settings: nextSettings,
+      },
+    )
+
+    appState.activeProfile = savedProfile
+
+    if (status) {
+      status.textContent = 'Saved to cloud'
+      status.className = 'save-status saved'
+    }
+  } catch (error) {
+    console.error(error)
+
+    if (status) {
+      status.textContent = 'Could not save'
+      status.className = 'save-status error'
+    }
+  }
+}
+
+async function openSettingsPage() {
+  const mainContent = document.querySelector('.main-content')
+
+  mainContent.innerHTML = `
+    <section class="feature-page">
+      <div class="panel empty-state">
+        <strong>Loading catalog health…</strong>
+      </div>
+    </section>
+  `
+
+  try {
+    const catalog = await ensureGameCatalog()
+
+    if (!catalog) {
+      throw new Error(
+        'The generated catalog could not be loaded.',
+      )
+    }
+
+    mainContent.innerHTML =
+      renderCatalogHealthPage(catalog)
+
+    document
+      .querySelector('#refresh-catalog-health')
+      ?.addEventListener('click', async () => {
+        const button = document.querySelector(
+          '#refresh-catalog-health',
+        )
+
+        if (button) {
+          button.disabled = true
+          button.textContent = 'Refreshing…'
+        }
+
+        clearCatalogCache()
+        currentGameCatalog = null
+        await openSettingsPage()
+      })
+  } catch (error) {
+    console.error(error)
+
+    mainContent.innerHTML = `
+      <section class="feature-page">
+        <div class="panel empty-state">
+          <strong>Could not load catalog health</strong>
+          <p>${error.message}</p>
+        </div>
+      </section>
+    `
+  }
+}
+
 async function initializeApp() {
   renderDashboard()
   startResetCountdown()
@@ -300,6 +593,9 @@ async function initializeApp() {
     openDashboard,
     openExpertise: openExpertisePage,
     openVendors: openVendorPage,
+    openLibrary: openLibraryPage,
+    openInventory: openInventoryPage,
+    openSettings: openSettingsPage,
   })
 
   await initializeAuthentication({

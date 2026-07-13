@@ -1,7 +1,9 @@
 function setActivePage(activePage) {
   document.querySelectorAll('.nav-item').forEach((button) => {
-    const isActive = button.dataset.page === activePage
-    button.classList.toggle('active', isActive)
+    button.classList.toggle(
+      'active',
+      button.dataset.page === activePage,
+    )
   })
 }
 
@@ -9,23 +11,42 @@ export function connectNavigation({
   openDashboard,
   openExpertise,
   openVendors,
+  openLibrary,
+  openInventory,
+  openSettings,
 }) {
   document.querySelectorAll('.nav-item').forEach((button) => {
     const page = button.dataset.page
 
     button.addEventListener('click', () => {
-      setActivePage(page)
-
       if (page === 'Dashboard') {
+        setActivePage('Dashboard')
         openDashboard()
       }
 
       if (page === 'Expertise') {
+        setActivePage('Expertise')
         openExpertise()
       }
 
       if (page === 'Weekly Vendors') {
+        setActivePage('Weekly Vendors')
         openVendors()
+      }
+
+      if (page === 'Library') {
+        setActivePage('Library')
+        openLibrary()
+      }
+
+      if (page === 'Inventory') {
+        setActivePage('Inventory')
+        openInventory()
+      }
+
+      if (page === 'Settings') {
+        setActivePage('Settings')
+        openSettings()
       }
     })
   })
@@ -38,7 +59,7 @@ export function connectNavigation({
     })
 
   document
-    .querySelector('.primary-button')
+    .querySelector('.vendor-panel .primary-button')
     ?.addEventListener('click', () => {
       setActivePage('Weekly Vendors')
       openVendors()

@@ -2,6 +2,7 @@ const navigation = [
   { label: 'Dashboard', icon: '⌂', active: true },
   { label: 'Expertise', icon: '◎' },
   { label: 'Weekly Vendors', icon: '◆' },
+  { label: 'Library', icon: '◫' },
   { label: 'Inventory', icon: '▣' },
   { label: 'Builds', icon: '△' },
   { label: 'Settings', icon: '⚙' },
@@ -29,7 +30,7 @@ const vendorItems = [
   },
   {
     title: 'Assault rifles',
-    reason: 'Only 1 of 55 currently proficient',
+    reason: 'Check exact item proficiency',
     vendor: 'Buy inexpensive duplicates',
     type: 'priority',
   },
@@ -270,21 +271,16 @@ export function getDashboardElements() {
 export function showSignedOutDashboard() {
   const elements = getDashboardElements()
 
-  if (!elements.loginButton) {
-    return
-  }
+  if (!elements.loginButton) return
 
   elements.cloudStatus.textContent = 'Offline'
   elements.cloudStatusNote.textContent =
     'Sign in to enable cloud sync'
-
   elements.sidebarProfileName.textContent = 'Local profile'
   elements.sidebarProfileStatus.textContent =
     'Cloud sync available'
-
   elements.connectionDot.style.background = '#f0a020'
   elements.welcomeHeading.textContent = 'Welcome back, Jay'
-
   elements.expertiseLevelMetric.textContent = '0'
   elements.expertiseLevelNote.textContent =
     'Profile setup in progress'
@@ -296,25 +292,19 @@ export function showSignedInDashboard({
 }) {
   const elements = getDashboardElements()
 
-  if (!elements.loginButton) {
-    return
-  }
+  if (!elements.loginButton) return
 
   elements.cloudStatus.textContent = 'Connected'
   elements.cloudStatusNote.textContent =
     'Your profile is synced securely'
-
   elements.sidebarProfileName.textContent = displayName
   elements.sidebarProfileStatus.textContent =
     'Cloud profile connected'
-
   elements.connectionDot.style.background = '#49d17d'
   elements.welcomeHeading.textContent =
     `Welcome back, ${displayName}`
-
   elements.expertiseLevelMetric.textContent =
     expertiseLevel ?? 0
-
   elements.expertiseLevelNote.textContent =
     'Loaded from your cloud profile'
 }
@@ -322,7 +312,6 @@ export function showSignedInDashboard({
 function getNextWeeklyReset() {
   const now = new Date()
   const reset = new Date(now)
-
   const daysUntilTuesday =
     (2 - now.getDay() + 7) % 7
 
@@ -340,9 +329,7 @@ function updateCountdown() {
   const countdown = document.querySelector('#reset-countdown')
   const resetDetail = document.querySelector('#reset-detail')
 
-  if (!countdown || !resetDetail) {
-    return
-  }
+  if (!countdown || !resetDetail) return
 
   const now = new Date()
   const reset = getNextWeeklyReset()
