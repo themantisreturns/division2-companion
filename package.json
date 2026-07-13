@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
- "scripts": {
+"scripts": {
   "catalog:build": "node scripts/build-catalog.mjs",
-  "dev": "npm run catalog:build && vite",
-  "build": "npm run catalog:build && vite build",
+  "catalog:validate": "node scripts/validate-catalog.mjs",
+  "catalog:check": "npm run catalog:build && npm run catalog:validate",
+  "dev": "npm run catalog:check && vite",
+  "build": "npm run catalog:check && vite build",
   "preview": "vite preview"
 },
   "devDependencies": {
