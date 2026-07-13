@@ -8,6 +8,10 @@ import {
 } from './features/vendors/vendors.js'
 
 import {
+  createVendorRecommendations,
+} from './features/vendors/recommendationEngine.js'
+
+import {
   mergeExpertiseProgress,
   readExpertiseForm,
   renderExpertisePage,
@@ -248,7 +252,8 @@ connectNavigation({
 }
 
 async function openVendorPage() {
-  const mainContent = document.querySelector('.main-content')
+  const mainContent =
+    document.querySelector('.main-content')
 
   mainContent.innerHTML = `
     <section class="feature-page">
@@ -261,7 +266,26 @@ async function openVendorPage() {
   try {
     const vendorData = await loadVendorData()
 
-    mainContent.innerHTML = renderVendorPage(vendorData)
+    let recommendations = []
+
+    if (appState.activeProfile) {
+      const expertiseProgress =
+        mergeExpertiseProgress(
+          appState.activeProfile.expertise_progress,
+        )
+
+      recommendations =
+        createVendorRecommendations(
+          vendorData,
+          expertiseProgress,
+        )
+    }
+
+    mainContent.innerHTML = renderVendorPage({
+      vendorData,
+      recommendations,
+    })
+
     connectVendorFilters()
   } catch (error) {
     console.error(error)

@@ -775,3 +775,84 @@ h2 {
     text-align: left;
   }
 }
+
+.recommendation-panel {
+  border-color: rgba(255, 106, 0, 0.24);
+}
+
+.recommendation-list {
+  display: grid;
+}
+
+.recommendation-item {
+  display: grid;
+  grid-template-columns: 125px minmax(0, 1fr) 210px;
+  align-items: center;
+  gap: 22px;
+  padding: 17px 0;
+  border-top: 1px solid var(--border);
+}
+
+.recommendation-item:first-child {
+  border-top: 0;
+}
+
+.recommendation-priority {
+  display: grid;
+  gap: 6px;
+}
+
+.recommendation-stars {
+  color: var(--orange);
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.recommendation-priority > span:last-child {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.recommendation-copy strong,
+.recommendation-location strong,
+.recommendation-location span {
+  display: block;
+}
+
+.recommendation-copy strong {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.recommendation-copy p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.recommendation-location {
+  text-align: right;
+}
+
+.recommendation-location strong {
+  font-size: 13px;
+}
+
+.recommendation-location span {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 850px) {
+  .recommendation-item {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .recommendation-location {
+    text-align: left;
+  }
+}

@@ -36,8 +36,14 @@ function getAllItems(vendorData) {
 
     ...vendorData.weapons.map((item) => ({
       ...item,
-      category: 'Weapon',
+      category:
+        item.weaponType ||
+        item.type ||
+        item.category ||
+        'Weapon',
+
       kind: 'Weapon',
+
       details: [
         item.talent,
         cleanHtml(item.attribute1),
@@ -70,7 +76,104 @@ function groupItemsByVendor(items) {
   }, {})
 }
 
-export function renderVendorPage(vendorData) {
+function renderPriorityStars(priority) {
+  return `
+    <span
+      class="recommendation-stars"
+      aria-label="${priority} out of 5 priority"
+    >
+      ${'★'.repeat(priority)}${'☆'.repeat(5 - priority)}
+    </span>
+  `
+}
+
+function renderRecommendations(recommendations) {
+  if (!recommendations.length) {
+    return `
+      <section class="panel recommendation-panel">
+        <div class="empty-state">
+          <div class="empty-icon">✓</div>
+          <strong>No Expertise purchases identified</strong>
+          <p>
+            Either your tracked categories are complete or the
+            current data could not be matched to your profile.
+          </p>
+        </div>
+      </section>
+    `
+  }
+
+  return `
+    <section class="panel recommendation-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Personalized results</p>
+          <h2>What to consider buying</h2>
+        </div>
+
+        <span class="vendor-count">
+          ${recommendations.length} recommendations
+        </span>
+      </div>
+
+      <div class="recommendation-list">
+        ${recommendations
+          .map(
+            (recommendation) => `
+              <article class="recommendation-item">
+                <div class="recommendation-priority">
+                  ${renderPriorityStars(
+                    recommendation.priority,
+                  )}
+
+                  <span>
+                    ${escapeHtml(
+                      recommendation.progressLabel,
+                    )}
+                  </span>
+                </div>
+
+                <div class="recommendation-copy">
+                  <span class="vendor-item-kind">
+                    ${escapeHtml(recommendation.kind)}
+                  </span>
+
+                  <strong>
+                    ${escapeHtml(recommendation.name)}
+                  </strong>
+
+                  <p>
+                    ${escapeHtml(recommendation.reason)}
+                  </p>
+                </div>
+
+                <div class="recommendation-location">
+                  <strong>
+                    ${escapeHtml(recommendation.vendor)}
+                  </strong>
+
+                  <span>
+                    ${
+                      recommendation.recommendationType ===
+                      'verify-weapon'
+                        ? 'Verify exact proficiency'
+                        : 'Buy for brand Expertise'
+                    }
+                  </span>
+                </div>
+              </article>
+            `,
+          )
+          .join('')}
+      </div>
+    </section>
+  `
+}
+
+export function renderVendorPage({
+  vendorData,
+  recommendations = [],
+}) {
   const allItems = getAllItems(vendorData)
   const groupedItems = groupItemsByVendor(allItems)
   const vendorNames = Object.keys(groupedItems).sort()
@@ -82,7 +185,8 @@ export function renderVendorPage(vendorData) {
           <p class="eyebrow">Current weekly inventory</p>
           <h1>Weekly Vendors</h1>
           <p class="subtitle">
-            Browse the loaded gear, weapons, and mods by vendor.
+            Personalized recommendations based on your saved
+            Expertise profile.
           </p>
         </div>
 
@@ -97,54 +201,86 @@ export function renderVendorPage(vendorData) {
       </header>
 
       <section class="summary-grid vendor-summary-grid">
+        <article class="summary-card accent-card">
+          <span class="card-label">Recommendations</span>
+          <strong class="metric">
+            ${recommendations.length}
+          </strong>
+          <span class="metric-note">
+            Personalized Expertise opportunities
+          </span>
+        </article>
+
         <article class="summary-card">
           <span class="card-label">Total items</span>
-          <strong class="metric">${vendorData.total}</strong>
-          <span class="metric-note">Across all vendor files</span>
+          <strong class="metric">
+            ${vendorData.total}
+          </strong>
+          <span class="metric-note">
+            Across all vendor files
+          </span>
         </article>
 
         <article class="summary-card">
           <span class="card-label">Gear</span>
-          <strong class="metric">${vendorData.gear.length}</strong>
-          <span class="metric-note">Gear pieces available</span>
+          <strong class="metric">
+            ${vendorData.gear.length}
+          </strong>
+          <span class="metric-note">
+            Gear pieces available
+          </span>
         </article>
 
         <article class="summary-card">
-          <span class="card-label">Weapons</span>
-          <strong class="metric">${vendorData.weapons.length}</strong>
-          <span class="metric-note">Weapons available</span>
-        </article>
-
-        <article class="summary-card">
-          <span class="card-label">Mods</span>
-          <strong class="metric">${vendorData.mods.length}</strong>
-          <span class="metric-note">${vendorNames.length} vendors loaded</span>
+          <span class="card-label">Weapons and mods</span>
+          <strong class="metric">
+            ${
+              vendorData.weapons.length +
+              vendorData.mods.length
+            }
+          </strong>
+          <span class="metric-note">
+            ${vendorNames.length} vendors loaded
+          </span>
         </article>
       </section>
 
-      <div class="vendor-controls">
-        <label class="vendor-search">
-          <span>Search inventory</span>
-          <input
-            id="vendor-search-input"
-            type="search"
-            placeholder="Item, brand, vendor, talent…"
-          >
-        </label>
+      ${renderRecommendations(recommendations)}
 
-        <select id="vendor-filter">
-          <option value="">All vendors</option>
-          ${vendorNames
-            .map(
-              (vendor) => `
-                <option value="${escapeHtml(vendor)}">
-                  ${escapeHtml(vendor)}
-                </option>
-              `,
-            )
-            .join('')}
-        </select>
-      </div>
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Complete inventory</p>
+            <h2>Browse all vendor items</h2>
+          </div>
+        </div>
+
+        <div class="vendor-controls">
+          <label class="vendor-search">
+            <span>Search inventory</span>
+
+            <input
+              id="vendor-search-input"
+              type="search"
+              placeholder="Item, brand, vendor, talent…"
+            >
+          </label>
+
+          <select id="vendor-filter">
+            <option value="">All vendors</option>
+
+            ${vendorNames
+              .map(
+                (vendor) => `
+                  <option value="${escapeHtml(vendor)}">
+                    ${escapeHtml(vendor)}
+                  </option>
+                `,
+              )
+              .join('')}
+          </select>
+        </div>
+      </section>
 
       <div id="vendor-results">
         ${renderVendorGroups(groupedItems)}
@@ -198,16 +334,22 @@ export function renderVendorGroups(groupedItems) {
                         .join(' ')
                         .toLowerCase(),
                     )}"
-                    data-vendor="${escapeHtml(item.vendor)}"
+                    data-vendor="${escapeHtml(
+                      item.vendor,
+                    )}"
                   >
                     <div>
                       <span class="vendor-item-kind">
                         ${escapeHtml(item.kind)}
                       </span>
 
-                      <strong>${escapeHtml(item.name)}</strong>
+                      <strong>
+                        ${escapeHtml(item.name)}
+                      </strong>
 
-                      <p>${escapeHtml(item.details)}</p>
+                      <p>
+                        ${escapeHtml(item.details)}
+                      </p>
                     </div>
 
                     <span class="vendor-item-category">
@@ -228,25 +370,43 @@ export function connectVendorFilters() {
   const searchInput = document.querySelector(
     '#vendor-search-input',
   )
-  const vendorFilter = document.querySelector('#vendor-filter')
+
+  const vendorFilter = document.querySelector(
+    '#vendor-filter',
+  )
+
+  if (!searchInput || !vendorFilter) {
+    return
+  }
+
   const items = [
-    ...document.querySelectorAll('.vendor-inventory-item'),
+    ...document.querySelectorAll(
+      '.vendor-inventory-item',
+    ),
   ]
-  const groups = [...document.querySelectorAll('.vendor-group')]
+
+  const groups = [
+    ...document.querySelectorAll('.vendor-group'),
+  ]
 
   function applyFilters() {
-    const search = searchInput.value.trim().toLowerCase()
+    const search =
+      searchInput.value.trim().toLowerCase()
+
     const selectedVendor = vendorFilter.value
 
     items.forEach((item) => {
       const matchesSearch =
-        !search || item.dataset.search.includes(search)
+        !search ||
+        item.dataset.search.includes(search)
 
       const matchesVendor =
         !selectedVendor ||
         item.dataset.vendor === selectedVendor
 
-      item.hidden = !(matchesSearch && matchesVendor)
+      item.hidden = !(
+        matchesSearch && matchesVendor
+      )
     })
 
     groups.forEach((group) => {
