@@ -901,3 +901,58 @@ h2 {
       125px minmax(0, 1fr) 210px 125px;
   }
 }
+
+.migration-note {
+  padding: 18px 22px;
+  border-color: rgba(255, 106, 0, 0.22);
+}
+
+.migration-note p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.expertise-v2-grid {
+  align-items: start;
+}
+
+.expertise-catalog-section {
+  min-height: 360px;
+}
+
+.expertise-search {
+  margin-bottom: 15px;
+}
+
+.expertise-checklist {
+  display: grid;
+  max-height: 440px;
+  overflow: auto;
+  border-top: 1px solid var(--border);
+}
+
+.expertise-check-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 45px;
+  padding: 9px 2px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.expertise-check-item[hidden] {
+  display: none;
+}
+
+.expertise-check-item input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--orange);
+}
+
+.expertise-check-item span {
+  font-size: 13px;
+}

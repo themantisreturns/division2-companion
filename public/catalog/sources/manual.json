@@ -1,0 +1,150 @@
+{
+  "weapons": [],
+  "namedGear": [],
+  "exotics": [],
+  "mods": [],
+  "brands": [
+    "5.11 Tactical",
+    "Airaldi Holdings",
+    "Alps Summit Armament",
+    "Badger Tuff",
+    "Belstone Armory",
+    "Brazos de Arcabuz",
+    "Česká Výroba s.r.o.",
+    "Douglas & Harding",
+    "Edelweiss GP-2",
+    "Electrique",
+    "Empress International",
+    "Fenris Group AB",
+    "Gila Guard",
+    "Golan Gear Ltd",
+    "Grupo Sombra S.A.",
+    "Habsburg Guard",
+    "Hana-U Corporation",
+    "Legatus S.p.A.",
+    "Lengmo",
+    "Murakami Industries",
+    "Overlord Armaments",
+    "Palisade Steelworks",
+    "Petrov Defense Group",
+    "Providence Defense",
+    "Richter & Kaiser GmbH",
+    "Royal Works",
+    "Shiny Monkey Gear",
+    "Sokolov Concern",
+    "Svadovka Sp. z o.o.",
+    "Unit Alloys",
+    "Urban Lookout",
+    "Uzina Getica",
+    "Walker, Harris & Co.",
+    "Wyvern Wear",
+    "Yaahl Gear"
+  ],
+  "gearSets": [
+    "Aces & Eights",
+    "Aegis",
+    "Breaking Point",
+    "Cavalier",
+    "Concentrated Companionship",
+    "Core Strength",
+    "Eclipse Protocol",
+    "Foundry Bulwark",
+    "Future Initiative",
+    "Hard Wired",
+    "Heartbreaker",
+    "Hotshot",
+    "Hunter's Fury",
+    "Measured Asset",
+    "Negotiator's Dilemma",
+    "Ongoing Directive",
+    "Ortiz: Exuro",
+    "Ortiz: Reficere",
+    "Refactor",
+    "Rigger",
+    "Striker's Battlegear",
+    "System Corruption",
+    "Tip of the Spear",
+    "Tipping Scales",
+    "True Patriot",
+    "Umbra Initiative",
+    "Virtuoso"
+  ],
+  "skills": {
+    "Ballistic Shield": [
+      "Bulwark",
+      "Crusader",
+      "Deflector",
+      "Firewall Striker"
+    ],
+    "Chem Launcher": [
+      "Firestarter",
+      "Oxidizer",
+      "Reinforcer",
+      "Riot Foam"
+    ],
+    "Decoy": [
+      "Decoy"
+    ],
+    "Drone": [
+      "Bombardier",
+      "Defender",
+      "Fixer",
+      "Striker",
+      "Tactician"
+    ],
+    "Firefly": [
+      "Blinder",
+      "Burster",
+      "Demolisher"
+    ],
+    "Hive": [
+      "Artificer",
+      "Booster",
+      "Restorer",
+      "Reviver",
+      "Stinger"
+    ],
+    "Pulse": [
+      "Achilles",
+      "Banshee",
+      "Jammer",
+      "Remote",
+      "Scanner"
+    ],
+    "Seeker Mine": [
+      "Airburst",
+      "Cluster",
+      "Explosive",
+      "Mender"
+    ],
+    "Smart Cover": [
+      "Reclaimer",
+      "Smart Cover"
+    ],
+    "Sticky Bomb": [
+      "Burn",
+      "EMP",
+      "Explosive"
+    ],
+    "Trap": [
+      "Repair",
+      "Shrapnel",
+      "Shock"
+    ],
+    "Turret": [
+      "Artillery",
+      "Assault",
+      "Flame",
+      "Sniper"
+    ]
+  },
+  "specializations": [
+    "Demolitionist",
+    "Firewall",
+    "Gunner",
+    "Sharpshooter",
+    "Survivalist",
+    "Technician"
+  ],
+  "skillItems": []
+}

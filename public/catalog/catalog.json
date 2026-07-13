@@ -1,0 +1,1133 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-13T17:06:34.877Z",
+  "sourceSummary": {
+    "weeklyGear": 46,
+    "weeklyWeapons": 44,
+    "weeklyMods": 54,
+    "manualWeapons": 0,
+    "manualNamedGear": 0,
+    "manualExotics": 0
+  },
+  "categories": {
+    "weapons": [
+      {
+        "name": "ACR SS",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "acr-ss"
+      },
+      {
+        "name": "Big Show - MG5",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "big-show-mg5"
+      },
+      {
+        "name": "Black Market RPK-74 E",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "black-market-rpk-74-e"
+      },
+      {
+        "name": "Brain Breaker - Urban MDR",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "brain-breaker-urban-mdr"
+      },
+      {
+        "name": "Carbine 7",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "carbine-7"
+      },
+      {
+        "name": "Classic M44 Carbine",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "classic-m44-carbine"
+      },
+      {
+        "name": "Custom PF45",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "custom-pf45"
+      },
+      {
+        "name": "D50",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "d50"
+      },
+      {
+        "name": "Double Barrel Shotgun",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "double-barrel-shotgun"
+      },
+      {
+        "name": "Enhanced AUG A3P",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "enhanced-aug-a3p"
+      },
+      {
+        "name": "F2000",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "f2000"
+      },
+      {
+        "name": "First Wave PF45",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "first-wave-pf45"
+      },
+      {
+        "name": "Huntsman - FAMAS 2010",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "huntsman-famas-2010"
+      },
+      {
+        "name": "Instigator - Custom M44",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "instigator-custom-m44"
+      },
+      {
+        "name": "IWI NEGEV",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "iwi-negev"
+      },
+      {
+        "name": "Lightning Rod - Custom PF45",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "lightning-rod-custom-pf45"
+      },
+      {
+        "name": "Like Glue - Super 90",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "like-glue-super-90"
+      },
+      {
+        "name": "M1911",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "m1911"
+      },
+      {
+        "name": "M1928",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "m1928"
+      },
+      {
+        "name": "M700 Carbon",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "m700-carbon"
+      },
+      {
+        "name": "Marine Super 90",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "marine-super-90"
+      },
+      {
+        "name": "Military M870",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "military-m870"
+      },
+      {
+        "name": "Military MK46",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "military-mk46"
+      },
+      {
+        "name": "Military RPK-74 M",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "military-rpk-74-m"
+      },
+      {
+        "name": "Mozambique Special",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "mozambique-special"
+      },
+      {
+        "name": "MP5A2",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "mp5a2"
+      },
+      {
+        "name": "New Reliable - Black Market RPK-74 E",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "new-reliable-black-market-rpk-74-e"
+      },
+      {
+        "name": "Police T821",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "police-t821"
+      },
+      {
+        "name": "Px4 Storm Type F",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "px4-storm-type-f"
+      },
+      {
+        "name": "Relic - G28",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "relic-g28"
+      },
+      {
+        "name": "Rock n' Roll - ACS-12",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "rock-n-roll-acs-12"
+      },
+      {
+        "name": "SASG-12",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "sasg-12"
+      },
+      {
+        "name": "Shield Splinterer - F2000",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "shield-splinterer-f2000"
+      },
+      {
+        "name": "SIG 556",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "sig-556"
+      },
+      {
+        "name": "SOCOM Mk20 SSR",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "socom-mk20-ssr"
+      },
+      {
+        "name": "SR-1",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "sr-1"
+      },
+      {
+        "name": "Stoner LAMG",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "stoner-lamg"
+      },
+      {
+        "name": "Tactical .308",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "tactical-308"
+      },
+      {
+        "name": "Tactical M249 Para",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "tactical-m249-para"
+      },
+      {
+        "name": "UIC15 MOD2",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "uic15-mod2"
+      },
+      {
+        "name": "USC .45 ACP",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "usc-45-acp"
+      },
+      {
+        "name": "Vector SBR 9mm",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "vector-sbr-9mm"
+      }
+    ],
+    "namedGear": [
+      {
+        "name": "Forge",
+        "slot": "Holster",
+        "brand": "Richter & Kaiser",
+        "source": "weekly-vendor-seed",
+        "id": "forge"
+      },
+      {
+        "name": "Hunter-Killer",
+        "slot": "Chest",
+        "brand": "Golan Gear Ltd",
+        "source": "weekly-vendor-seed",
+        "id": "hunter-killer"
+      },
+      {
+        "name": "Pointman",
+        "slot": "Chest",
+        "brand": "Gila Guard",
+        "source": "weekly-vendor-seed",
+        "id": "pointman"
+      },
+      {
+        "name": "Robin",
+        "slot": "Chest",
+        "brand": "Royal Works",
+        "source": "weekly-vendor-seed",
+        "id": "robin"
+      }
+    ],
+    "exotics": [],
+    "brands": [
+      {
+        "name": "5.11 Tactical",
+        "id": "5-11-tactical"
+      },
+      {
+        "name": "Airaldi Holdings",
+        "id": "airaldi-holdings"
+      },
+      {
+        "name": "Alps Summit Armament",
+        "id": "alps-summit-armament"
+      },
+      {
+        "name": "Badger Tuff",
+        "id": "badger-tuff"
+      },
+      {
+        "name": "Belstone Armory",
+        "id": "belstone-armory"
+      },
+      {
+        "name": "Brazos de Arcabuz",
+        "id": "brazos-de-arcabuz"
+      },
+      {
+        "name": "Česká Výroba s.r.o.",
+        "id": "ceska-vyroba-s-r-o"
+      },
+      {
+        "name": "Douglas & Harding",
+        "id": "douglas-harding"
+      },
+      {
+        "name": "Edelweiss GP-2",
+        "id": "edelweiss-gp-2"
+      },
+      {
+        "name": "Electrique",
+        "id": "electrique"
+      },
+      {
+        "name": "Empress International",
+        "id": "empress-international"
+      },
+      {
+        "name": "Fenris Group AB",
+        "id": "fenris-group-ab"
+      },
+      {
+        "name": "Gila Guard",
+        "id": "gila-guard"
+      },
+      {
+        "name": "Golan Gear Ltd",
+        "id": "golan-gear-ltd"
+      },
+      {
+        "name": "Grupo Sombra S.A.",
+        "id": "grupo-sombra-s-a"
+      },
+      {
+        "name": "Habsburg Guard",
+        "id": "habsburg-guard"
+      },
+      {
+        "name": "Hana-U Corporation",
+        "id": "hana-u-corporation"
+      },
+      {
+        "name": "Legatus S.p.A.",
+        "id": "legatus-s-p-a"
+      },
+      {
+        "name": "Lengmo",
+        "id": "lengmo"
+      },
+      {
+        "name": "Murakami Industries",
+        "id": "murakami-industries"
+      },
+      {
+        "name": "Overlord Armaments",
+        "id": "overlord-armaments"
+      },
+      {
+        "name": "Palisade Steelworks",
+        "id": "palisade-steelworks"
+      },
+      {
+        "name": "Petrov Defense Group",
+        "id": "petrov-defense-group"
+      },
+      {
+        "name": "Providence Defense",
+        "id": "providence-defense"
+      },
+      {
+        "name": "Richter & Kaiser GmbH",
+        "id": "richter-kaiser-gmbh"
+      },
+      {
+        "name": "Royal Works",
+        "id": "royal-works"
+      },
+      {
+        "name": "Shiny Monkey Gear",
+        "id": "shiny-monkey-gear"
+      },
+      {
+        "name": "Sokolov Concern",
+        "id": "sokolov-concern"
+      },
+      {
+        "name": "Svadovka Sp. z o.o.",
+        "id": "svadovka-sp-z-o-o"
+      },
+      {
+        "name": "Unit Alloys",
+        "id": "unit-alloys"
+      },
+      {
+        "name": "Urban Lookout",
+        "id": "urban-lookout"
+      },
+      {
+        "name": "Uzina Getica",
+        "id": "uzina-getica"
+      },
+      {
+        "name": "Walker, Harris & Co.",
+        "id": "walker-harris-co"
+      },
+      {
+        "name": "Wyvern Wear",
+        "id": "wyvern-wear"
+      },
+      {
+        "name": "Yaahl Gear",
+        "id": "yaahl-gear"
+      }
+    ],
+    "gearSets": [
+      {
+        "name": "Aces & Eights",
+        "id": "aces-eights"
+      },
+      {
+        "name": "Aegis",
+        "id": "aegis"
+      },
+      {
+        "name": "Breaking Point",
+        "id": "breaking-point"
+      },
+      {
+        "name": "Cavalier",
+        "id": "cavalier"
+      },
+      {
+        "name": "Concentrated Companionship",
+        "id": "concentrated-companionship"
+      },
+      {
+        "name": "Core Strength",
+        "id": "core-strength"
+      },
+      {
+        "name": "Eclipse Protocol",
+        "id": "eclipse-protocol"
+      },
+      {
+        "name": "Foundry Bulwark",
+        "id": "foundry-bulwark"
+      },
+      {
+        "name": "Future Initiative",
+        "id": "future-initiative"
+      },
+      {
+        "name": "Hard Wired",
+        "id": "hard-wired"
+      },
+      {
+        "name": "Heartbreaker",
+        "id": "heartbreaker"
+      },
+      {
+        "name": "Hotshot",
+        "id": "hotshot"
+      },
+      {
+        "name": "Hunter's Fury",
+        "id": "hunter-s-fury"
+      },
+      {
+        "name": "Measured Asset",
+        "id": "measured-asset"
+      },
+      {
+        "name": "Negotiator's Dilemma",
+        "id": "negotiator-s-dilemma"
+      },
+      {
+        "name": "Ongoing Directive",
+        "id": "ongoing-directive"
+      },
+      {
+        "name": "Ortiz: Exuro",
+        "id": "ortiz-exuro"
+      },
+      {
+        "name": "Ortiz: Reficere",
+        "id": "ortiz-reficere"
+      },
+      {
+        "name": "Refactor",
+        "id": "refactor"
+      },
+      {
+        "name": "Rigger",
+        "id": "rigger"
+      },
+      {
+        "name": "Striker's Battlegear",
+        "id": "striker-s-battlegear"
+      },
+      {
+        "name": "System Corruption",
+        "id": "system-corruption"
+      },
+      {
+        "name": "Tip of the Spear",
+        "id": "tip-of-the-spear"
+      },
+      {
+        "name": "Tipping Scales",
+        "id": "tipping-scales"
+      },
+      {
+        "name": "True Patriot",
+        "id": "true-patriot"
+      },
+      {
+        "name": "Umbra Initiative",
+        "id": "umbra-initiative"
+      },
+      {
+        "name": "Virtuoso",
+        "id": "virtuoso"
+      }
+    ],
+    "skills": [
+      {
+        "name": "Ballistic Shield — Bulwark",
+        "family": "Ballistic Shield",
+        "variant": "Bulwark",
+        "id": "ballistic-shield-bulwark"
+      },
+      {
+        "name": "Ballistic Shield — Crusader",
+        "family": "Ballistic Shield",
+        "variant": "Crusader",
+        "id": "ballistic-shield-crusader"
+      },
+      {
+        "name": "Ballistic Shield — Deflector",
+        "family": "Ballistic Shield",
+        "variant": "Deflector",
+        "id": "ballistic-shield-deflector"
+      },
+      {
+        "name": "Ballistic Shield — Firewall Striker",
+        "family": "Ballistic Shield",
+        "variant": "Firewall Striker",
+        "id": "ballistic-shield-firewall-striker"
+      },
+      {
+        "name": "Chem Launcher — Firestarter",
+        "family": "Chem Launcher",
+        "variant": "Firestarter",
+        "id": "chem-launcher-firestarter"
+      },
+      {
+        "name": "Chem Launcher — Oxidizer",
+        "family": "Chem Launcher",
+        "variant": "Oxidizer",
+        "id": "chem-launcher-oxidizer"
+      },
+      {
+        "name": "Chem Launcher — Reinforcer",
+        "family": "Chem Launcher",
+        "variant": "Reinforcer",
+        "id": "chem-launcher-reinforcer"
+      },
+      {
+        "name": "Chem Launcher — Riot Foam",
+        "family": "Chem Launcher",
+        "variant": "Riot Foam",
+        "id": "chem-launcher-riot-foam"
+      },
+      {
+        "name": "Decoy — Decoy",
+        "family": "Decoy",
+        "variant": "Decoy",
+        "id": "decoy-decoy"
+      },
+      {
+        "name": "Drone — Bombardier",
+        "family": "Drone",
+        "variant": "Bombardier",
+        "id": "drone-bombardier"
+      },
+      {
+        "name": "Drone — Defender",
+        "family": "Drone",
+        "variant": "Defender",
+        "id": "drone-defender"
+      },
+      {
+        "name": "Drone — Fixer",
+        "family": "Drone",
+        "variant": "Fixer",
+        "id": "drone-fixer"
+      },
+      {
+        "name": "Drone — Striker",
+        "family": "Drone",
+        "variant": "Striker",
+        "id": "drone-striker"
+      },
+      {
+        "name": "Drone — Tactician",
+        "family": "Drone",
+        "variant": "Tactician",
+        "id": "drone-tactician"
+      },
+      {
+        "name": "Firefly — Blinder",
+        "family": "Firefly",
+        "variant": "Blinder",
+        "id": "firefly-blinder"
+      },
+      {
+        "name": "Firefly — Burster",
+        "family": "Firefly",
+        "variant": "Burster",
+        "id": "firefly-burster"
+      },
+      {
+        "name": "Firefly — Demolisher",
+        "family": "Firefly",
+        "variant": "Demolisher",
+        "id": "firefly-demolisher"
+      },
+      {
+        "name": "Hive — Artificer",
+        "family": "Hive",
+        "variant": "Artificer",
+        "id": "hive-artificer"
+      },
+      {
+        "name": "Hive — Booster",
+        "family": "Hive",
+        "variant": "Booster",
+        "id": "hive-booster"
+      },
+      {
+        "name": "Hive — Restorer",
+        "family": "Hive",
+        "variant": "Restorer",
+        "id": "hive-restorer"
+      },
+      {
+        "name": "Hive — Reviver",
+        "family": "Hive",
+        "variant": "Reviver",
+        "id": "hive-reviver"
+      },
+      {
+        "name": "Hive — Stinger",
+        "family": "Hive",
+        "variant": "Stinger",
+        "id": "hive-stinger"
+      },
+      {
+        "name": "Pulse — Achilles",
+        "family": "Pulse",
+        "variant": "Achilles",
+        "id": "pulse-achilles"
+      },
+      {
+        "name": "Pulse — Banshee",
+        "family": "Pulse",
+        "variant": "Banshee",
+        "id": "pulse-banshee"
+      },
+      {
+        "name": "Pulse — Jammer",
+        "family": "Pulse",
+        "variant": "Jammer",
+        "id": "pulse-jammer"
+      },
+      {
+        "name": "Pulse — Remote",
+        "family": "Pulse",
+        "variant": "Remote",
+        "id": "pulse-remote"
+      },
+      {
+        "name": "Pulse — Scanner",
+        "family": "Pulse",
+        "variant": "Scanner",
+        "id": "pulse-scanner"
+      },
+      {
+        "name": "Seeker Mine — Airburst",
+        "family": "Seeker Mine",
+        "variant": "Airburst",
+        "id": "seeker-mine-airburst"
+      },
+      {
+        "name": "Seeker Mine — Cluster",
+        "family": "Seeker Mine",
+        "variant": "Cluster",
+        "id": "seeker-mine-cluster"
+      },
+      {
+        "name": "Seeker Mine — Explosive",
+        "family": "Seeker Mine",
+        "variant": "Explosive",
+        "id": "seeker-mine-explosive"
+      },
+      {
+        "name": "Seeker Mine — Mender",
+        "family": "Seeker Mine",
+        "variant": "Mender",
+        "id": "seeker-mine-mender"
+      },
+      {
+        "name": "Smart Cover — Reclaimer",
+        "family": "Smart Cover",
+        "variant": "Reclaimer",
+        "id": "smart-cover-reclaimer"
+      },
+      {
+        "name": "Smart Cover — Smart Cover",
+        "family": "Smart Cover",
+        "variant": "Smart Cover",
+        "id": "smart-cover-smart-cover"
+      },
+      {
+        "name": "Sticky Bomb — Burn",
+        "family": "Sticky Bomb",
+        "variant": "Burn",
+        "id": "sticky-bomb-burn"
+      },
+      {
+        "name": "Sticky Bomb — EMP",
+        "family": "Sticky Bomb",
+        "variant": "EMP",
+        "id": "sticky-bomb-emp"
+      },
+      {
+        "name": "Sticky Bomb — Explosive",
+        "family": "Sticky Bomb",
+        "variant": "Explosive",
+        "id": "sticky-bomb-explosive"
+      },
+      {
+        "name": "Trap — Repair",
+        "family": "Trap",
+        "variant": "Repair",
+        "id": "trap-repair"
+      },
+      {
+        "name": "Trap — Shock",
+        "family": "Trap",
+        "variant": "Shock",
+        "id": "trap-shock"
+      },
+      {
+        "name": "Trap — Shrapnel",
+        "family": "Trap",
+        "variant": "Shrapnel",
+        "id": "trap-shrapnel"
+      },
+      {
+        "name": "Turret — Artillery",
+        "family": "Turret",
+        "variant": "Artillery",
+        "id": "turret-artillery"
+      },
+      {
+        "name": "Turret — Assault",
+        "family": "Turret",
+        "variant": "Assault",
+        "id": "turret-assault"
+      },
+      {
+        "name": "Turret — Flame",
+        "family": "Turret",
+        "variant": "Flame",
+        "id": "turret-flame"
+      },
+      {
+        "name": "Turret — Sniper",
+        "family": "Turret",
+        "variant": "Sniper",
+        "id": "turret-sniper"
+      }
+    ],
+    "specializations": [
+      {
+        "name": "Demolitionist",
+        "id": "demolitionist"
+      },
+      {
+        "name": "Firewall",
+        "id": "firewall"
+      },
+      {
+        "name": "Gunner",
+        "id": "gunner"
+      },
+      {
+        "name": "Sharpshooter",
+        "id": "sharpshooter"
+      },
+      {
+        "name": "Survivalist",
+        "id": "survivalist"
+      },
+      {
+        "name": "Technician",
+        "id": "technician"
+      }
+    ],
+    "mods": [
+      {
+        "name": "Adaptive Insulation Foam",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "adaptive-insulation-foam"
+      },
+      {
+        "name": "Brushless DC-motor",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "brushless-dc-motor"
+      },
+      {
+        "name": "Carbon Fiber Barrel",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "carbon-fiber-barrel"
+      },
+      {
+        "name": "Carbon Fiber Frame",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "carbon-fiber-frame"
+      },
+      {
+        "name": "Cyclone Magazine",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "cyclone-magazine"
+      },
+      {
+        "name": "Decoy Housing Shell",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "decoy-housing-shell"
+      },
+      {
+        "name": "Decoy Projector Internals",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "decoy-projector-internals"
+      },
+      {
+        "name": "Defensive Protocol: Resilience",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "defensive-protocol-resilience"
+      },
+      {
+        "name": "Defensive Protocol: Stamina",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "defensive-protocol-stamina"
+      },
+      {
+        "name": "Defensive System: Mending",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "defensive-system-mending"
+      },
+      {
+        "name": "Dielectric Elastomers",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "dielectric-elastomers"
+      },
+      {
+        "name": "Distributed Architecture",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "distributed-architecture"
+      },
+      {
+        "name": "Ecotoxicology Research",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "ecotoxicology-research"
+      },
+      {
+        "name": "Electric Soldering Tool",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "electric-soldering-tool"
+      },
+      {
+        "name": "Experimental Blend",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "experimental-blend"
+      },
+      {
+        "name": "Exploded Blueprint",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "exploded-blueprint"
+      },
+      {
+        "name": "Gimbal Vibration Damping",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "gimbal-vibration-damping"
+      },
+      {
+        "name": "Hydrocloric Infusion",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "hydrocloric-infusion"
+      },
+      {
+        "name": "Imbued Metal String",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "imbued-metal-string"
+      },
+      {
+        "name": "Improved Sticky Payload",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "improved-sticky-payload"
+      },
+      {
+        "name": "Larrea Tridentata Infusion",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "larrea-tridentata-infusion"
+      },
+      {
+        "name": "Liquid Nitrogen Cooling System",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "liquid-nitrogen-cooling-system"
+      },
+      {
+        "name": "Micropulse Frequency",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "micropulse-frequency"
+      },
+      {
+        "name": "Offensive Protocol: Critical",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "offensive-protocol-critical"
+      },
+      {
+        "name": "Offensive Protocol: Dexterity",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "offensive-protocol-dexterity"
+      },
+      {
+        "name": "Offensive System: Dexterity",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "offensive-system-dexterity"
+      },
+      {
+        "name": "Offensive System: Firearms",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "offensive-system-firearms"
+      },
+      {
+        "name": "Propantriol Adhesive",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "propantriol-adhesive"
+      },
+      {
+        "name": "PVA Polymer Coating",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "pva-polymer-coating"
+      },
+      {
+        "name": "Radar Signal Antennas",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "radar-signal-antennas"
+      },
+      {
+        "name": "Silicon Carbide Coil",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "silicon-carbide-coil"
+      },
+      {
+        "name": "Slip Fit Tube",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "slip-fit-tube"
+      },
+      {
+        "name": "Supramolecular Networks",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "supramolecular-networks"
+      },
+      {
+        "name": "Swarm Control",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "swarm-control"
+      },
+      {
+        "name": "Terminal Ballistics",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "terminal-ballistics"
+      },
+      {
+        "name": "Trap Charge Improvement",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "trap-charge-improvement"
+      },
+      {
+        "name": "Trap Electronics Upgrade",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "trap-electronics-upgrade"
+      },
+      {
+        "name": "Tungsten Compound",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "tungsten-compound"
+      },
+      {
+        "name": "Utility Protocol: Assist",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "utility-protocol-assist"
+      },
+      {
+        "name": "Utility Protocol: Intensity",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "utility-protocol-intensity"
+      },
+      {
+        "name": "Utility System: Electronics",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "utility-system-electronics"
+      },
+      {
+        "name": "Vac Pack",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "vac-pack"
+      }
+    ]
+  }
+}
