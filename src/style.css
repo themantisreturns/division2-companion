@@ -856,3 +856,48 @@ h2 {
     text-align: left;
   }
 }
+
+.purchase-toggle {
+  padding: 9px 12px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  background: transparent;
+  border: 1px solid rgba(255, 106, 0, 0.55);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.purchase-toggle:hover {
+  color: #111;
+  background: var(--orange);
+}
+
+.purchase-toggle.purchased {
+  color: #49d17d;
+  border-color: rgba(73, 209, 125, 0.45);
+}
+
+.recommendation-item.purchased {
+  opacity: 0.72;
+}
+
+.recommendation-item.purchased
+  .recommendation-copy > strong {
+  text-decoration: line-through;
+}
+
+.purchased-panel {
+  border-color: rgba(73, 209, 125, 0.25);
+}
+
+.compact-empty-state {
+  min-height: 160px;
+}
+
+@media (min-width: 851px) {
+  .recommendation-item {
+    grid-template-columns:
+      125px minmax(0, 1fr) 210px 125px;
+  }
+}

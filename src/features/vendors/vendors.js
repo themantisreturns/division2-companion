@@ -87,7 +87,84 @@ function renderPriorityStars(priority) {
   `
 }
 
-function renderRecommendations(recommendations) {
+function renderRecommendationItems(
+  recommendations,
+  purchasedIds,
+) {
+  return recommendations
+    .map((recommendation) => {
+      const isPurchased = purchasedIds.includes(
+        recommendation.id,
+      )
+
+      return `
+        <article
+          class="recommendation-item ${
+            isPurchased ? 'purchased' : ''
+          }"
+        >
+          <div class="recommendation-priority">
+            ${renderPriorityStars(
+              recommendation.priority,
+            )}
+
+            <span>
+              ${escapeHtml(
+                recommendation.progressLabel,
+              )}
+            </span>
+          </div>
+
+          <div class="recommendation-copy">
+            <span class="vendor-item-kind">
+              ${escapeHtml(recommendation.kind)}
+            </span>
+
+            <strong>
+              ${escapeHtml(recommendation.name)}
+            </strong>
+
+            <p>
+              ${escapeHtml(recommendation.reason)}
+            </p>
+          </div>
+
+          <div class="recommendation-location">
+            <strong>
+              ${escapeHtml(recommendation.vendor)}
+            </strong>
+
+            <span>
+              ${
+                recommendation.recommendationType ===
+                'verify-weapon'
+                  ? 'Verify exact proficiency'
+                  : 'Buy for brand Expertise'
+              }
+            </span>
+          </div>
+
+          <button
+            class="purchase-toggle ${
+              isPurchased ? 'purchased' : ''
+            }"
+            data-recommendation-id="${escapeHtml(
+              recommendation.id,
+            )}"
+            type="button"
+          >
+            ${isPurchased ? 'Purchased ✓' : 'Mark purchased'}
+          </button>
+        </article>
+      `
+    })
+    .join('')
+}
+
+function renderRecommendations(
+  recommendations,
+  purchasedIds,
+) {
   if (!recommendations.length) {
     return `
       <section class="panel recommendation-panel">
@@ -103,6 +180,14 @@ function renderRecommendations(recommendations) {
     `
   }
 
+  const remaining = recommendations.filter(
+    (item) => !purchasedIds.includes(item.id),
+  )
+
+  const purchased = recommendations.filter((item) =>
+    purchasedIds.includes(item.id),
+  )
+
   return `
     <section class="panel recommendation-panel">
       <div class="panel-heading">
@@ -112,71 +197,72 @@ function renderRecommendations(recommendations) {
         </div>
 
         <span class="vendor-count">
-          ${recommendations.length} recommendations
+          ${remaining.length} remaining
         </span>
       </div>
 
-      <div class="recommendation-list">
-        ${recommendations
-          .map(
-            (recommendation) => `
-              <article class="recommendation-item">
-                <div class="recommendation-priority">
-                  ${renderPriorityStars(
-                    recommendation.priority,
-                  )}
-
-                  <span>
-                    ${escapeHtml(
-                      recommendation.progressLabel,
-                    )}
-                  </span>
-                </div>
-
-                <div class="recommendation-copy">
-                  <span class="vendor-item-kind">
-                    ${escapeHtml(recommendation.kind)}
-                  </span>
-
-                  <strong>
-                    ${escapeHtml(recommendation.name)}
-                  </strong>
-
-                  <p>
-                    ${escapeHtml(recommendation.reason)}
-                  </p>
-                </div>
-
-                <div class="recommendation-location">
-                  <strong>
-                    ${escapeHtml(recommendation.vendor)}
-                  </strong>
-
-                  <span>
-                    ${
-                      recommendation.recommendationType ===
-                      'verify-weapon'
-                        ? 'Verify exact proficiency'
-                        : 'Buy for brand Expertise'
-                    }
-                  </span>
-                </div>
-              </article>
-            `,
-          )
-          .join('')}
-      </div>
+      ${
+        remaining.length
+          ? `
+            <div class="recommendation-list">
+              ${renderRecommendationItems(
+                remaining,
+                purchasedIds,
+              )}
+            </div>
+          `
+          : `
+            <div class="empty-state compact-empty-state">
+              <div class="empty-icon">✓</div>
+              <strong>Shopping list complete</strong>
+              <p>
+                You marked every current recommendation as purchased.
+              </p>
+            </div>
+          `
+      }
     </section>
+
+    ${
+      purchased.length
+        ? `
+          <section class="panel purchased-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">This weekly reset</p>
+                <h2>Purchased items</h2>
+              </div>
+
+              <span class="vendor-count">
+                ${purchased.length} purchased
+              </span>
+            </div>
+
+            <div class="recommendation-list">
+              ${renderRecommendationItems(
+                purchased,
+                purchasedIds,
+              )}
+            </div>
+          </section>
+        `
+        : ''
+    }
   `
 }
 
 export function renderVendorPage({
   vendorData,
   recommendations = [],
+  purchasedIds = [],
 }) {
   const allItems = getAllItems(vendorData)
   const groupedItems = groupItemsByVendor(allItems)
   const vendorNames = Object.keys(groupedItems).sort()
+
+  const purchasedCount = recommendations.filter((item) =>
+    purchasedIds.includes(item.id),
+  ).length
 
   return `
     <section class="feature-page vendor-feature-page">
@@ -202,22 +288,22 @@ export function renderVendorPage({
 
       <section class="summary-grid vendor-summary-grid">
         <article class="summary-card accent-card">
-          <span class="card-label">Recommendations</span>
+          <span class="card-label">Remaining</span>
           <strong class="metric">
-            ${recommendations.length}
+            ${recommendations.length - purchasedCount}
           </strong>
           <span class="metric-note">
-            Personalized Expertise opportunities
+            Recommendations left to check
           </span>
         </article>
 
         <article class="summary-card">
-          <span class="card-label">Total items</span>
+          <span class="card-label">Purchased</span>
           <strong class="metric">
-            ${vendorData.total}
+            ${purchasedCount}
           </strong>
           <span class="metric-note">
-            Across all vendor files
+            Saved for this weekly reset
           </span>
         </article>
 
@@ -245,7 +331,10 @@ export function renderVendorPage({
         </article>
       </section>
 
-      ${renderRecommendations(recommendations)}
+      ${renderRecommendations(
+        recommendations,
+        purchasedIds,
+      )}
 
       <section class="panel">
         <div class="panel-heading">
@@ -420,4 +509,19 @@ export function connectVendorFilters() {
 
   searchInput.addEventListener('input', applyFilters)
   vendorFilter.addEventListener('change', applyFilters)
+}
+
+export function connectPurchaseButtons(onToggle) {
+  document
+    .querySelectorAll('.purchase-toggle')
+    .forEach((button) => {
+      button.addEventListener('click', async () => {
+        button.disabled = true
+        button.textContent = 'Saving…'
+
+        await onToggle(
+          button.dataset.recommendationId,
+        )
+      })
+    })
 }

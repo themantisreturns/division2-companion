@@ -3,6 +3,7 @@ import './style.css'
 import { loadVendorData } from './features/vendors/vendorData.js'
 
 import {
+  connectPurchaseButtons,
   connectVendorFilters,
   renderVendorPage,
 } from './features/vendors/vendors.js'
@@ -10,6 +11,11 @@ import {
 import {
   createVendorRecommendations,
 } from './features/vendors/recommendationEngine.js'
+
+import {
+  getPurchasedIdsForCurrentReset,
+  togglePurchasedItem,
+} from './features/vendors/purchases.js'
 
 import {
   mergeExpertiseProgress,
@@ -38,6 +44,9 @@ import {
   loadUserProfile,
   saveUserProfile,
 } from './services/profile.js'
+
+let currentVendorData = null
+let currentRecommendations = []
 
 function getDisplayName(user) {
   const metadata = user.user_metadata ?? {}
@@ -138,10 +147,6 @@ async function configureSignedInDashboard(user) {
 
     loginButton.onclick = handleSignOut
   }
-
-  if (profile) {
-    console.log('Loaded cloud profile:', profile)
-  }
 }
 
 function openDashboard() {
@@ -235,20 +240,75 @@ async function saveExpertiseProgress() {
   }
 }
 
-async function initializeApp() {
-  renderDashboard()
-  startResetCountdown()
+function renderCurrentVendorPage() {
+  const mainContent =
+    document.querySelector('.main-content')
 
-connectNavigation({
-  openDashboard,
-  openExpertise: openExpertisePage,
-  openVendors: openVendorPage,
-})
+  const purchasedIds =
+    getPurchasedIdsForCurrentReset(
+      appState.activeProfile?.purchased_items ?? [],
+    )
 
-  await initializeAuthentication({
-    onSignedIn: configureSignedInDashboard,
-    onSignedOut: configureSignedOutDashboard,
+  mainContent.innerHTML = renderVendorPage({
+    vendorData: currentVendorData,
+    recommendations: currentRecommendations,
+    purchasedIds,
   })
+
+  connectVendorFilters()
+
+  connectPurchaseButtons(
+    handleTogglePurchase,
+  )
+}
+
+async function handleTogglePurchase(recommendationId) {
+  if (
+    !appState.activeUser ||
+    !appState.activeProfile
+  ) {
+    window.alert(
+      'Sign in before saving purchased items.',
+    )
+    return
+  }
+
+  const recommendation =
+    currentRecommendations.find(
+      (item) => item.id === recommendationId,
+    )
+
+  if (!recommendation) {
+    window.alert(
+      'The selected recommendation could not be found.',
+    )
+    return
+  }
+
+  try {
+    const updatedPurchases = togglePurchasedItem(
+      appState.activeProfile.purchased_items ?? [],
+      recommendation,
+    )
+
+    const savedProfile = await saveUserProfile(
+      appState.activeUser.id,
+      {
+        purchased_items: updatedPurchases,
+      },
+    )
+
+    appState.activeProfile = savedProfile
+    renderCurrentVendorPage()
+  } catch (error) {
+    console.error(error)
+
+    window.alert(
+      `Could not save purchase: ${error.message}`,
+    )
+
+    renderCurrentVendorPage()
+  }
 }
 
 async function openVendorPage() {
@@ -264,9 +324,8 @@ async function openVendorPage() {
   `
 
   try {
-    const vendorData = await loadVendorData()
-
-    let recommendations = []
+    currentVendorData = await loadVendorData()
+    currentRecommendations = []
 
     if (appState.activeProfile) {
       const expertiseProgress =
@@ -274,19 +333,14 @@ async function openVendorPage() {
           appState.activeProfile.expertise_progress,
         )
 
-      recommendations =
+      currentRecommendations =
         createVendorRecommendations(
-          vendorData,
+          currentVendorData,
           expertiseProgress,
         )
     }
 
-    mainContent.innerHTML = renderVendorPage({
-      vendorData,
-      recommendations,
-    })
-
-    connectVendorFilters()
+    renderCurrentVendorPage()
   } catch (error) {
     console.error(error)
 
@@ -299,6 +353,22 @@ async function openVendorPage() {
       </section>
     `
   }
+}
+
+async function initializeApp() {
+  renderDashboard()
+  startResetCountdown()
+
+  connectNavigation({
+    openDashboard,
+    openExpertise: openExpertisePage,
+    openVendors: openVendorPage,
+  })
+
+  await initializeAuthentication({
+    onSignedIn: configureSignedInDashboard,
+    onSignedOut: configureSignedOutDashboard,
+  })
 }
 
 initializeApp()
