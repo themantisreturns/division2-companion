@@ -1,4 +1,10 @@
 import './style.css'
+import { supabase } from './services/supabase.js'
+import {
+  mergeExpertiseProgress,
+  readExpertiseForm,
+  renderExpertisePage,
+} from './features/expertise/expertise.js'
 
 const navigation = [
   { label: 'Dashboard', icon: '⌂', active: true },
@@ -49,12 +55,16 @@ document.querySelector('#app').innerHTML = `
       </div>
 
       <nav class="navigation">
-        ${navigation.map(item => `
-          <button class="nav-item ${item.active ? 'active' : ''}">
-            <span class="nav-icon">${item.icon}</span>
-            <span>${item.label}</span>
-          </button>
-        `).join('')}
+        ${navigation
+          .map(
+            (item) => `
+              <button class="nav-item ${item.active ? 'active' : ''}">
+                <span class="nav-icon">${item.icon}</span>
+                <span>${item.label}</span>
+              </button>
+            `,
+          )
+          .join('')}
       </nav>
 
       <div class="sidebar-footer">
@@ -100,7 +110,7 @@ document.querySelector('#app').innerHTML = `
           <span class="metric-note">Based on current Expertise</span>
         </article>
 
-        <article class="summary-card">
+        <article class="summary-card cloud-card">
           <span class="card-label">Cloud status</span>
           <strong class="metric status-metric">Offline</strong>
           <span class="metric-note">Saved locally for now</span>
@@ -118,17 +128,24 @@ document.querySelector('#app').innerHTML = `
           </div>
 
           <div class="progress-list">
-            ${expertiseGroups.map(group => `
-              <div class="progress-row">
-                <div class="progress-copy">
-                  <span>${group.label}</span>
-                  <strong>${group.value}%</strong>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width: ${group.value}%"></div>
-                </div>
-              </div>
-            `).join('')}
+            ${expertiseGroups
+              .map(
+                (group) => `
+                  <div class="progress-row">
+                    <div class="progress-copy">
+                      <span>${group.label}</span>
+                      <strong>${group.value}%</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div
+                        class="progress-fill"
+                        style="width: ${group.value}%"
+                      ></div>
+                    </div>
+                  </div>
+                `,
+              )
+              .join('')}
           </div>
         </article>
 
@@ -165,16 +182,20 @@ document.querySelector('#app').innerHTML = `
           </div>
 
           <div class="vendor-list">
-            ${vendorItems.map(item => `
-              <div class="vendor-item">
-                <div class="vendor-icon ${item.type}">+</div>
-                <div class="vendor-copy">
-                  <strong>${item.title}</strong>
-                  <span>${item.reason}</span>
-                </div>
-                <span class="vendor-location">${item.vendor}</span>
-              </div>
-            `).join('')}
+            ${vendorItems
+              .map(
+                (item) => `
+                  <div class="vendor-item">
+                    <div class="vendor-icon ${item.type}">+</div>
+                    <div class="vendor-copy">
+                      <strong>${item.title}</strong>
+                      <span>${item.reason}</span>
+                    </div>
+                    <span class="vendor-location">${item.vendor}</span>
+                  </div>
+                `,
+              )
+              .join('')}
           </div>
         </article>
 
@@ -199,6 +220,31 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
+const loginButton = document.querySelector('.login-button')
+const cloudStatus = document.querySelector('.status-metric')
+const cloudStatusNote = document.querySelector(
+  '.cloud-card .metric-note',
+)
+const sidebarProfileName = document.querySelector(
+  '.sidebar-footer strong',
+)
+const sidebarProfileStatus = document.querySelector(
+  '.sidebar-footer span',
+)
+const connectionDot = document.querySelector('.connection-dot')
+const welcomeHeading = document.querySelector('h1')
+const expertiseLevelMetric = document.querySelector(
+  '.accent-card .metric',
+)
+const expertiseLevelNote = document.querySelector(
+  '.accent-card .metric-note',
+)
+
+let activeUser = null
+let activeProfile = null
+let expertiseProgress = null
+let saveTimer = null
+
 function getNextWeeklyReset() {
   const now = new Date()
   const reset = new Date(now)
@@ -220,8 +266,12 @@ function updateCountdown() {
   const difference = reset.getTime() - now.getTime()
 
   const days = Math.floor(difference / 86_400_000)
-  const hours = Math.floor((difference % 86_400_000) / 3_600_000)
-  const minutes = Math.floor((difference % 3_600_000) / 60_000)
+  const hours = Math.floor(
+    (difference % 86_400_000) / 3_600_000,
+  )
+  const minutes = Math.floor(
+    (difference % 3_600_000) / 60_000,
+  )
 
   document.querySelector('#reset-countdown').textContent =
     `${days}d ${hours}h ${minutes}m`
@@ -236,5 +286,243 @@ function updateCountdown() {
     })
 }
 
+async function signInWithGitHub() {
+  loginButton.disabled = true
+  loginButton.textContent = 'Opening GitHub…'
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: {
+      redirectTo: window.location.origin,
+    },
+  })
+
+  if (error) {
+    console.error('GitHub sign-in failed:', error)
+
+    loginButton.disabled = false
+    loginButton.textContent = 'Sign in with GitHub'
+
+    window.alert(`GitHub sign-in failed: ${error.message}`)
+  }
+}
+
+async function signOut() {
+  loginButton.disabled = true
+  loginButton.textContent = 'Signing out…'
+
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    console.error('Sign-out failed:', error)
+    window.alert(`Sign-out failed: ${error.message}`)
+    loginButton.disabled = false
+  }
+}
+
+async function loadUserProfile(user) {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (error) {
+    console.error('Could not load user profile:', error)
+    return null
+  }
+
+  return data
+}
+
+async function saveUserProfile(userId, updates) {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .update(updates)
+    .eq('user_id', userId)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Could not save user profile:', error)
+    throw error
+  }
+
+  return data
+}
+
+function showSignedOutState() {
+  loginButton.disabled = false
+  loginButton.textContent = 'Sign in with GitHub'
+  loginButton.onclick = signInWithGitHub
+
+  cloudStatus.textContent = 'Offline'
+  cloudStatusNote.textContent = 'Sign in to enable cloud sync'
+
+  sidebarProfileName.textContent = 'Local profile'
+  sidebarProfileStatus.textContent = 'Cloud sync available'
+
+  connectionDot.style.background = '#f0a020'
+
+  welcomeHeading.textContent = 'Welcome back, Jay'
+
+  expertiseLevelMetric.textContent = '0'
+  expertiseLevelNote.textContent = 'Profile setup in progress'
+}
+
+async function showSignedInState(user) {
+  activeUser = user
+  const metadata = user.user_metadata ?? {}
+
+  const displayName =
+    metadata.full_name ||
+    metadata.name ||
+    metadata.user_name ||
+    user.email ||
+    'Agent'
+
+  loginButton.disabled = false
+  loginButton.textContent = `Sign out · ${displayName}`
+  loginButton.onclick = signOut
+
+  cloudStatus.textContent = 'Connected'
+  cloudStatusNote.textContent = 'Your profile is synced securely'
+
+  sidebarProfileName.textContent = displayName
+  sidebarProfileStatus.textContent = 'Cloud profile connected'
+
+  connectionDot.style.background = '#49d17d'
+
+  welcomeHeading.textContent = `Welcome back, ${displayName}`
+
+  const profile = await loadUserProfile(user)
+  activeProfile = profile
+
+  if (!profile) {
+    expertiseLevelMetric.textContent = '0'
+    expertiseLevelNote.textContent = 'No cloud profile found'
+    return
+  }
+
+  console.log('Loaded cloud profile:', profile)
+
+  const expertiseProgress = profile.expertise_progress ?? {}
+  const expertiseLevel = expertiseProgress.level ?? 0
+
+  expertiseLevelMetric.textContent = expertiseLevel
+  expertiseLevelNote.textContent = 'Loaded from your cloud profile'
+}
+
+async function refreshAuthenticationState() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
+
+  if (error) {
+    console.error(
+      'Could not read authentication session:',
+      error,
+    )
+    showSignedOutState()
+    return
+  }
+
+  if (session?.user) {
+    await showSignedInState(session.user)
+  } else {
+    showSignedOutState()
+  }
+}
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  if (session?.user) {
+    showSignedInState(session.user)
+  } else {
+    showSignedOutState()
+  }
+})
+
 updateCountdown()
 setInterval(updateCountdown, 60_000)
+function openDashboard() {
+  window.location.reload()
+}
+
+async function openExpertisePage() {
+  if (!activeUser || !activeProfile) {
+    window.alert('Sign in with GitHub before editing your Expertise profile.')
+    return
+  }
+
+  const mainContent = document.querySelector('.main-content')
+
+  expertiseProgress = mergeExpertiseProgress(
+    activeProfile.expertise_progress,
+  )
+
+  mainContent.innerHTML = renderExpertisePage(expertiseProgress)
+
+  document
+    .querySelectorAll('.expertise-number, #expertise-level-input')
+    .forEach((input) => {
+      input.addEventListener('input', scheduleExpertiseSave)
+    })
+}
+
+function scheduleExpertiseSave() {
+  const status = document.querySelector('#expertise-save-status')
+
+  if (status) {
+    status.textContent = 'Saving changes…'
+    status.className = 'save-status saving'
+  }
+
+  clearTimeout(saveTimer)
+
+  saveTimer = setTimeout(saveExpertiseProgress, 700)
+}
+
+async function saveExpertiseProgress() {
+  const status = document.querySelector('#expertise-save-status')
+
+  try {
+    expertiseProgress = readExpertiseForm(expertiseProgress)
+
+    const savedProfile = await saveUserProfile(activeUser.id, {
+      expertise_progress: expertiseProgress,
+    })
+
+    activeProfile = savedProfile
+
+    if (status) {
+      status.textContent = 'Saved to cloud'
+      status.className = 'save-status saved'
+    }
+  } catch (error) {
+    console.error(error)
+
+    if (status) {
+      status.textContent = 'Could not save'
+      status.className = 'save-status error'
+    }
+  }
+}
+
+function connectNavigation() {
+  const buttons = document.querySelectorAll('.nav-item')
+
+  buttons.forEach((button) => {
+    const label = button.textContent.trim()
+
+    if (label === 'Dashboard') {
+      button.addEventListener('click', openDashboard)
+    }
+
+    if (label === 'Expertise') {
+      button.addEventListener('click', openExpertisePage)
+    }
+  })
+}
+refreshAuthenticationState()
+connectNavigation()
