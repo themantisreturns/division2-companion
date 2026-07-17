@@ -5,8 +5,8 @@ const TESSERACT_MODULE_URL = 'https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/+e
 // and capture differences.
 const OVERVIEW_FIELDS = {
   level: { region: [0.257, 0.205, 0.090, 0.130], type: 'number' },
-  levelProgress: { region: [0.250, 0.250, 0.110, 0.090], type: 'ratio' },
-  proficient: { region: [0.205, 0.365, 0.140, 0.085], type: 'ratio' },
+  levelProgress: { region: [0.250, 0.250, 0.110, 0.090], type: 'ratio', total: 200 },
+  proficient: { region: [0.205, 0.365, 0.140, 0.085], type: 'ratio', total: 484 },
 
   rifles: { region: [0.436, 0.253, 0.090, 0.090], type: 'ratio', total: 36 },
   assaultRifles: { region: [0.633, 0.252, 0.095, 0.090], type: 'ratio', total: 55 },
@@ -111,9 +111,21 @@ function parseRatio(text, expectedTotal = null) {
     for (const match of matches) {
       const total = Number(match[2])
       if (total === expectedTotal) {
-        return {
-          current: match[1] ? Number(match[1]) : 0,
-          total: expectedTotal,
+        const rawCurrent = match[1] ? Number(match[1]) : 0
+        if (rawCurrent <= expectedTotal) {
+          return { current: rawCurrent, total: expectedTotal }
+        }
+
+        // A generous crop can include a nearby number immediately before the
+        // real numerator (for example Expertise level 8 + progress 82 becomes
+        // 882/200). Keep the longest trailing suffix that is valid for the
+        // known denominator.
+        const digits = String(rawCurrent)
+        for (let start = 1; start < digits.length; start += 1) {
+          const repaired = Number(digits.slice(start))
+          if (repaired >= 0 && repaired <= expectedTotal) {
+            return { current: repaired, total: expectedTotal }
+          }
         }
       }
     }
