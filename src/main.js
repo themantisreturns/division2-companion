@@ -17,11 +17,13 @@ import {
 } from './features/vendors/purchases.js'
 import {
   connectExpertiseFilters,
+  connectExpertiseLiveCounts,
   mergeExpertiseProgress,
   readExpertiseForm,
   renderExpertisePage,
   serializeExpertiseProgress,
 } from './features/expertise/expertise.js'
+import { scanExpertiseOverview } from './features/expertise/expertiseScanner.js'
 import { fallbackExpertiseCatalog } from './features/expertise/expertiseData.js'
 import { getExpertiseCatalog } from './services/catalog.js'
 import {
@@ -174,10 +176,60 @@ async function openExpertisePage() {
   )
 
   connectExpertiseFilters()
+  connectExpertiseLiveCounts()
+  connectExpertiseScanner()
 
   document
-    .querySelectorAll('.expertise-item-checkbox, .expertise-number, #expertise-level-input')
+    .querySelectorAll('.expertise-item-checkbox, .expertise-number, #expertise-level-input, #expertise-progress-current, #expertise-progress-total, #expertise-proficient-current, #expertise-proficient-total, #expertise-shd-level')
     .forEach((input) => input.addEventListener('input', scheduleExpertiseSave))
+}
+
+function connectExpertiseScanner() {
+  const button = document.querySelector('#expertise-scan-button')
+  const input = document.querySelector('#expertise-screenshot-input')
+  const status = document.querySelector('#expertise-scan-status')
+  if (!button || !input || !status) return
+
+  button.addEventListener('click', () => input.click())
+  input.addEventListener('change', async () => {
+    const file = input.files?.[0]
+    if (!file) return
+
+    button.disabled = true
+    status.hidden = false
+    status.className = 'expertise-scan-status scanning'
+    status.textContent = 'Preparing screenshot reader…'
+
+    try {
+      const result = await scanExpertiseOverview(file, (percent, message) => {
+        status.textContent = `${message} ${percent}%`
+      })
+
+      document.querySelector('#expertise-level-input').value = result.level
+      document.querySelector('#expertise-progress-current').value = result.levelProgress.current
+      document.querySelector('#expertise-progress-total').value = result.levelProgress.total
+      document.querySelector('#expertise-proficient-current').value = result.proficient.current
+      document.querySelector('#expertise-proficient-total').value = result.proficient.total
+
+      appState.expertiseProgress.legacySummary.weapons = Object.fromEntries(
+        Object.entries(result.categories.weapons).filter(([, value]) => value),
+      )
+      appState.expertiseProgress.legacySummary.namedGear = Object.fromEntries(
+        Object.entries(result.categories.namedGear).filter(([, value]) => value),
+      )
+
+      status.className = 'expertise-scan-status success'
+      status.textContent = `Imported ${result.fileName}: level ${result.level}, ${result.levelProgress.current}/${result.levelProgress.total}, ${result.proficient.current}/${result.proficient.total} proficient.`
+      scheduleExpertiseSave()
+    } catch (error) {
+      console.error(error)
+      status.className = 'expertise-scan-status error'
+      status.textContent = error.message || 'The screenshot could not be read.'
+    } finally {
+      button.disabled = false
+      input.value = ''
+    }
+  })
 }
 
 function scheduleExpertiseSave() {

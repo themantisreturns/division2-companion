@@ -33,6 +33,15 @@ export function mergeExpertiseProgress(saved = {}) {
   return {
     ...migrated,
     level: normalizeExpertiseLevel(migrated.level),
+    shdLevel: Math.max(0, Number(migrated.shdLevel) || 0),
+    levelProgress: {
+      current: Math.max(0, Number(migrated.levelProgress?.current) || 0),
+      total: Math.max(1, Number(migrated.levelProgress?.total) || 200),
+    },
+    proficient: {
+      current: Math.max(0, Number(migrated.proficient?.current) || 0),
+      total: Math.max(0, Number(migrated.proficient?.total) || 0),
+    },
     weapons:
       migrated.legacySummary?.weapons ??
       defaultExpertiseProgress.weapons,
@@ -55,6 +64,9 @@ export function serializeExpertiseProgress(progress) {
   return {
     schemaVersion: progress.schemaVersion,
     level: normalizeExpertiseLevel(progress.level),
+    shdLevel: Math.max(0, Number(progress.shdLevel) || 0),
+    levelProgress: structuredClone(progress.levelProgress ?? { current: 0, total: 200 }),
+    proficient: structuredClone(progress.proficient ?? { current: 0, total: 0 }),
     individual: structuredClone(progress.individual ?? {}),
     ranks: structuredClone(progress.ranks ?? {}),
     legacySummary: structuredClone(progress.legacySummary ?? {}),
@@ -85,6 +97,7 @@ function renderCheckboxRows(kind, items, selected) {
             class="expertise-item-checkbox"
             data-expertise-kind="${kind}"
             data-expertise-name="${escapeHtml(name)}"
+            data-counted-state="${selected[name] === true ? 'true' : 'false'}"
             ${selected[name] === true ? 'checked' : ''}
           >
           <span>${escapeHtml(name)}</span>
@@ -224,19 +237,42 @@ export function renderExpertisePage(progress, catalog) {
         <div class="save-status" id="expertise-save-status">Cloud profile loaded</div>
       </header>
 
-      <section class="summary-card expertise-level-editor">
-        <div>
-          <span class="card-label">Overall Expertise level</span>
-          <p class="metric-note">Keep this synced with the number shown at your Expertise bench.</p>
+      <section class="expertise-overview-panel">
+        <div class="expertise-overview-heading">
+          <div>
+            <p class="eyebrow">Expertise overview</p>
+            <h2>Bench progress</h2>
+          </div>
+          <button class="secondary-button" type="button" id="expertise-scan-button">Import screenshot</button>
         </div>
-        <input
-          class="expertise-level-input"
-          id="expertise-level-input"
-          type="number"
-          min="0"
-          max="30"
-          value="${normalizeExpertiseLevel(progress.level)}"
-        >
+        <div class="expertise-overview-grid">
+          <label class="expertise-overview-field">
+            <span>Expertise level</span>
+            <input id="expertise-level-input" type="number" min="0" max="30" value="${normalizeExpertiseLevel(progress.level)}">
+          </label>
+          <label class="expertise-overview-field">
+            <span>Progress toward next level</span>
+            <span class="expertise-ratio-inputs">
+              <input id="expertise-progress-current" type="number" min="0" value="${Number(progress.levelProgress?.current) || 0}">
+              <b>/</b>
+              <input id="expertise-progress-total" type="number" min="1" value="${Number(progress.levelProgress?.total) || 200}">
+            </span>
+          </label>
+          <label class="expertise-overview-field">
+            <span>Proficient items</span>
+            <span class="expertise-ratio-inputs">
+              <input id="expertise-proficient-current" type="number" min="0" value="${Number(progress.proficient?.current) || 0}">
+              <b>/</b>
+              <input id="expertise-proficient-total" type="number" min="0" value="${Number(progress.proficient?.total) || 0}">
+            </span>
+          </label>
+          <label class="expertise-overview-field">
+            <span>SHD level</span>
+            <input id="expertise-shd-level" type="number" min="0" value="${Number(progress.shdLevel) || 0}">
+          </label>
+        </div>
+        <input id="expertise-screenshot-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        <div class="expertise-scan-status" id="expertise-scan-status" hidden aria-live="polite"></div>
       </section>
 
       <div class="expertise-page-grid expertise-v2-grid">
@@ -312,11 +348,59 @@ export function connectExpertiseFilters() {
   })
 }
 
+
+export function updateExpertiseLiveCounts(changedInput = null) {
+  if (changedInput?.matches?.('.expertise-item-checkbox')) {
+    const group = changedInput.closest('.expertise-accordion')
+    if (group) {
+      const checked = group.querySelectorAll('.expertise-item-checkbox:checked').length
+      const total = group.querySelectorAll('.expertise-item-checkbox').length
+      const counter = group.querySelector('.expertise-group-count')
+      if (counter) counter.textContent = `${checked}/${total}`
+    }
+
+    const section = changedInput.closest('[data-catalog-section]')
+    if (section) {
+      const checked = section.querySelectorAll('.expertise-item-checkbox:checked').length
+      const total = section.querySelectorAll('.expertise-item-checkbox').length
+      const counter = section.querySelector('.panel-heading .vendor-count')
+      if (counter) counter.textContent = `${checked}/${total}`
+    }
+  }
+
+  const proficientInput = document.querySelector('#expertise-proficient-current')
+  if (proficientInput && changedInput?.matches?.('.expertise-item-checkbox')) {
+    const wasChecked = changedInput.dataset.countedState === 'true'
+    const isChecked = changedInput.checked
+
+    if (wasChecked !== isChecked) {
+      const current = Math.max(0, Number(proficientInput.value) || 0)
+      proficientInput.value = Math.max(0, current + (isChecked ? 1 : -1))
+      changedInput.dataset.countedState = String(isChecked)
+    }
+  }
+}
+
+export function connectExpertiseLiveCounts() {
+  document.querySelectorAll('.expertise-item-checkbox').forEach((input) => {
+    input.addEventListener('input', () => updateExpertiseLiveCounts(input))
+  })
+}
+
 export function readExpertiseForm(progress) {
   const updated = structuredClone(progress)
   updated.level = normalizeExpertiseLevel(
     document.querySelector('#expertise-level-input')?.value,
   )
+  updated.shdLevel = Math.max(0, Number(document.querySelector('#expertise-shd-level')?.value) || 0)
+  updated.levelProgress = {
+    current: Math.max(0, Number(document.querySelector('#expertise-progress-current')?.value) || 0),
+    total: Math.max(1, Number(document.querySelector('#expertise-progress-total')?.value) || 200),
+  }
+  updated.proficient = {
+    current: Math.max(0, Number(document.querySelector('#expertise-proficient-current')?.value) || 0),
+    total: Math.max(0, Number(document.querySelector('#expertise-proficient-total')?.value) || 0),
+  }
 
   document.querySelectorAll('.expertise-item-checkbox').forEach((input) => {
     const kind = input.dataset.expertiseKind
