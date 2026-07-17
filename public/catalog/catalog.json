@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-16T19:32:19.298Z",
+  "generatedAt": "2026-07-17T13:03:24.253Z",
   "sourceSummary": {
-    "weeklyGear": 46,
-    "weeklyWeapons": 44,
-    "weeklyMods": 54,
+    "weeklyGear": 38,
+    "weeklyWeapons": 37,
+    "weeklyMods": 52,
     "manualWeapons": 0,
     "manualNamedGear": 0,
     "manualExotics": 49
@@ -12,11 +12,11 @@
   "categories": {
     "weapons": [
       {
-        "name": "ACR SS",
+        "name": "ACR",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "acr-ss"
+        "id": "acr"
       },
       {
         "name": "Big Show - MG5",
@@ -26,67 +26,39 @@
         "id": "big-show-mg5"
       },
       {
-        "name": "Black Market RPK-74 E",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "black-market-rpk-74-e"
-      },
-      {
-        "name": "Brain Breaker - Urban MDR",
+        "name": "Brutus - M700 Carbon",
         "category": "weapon",
         "rarity": "header-named",
         "source": "weekly-vendor-seed",
-        "id": "brain-breaker-urban-mdr"
+        "id": "brutus-m700-carbon"
       },
       {
-        "name": "Carbine 7",
+        "name": "Commando - Paratrooper SVD",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "commando-paratrooper-svd"
+      },
+      {
+        "name": "Cuélebre – Military M870",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "cuelebre-military-m870"
+      },
+      {
+        "name": "FAL SA-58",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "carbine-7"
+        "id": "fal-sa-58"
       },
       {
-        "name": "Classic M44 Carbine",
+        "name": "FAMAS 2010",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "classic-m44-carbine"
-      },
-      {
-        "name": "Custom PF45",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "custom-pf45"
-      },
-      {
-        "name": "D50",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "d50"
-      },
-      {
-        "name": "Double Barrel Shotgun",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "double-barrel-shotgun"
-      },
-      {
-        "name": "Enhanced AUG A3P",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "enhanced-aug-a3p"
-      },
-      {
-        "name": "F2000",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "f2000"
+        "id": "famas-2010"
       },
       {
         "name": "First Wave PF45",
@@ -96,18 +68,11 @@
         "id": "first-wave-pf45"
       },
       {
-        "name": "Huntsman - FAMAS 2010",
+        "name": "G36 Enhanced",
         "category": "weapon",
-        "rarity": "header-named",
+        "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "huntsman-famas-2010"
-      },
-      {
-        "name": "Instigator - Custom M44",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "instigator-custom-m44"
+        "id": "g36-enhanced"
       },
       {
         "name": "IWI NEGEV",
@@ -117,11 +82,11 @@
         "id": "iwi-negev"
       },
       {
-        "name": "Lightning Rod - Custom PF45",
+        "name": "Lefty - ACS-12",
         "category": "weapon",
         "rarity": "header-named",
         "source": "weekly-vendor-seed",
-        "id": "lightning-rod-custom-pf45"
+        "id": "lefty-acs-12"
       },
       {
         "name": "Like Glue - Super 90",
@@ -129,6 +94,13 @@
         "rarity": "header-named",
         "source": "weekly-vendor-seed",
         "id": "like-glue-super-90"
+      },
+      {
+        "name": "LVOA-C",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "lvoa-c"
       },
       {
         "name": "M1911",
@@ -145,6 +117,13 @@
         "id": "m1928"
       },
       {
+        "name": "M45A1",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "m45a1"
+      },
+      {
         "name": "M700 Carbon",
         "category": "weapon",
         "rarity": "header-he",
@@ -159,32 +138,18 @@
         "id": "marine-super-90"
       },
       {
-        "name": "Military M870",
+        "name": "MG5",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "military-m870"
+        "id": "mg5"
       },
       {
-        "name": "Military MK46",
+        "name": "Military M60 E4",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "military-mk46"
-      },
-      {
-        "name": "Military RPK-74 M",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "military-rpk-74-m"
-      },
-      {
-        "name": "Mozambique Special",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "mozambique-special"
+        "id": "military-m60-e4"
       },
       {
         "name": "MP5A2",
@@ -194,18 +159,32 @@
         "id": "mp5a2"
       },
       {
-        "name": "New Reliable - Black Market RPK-74 E",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "new-reliable-black-market-rpk-74-e"
-      },
-      {
-        "name": "Police T821",
+        "name": "PDR",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "police-t821"
+        "id": "pdr"
+      },
+      {
+        "name": "Police 686 Magnum",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "police-686-magnum"
+      },
+      {
+        "name": "Police Mk17",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "police-mk17"
+      },
+      {
+        "name": "Police UMP-45",
+        "category": "weapon",
+        "rarity": "header-he",
+        "source": "weekly-vendor-seed",
+        "id": "police-ump-45"
       },
       {
         "name": "Px4 Storm Type F",
@@ -215,20 +194,6 @@
         "id": "px4-storm-type-f"
       },
       {
-        "name": "Relic - G28",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "relic-g28"
-      },
-      {
-        "name": "Rock n' Roll - ACS-12",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "rock-n-roll-acs-12"
-      },
-      {
         "name": "SASG-12",
         "category": "weapon",
         "rarity": "header-he",
@@ -236,18 +201,11 @@
         "id": "sasg-12"
       },
       {
-        "name": "Shield Splinterer - F2000",
-        "category": "weapon",
-        "rarity": "header-named",
-        "source": "weekly-vendor-seed",
-        "id": "shield-splinterer-f2000"
-      },
-      {
-        "name": "SIG 556",
+        "name": "SIG 716 CQB",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "sig-556"
+        "id": "sig-716-cqb"
       },
       {
         "name": "SOCOM Mk20 SSR",
@@ -257,25 +215,11 @@
         "id": "socom-mk20-ssr"
       },
       {
-        "name": "SR-1",
+        "name": "Surplus SVD",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "sr-1"
-      },
-      {
-        "name": "Stoner LAMG",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "stoner-lamg"
-      },
-      {
-        "name": "Tactical .308",
-        "category": "weapon",
-        "rarity": "header-he",
-        "source": "weekly-vendor-seed",
-        "id": "tactical-308"
+        "id": "surplus-svd"
       },
       {
         "name": "Tactical M249 Para",
@@ -285,6 +229,13 @@
         "id": "tactical-m249-para"
       },
       {
+        "name": "The White Death - Classic M44 Carbine",
+        "category": "weapon",
+        "rarity": "header-named",
+        "source": "weekly-vendor-seed",
+        "id": "the-white-death-classic-m44-carbine"
+      },
+      {
         "name": "UIC15 MOD2",
         "category": "weapon",
         "rarity": "header-he",
@@ -292,48 +243,34 @@
         "id": "uic15-mod2"
       },
       {
-        "name": "USC .45 ACP",
+        "name": "Whisper",
         "category": "weapon",
-        "rarity": "header-he",
+        "rarity": "header-named",
         "source": "weekly-vendor-seed",
-        "id": "usc-45-acp"
+        "id": "whisper"
       },
       {
-        "name": "Vector SBR 9mm",
+        "name": "X-45",
         "category": "weapon",
         "rarity": "header-he",
         "source": "weekly-vendor-seed",
-        "id": "vector-sbr-9mm"
+        "id": "x-45"
       }
     ],
     "namedGear": [
       {
-        "name": "Forge",
-        "slot": "Holster",
-        "brand": "Richter & Kaiser",
+        "name": "Door-Kicker's Knock",
+        "slot": "Chest",
+        "brand": "Grupo Sombra S.A.",
         "source": "weekly-vendor-seed",
-        "id": "forge"
+        "id": "door-kicker-s-knock"
       },
       {
-        "name": "Hunter-Killer",
+        "name": "Sleight",
         "slot": "Chest",
-        "brand": "Golan Gear Ltd",
+        "brand": "Urban Lookout",
         "source": "weekly-vendor-seed",
-        "id": "hunter-killer"
-      },
-      {
-        "name": "Pointman",
-        "slot": "Chest",
-        "brand": "Gila Guard",
-        "source": "weekly-vendor-seed",
-        "id": "pointman"
-      },
-      {
-        "name": "Robin",
-        "slot": "Chest",
-        "brand": "Royal Works",
-        "source": "weekly-vendor-seed",
-        "id": "robin"
+        "id": "sleight"
       }
     ],
     "exotics": [
@@ -1172,34 +1109,10 @@
     ],
     "mods": [
       {
-        "name": "Adaptive Insulation Foam",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "adaptive-insulation-foam"
-      },
-      {
-        "name": "Brushless DC-motor",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "brushless-dc-motor"
-      },
-      {
-        "name": "Carbon Fiber Barrel",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "carbon-fiber-barrel"
-      },
-      {
         "name": "Carbon Fiber Frame",
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "carbon-fiber-frame"
-      },
-      {
-        "name": "Cyclone Magazine",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "cyclone-magazine"
       },
       {
         "name": "Decoy Housing Shell",
@@ -1232,22 +1145,10 @@
         "id": "defensive-system-mending"
       },
       {
-        "name": "Dielectric Elastomers",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "dielectric-elastomers"
-      },
-      {
         "name": "Distributed Architecture",
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "distributed-architecture"
-      },
-      {
-        "name": "Ecotoxicology Research",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "ecotoxicology-research"
       },
       {
         "name": "Electric Soldering Tool",
@@ -1256,22 +1157,40 @@
         "id": "electric-soldering-tool"
       },
       {
-        "name": "Experimental Blend",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "experimental-blend"
-      },
-      {
         "name": "Exploded Blueprint",
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "exploded-blueprint"
       },
       {
-        "name": "Gimbal Vibration Damping",
+        "name": "Extra Payload",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "gimbal-vibration-damping"
+        "id": "extra-payload"
+      },
+      {
+        "name": "Feed Strip",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "feed-strip"
+      },
+      {
+        "name": "Gaffer Tape",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "gaffer-tape"
+      },
+      {
+        "name": "Graphene Battery",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "graphene-battery"
+      },
+      {
+        "name": "Guiding System",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "guiding-system"
       },
       {
         "name": "Hydrocloric Infusion",
@@ -1280,10 +1199,10 @@
         "id": "hydrocloric-infusion"
       },
       {
-        "name": "Imbued Metal String",
+        "name": "Improved Sticky Launcher",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "imbued-metal-string"
+        "id": "improved-sticky-launcher"
       },
       {
         "name": "Improved Sticky Payload",
@@ -1298,16 +1217,22 @@
         "id": "larrea-tridentata-infusion"
       },
       {
-        "name": "Liquid Nitrogen Cooling System",
+        "name": "Magnetic Rail",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "liquid-nitrogen-cooling-system"
+        "id": "magnetic-rail"
       },
       {
-        "name": "Micropulse Frequency",
+        "name": "Network Firewall",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "micropulse-frequency"
+        "id": "network-firewall"
+      },
+      {
+        "name": "Nitroglycerin Mixture",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "nitroglycerin-mixture"
       },
       {
         "name": "Offensive Protocol: Critical",
@@ -1322,64 +1247,52 @@
         "id": "offensive-protocol-dexterity"
       },
       {
-        "name": "Offensive System: Dexterity",
+        "name": "Offensive Protocol: Firearms",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "offensive-system-dexterity"
+        "id": "offensive-protocol-firearms"
       },
       {
-        "name": "Offensive System: Firearms",
+        "name": "Organic Circuits",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "offensive-system-firearms"
+        "id": "organic-circuits"
       },
       {
-        "name": "Propantriol Adhesive",
+        "name": "Pharmacokinetic Enhancer",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "propantriol-adhesive"
+        "id": "pharmacokinetic-enhancer"
       },
       {
-        "name": "PVA Polymer Coating",
+        "name": "Phosphorus Ingredient",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "pva-polymer-coating"
+        "id": "phosphorus-ingredient"
       },
       {
-        "name": "Radar Signal Antennas",
+        "name": "Russian Doll Protocol",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "radar-signal-antennas"
+        "id": "russian-doll-protocol"
       },
       {
-        "name": "Silicon Carbide Coil",
+        "name": "Shape-memory Alloy",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "silicon-carbide-coil"
+        "id": "shape-memory-alloy"
       },
       {
-        "name": "Slip Fit Tube",
+        "name": "Super Glue",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "slip-fit-tube"
+        "id": "super-glue"
       },
       {
-        "name": "Supramolecular Networks",
+        "name": "Titanium Reinforcement",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "supramolecular-networks"
-      },
-      {
-        "name": "Swarm Control",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "swarm-control"
-      },
-      {
-        "name": "Terminal Ballistics",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "terminal-ballistics"
+        "id": "titanium-reinforcement"
       },
       {
         "name": "Trap Charge Improvement",
@@ -1394,22 +1307,22 @@
         "id": "trap-electronics-upgrade"
       },
       {
-        "name": "Tungsten Compound",
+        "name": "Trauma Analyzer",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "tungsten-compound"
-      },
-      {
-        "name": "Utility Protocol: Assist",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "utility-protocol-assist"
+        "id": "trauma-analyzer"
       },
       {
         "name": "Utility Protocol: Intensity",
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "utility-protocol-intensity"
+      },
+      {
+        "name": "Utility System: Assist",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "utility-system-assist"
       },
       {
         "name": "Utility System: Electronics",
