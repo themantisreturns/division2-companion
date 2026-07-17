@@ -10,7 +10,7 @@ function escapeHtml(value) {
 const CATEGORY_LABELS = {
   weapons: 'Weapons',
   namedGear: 'Named Gear',
-  exotics: 'Exotics',
+  exotics: 'Exotic Gear',
   brands: 'Brands',
   gearSets: 'Gear Sets',
   skills: 'Skills',

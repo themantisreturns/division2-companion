@@ -1,6 +1,2089 @@
 {
-  "weapons": [],
-  "namedGear": [],
+  "weapons": [
+    {
+      "name": "ACR",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "ACR-E",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "AK-M",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Market AK-M",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "FAL",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "FAL SA-58",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "FAL SA-58 Para",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Police M4",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "P416",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Custom P416 G3",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military P416",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mk16",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SOCOM Mk16",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical Mk16",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "G36",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "G36 C",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "G36 Enhanced",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military G36",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "FAMAS 2010",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "PDR",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "PDR-C",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "CTAR-21",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "AUG A3-CQC",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Enhanced AUG A3P",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "F2000",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Honey Badger",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Carbine 7",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SIG 556",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "TKB-408",
+      "category": "Assault Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "ACR SS",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "LVOA-C",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lightweight M4",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Classic M1A",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M1A CQB",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SOCOM M1A",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M16A2",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Resolute Mk47",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mk17",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Police Mk17",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military Mk17",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SIG 716",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SIG 716 CQB",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "UIC15 MOD2",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Urban MDR",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "USC .45 ACP",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "1886",
+      "category": "Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "L86 LSW",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Custom L86 A2",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military L86 LSW",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Classic M60",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military M60 E4",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Market M60 E6",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Classic RPK-74",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military RPK-74 M",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Market RPK-74 E",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M249 B",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military MK46",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical M249 Para",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Infantry MG5",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MG5",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "IWI NEGEV",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Stoner LAMG",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "GR9",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "HK GR9",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "CETME Ameli",
+      "category": "LMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Classic M44 Carbine",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Custom M44",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Hunting M44",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SRS A1",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Covert SRS",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Paratrooper SVD",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Surplus SVD",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M700 Carbon",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M700 Tactical",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Model 700",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SR-1",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Adrestia SR-1",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SOCOM Mk20 SSR",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical .308",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "G28",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "G28 Marksman Rifle",
+      "category": "Marksman Rifles",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "T821",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Market T821",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Police T821",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MP5 ST",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MP5-N",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MP5A2",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MP7",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Vector SBR .45 ACP",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Vector SBR 9mm",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical Vector SBR 9mm",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SMG-9",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Converted SMG-9",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "AUG A3 Para XS",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "PP-19",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Enhanced PP-19",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Police UMP-45",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical UMP-45",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M1928",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tommy Gun",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "MPX",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "CMMG Banshee",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "P90",
+      "category": "SMGs",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Double Barrel Sawed Off",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Double Barrel Shotgun",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M870 Express",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Custom M870 MCS",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military M870",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SASG-12",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Market SASG-12 S",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical SASG-12 K",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Super 90",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Marine Super 90",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military Super 90",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "ACS-12",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SPAS-12",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SIX12",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "SIX12 M2",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "KSG Shotgun",
+      "category": "Shotguns",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "586 Magnum",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Police 686 Magnum",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Diceros",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Diceros Special",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M1911",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "M45A1",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tactical M1911",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Military M9",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Officer M9 A1",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "PF45",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "First Wave PF45",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Custom PF45",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Px4 Storm Type F",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Px4 Storm Type T",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "X-45",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "X-45 Tactical",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "93R",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "D50",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "P320 XCompact",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Maxim 9",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "KARD-45",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "TDI Kard Custom",
+      "category": "Pistols",
+      "itemType": "standard",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Born Great",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Burn Out",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Caretaker",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "First Bloom",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "First Sight",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Glory Daze",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Goalie",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Huntsman",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Interchange",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Invisible Hand",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Kingbreaker",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lexington",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lud",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Manic",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mechanical Animal",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Pyromaniac",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Savage Wolverine",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Shield Splinterer",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Test Subject",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Archivist",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Drill",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Railsplitter",
+      "category": "Assault Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Bellringer",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Big Show",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Black Friday",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Carnage",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Cricket",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Dare",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Gear Shift",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Good Times",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "New Reliable",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Quiet Roar",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Rusty",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Sleipner",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tabula Rasa",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Headline-grabber",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Stinger",
+      "category": "LMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Brutus",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Commando",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Designated Hitter",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Ekim's Long Stick",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Handbasket",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Instigator",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Oh Carol",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Pinprick",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Relic",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Scalpel",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Darkness",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The White Death",
+      "category": "Marksman Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Artist's Tool",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Baker's Dozen",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Cooler",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Everlasting Gaze",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Harmony",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Stage Left",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Surge",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Virginian",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Whisper",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Cabaret",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Cold Relations",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Dark Winter",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Emeline's Guard",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Grown Great",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Oxpecker",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Safety Distance",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Swap Chain",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Apartment",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Grudge",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Sleigher",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Backup Boomstick",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Boomstick",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Cuélebre",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Enforcer",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Firestarter",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lefty",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Like Glue",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Overlord",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Rock n' Roll",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Sheriff",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Mop",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Send-Off",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Thorn",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tsunami",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lightning Rod",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mozambique Special",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Orbit",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Prophet",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Quickstep",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Sharpshooter 93R",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Survivalist D50",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Tempest",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Harvest",
+      "category": "Pistols",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Backfire",
+      "category": "SMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Bighorn",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Bluescreen",
+      "category": "LMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Bullet King",
+      "category": "LMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Busy Little Bee",
+      "category": "Pistols",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Capacitor",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Chameleon",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Chatterbox",
+      "category": "SMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Diamondback",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Doctor Home",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Dread Edict",
+      "category": "Marksman Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Eagle Bearer",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Iron Lung",
+      "category": "LMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lady Death",
+      "category": "SMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Liberty",
+      "category": "Pistols",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Lullaby",
+      "category": "Shotguns",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mantis",
+      "category": "Marksman Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Merciless",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Mosquito",
+      "category": "Pistols",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Nemesis",
+      "category": "Marksman Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Ouroboros",
+      "category": "SMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Pestilence",
+      "category": "LMGs",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "The Ravenous",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Regulus",
+      "category": "Pistols",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Ruthless",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Sacrum Imperium",
+      "category": "Marksman Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Scorpio",
+      "category": "Shotguns",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "St. Elmo's Engine",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Strega",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Sweet Dreams",
+      "category": "Shotguns",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Vindicator",
+      "category": "Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "expertise-catalog-v2"
+    },
+    {
+      "name": "Achilles",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Trader",
+      "category": "Rifles",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Lockdown",
+      "category": "Shotguns",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Froth",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Purist",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Slingshot",
+      "category": "SMGs",
+      "itemType": "named",
+      "rarity": "named",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Caduceus",
+      "category": "Assault Rifles",
+      "itemType": "exotic",
+      "rarity": "exotic",
+      "source": "prototrack-2026"
+    }
+  ],
+  "namedGear": [
+    {
+      "name": "Punch Drunk",
+      "slot": "Mask",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Chill Out",
+      "slot": "Mask",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Nightwatcher",
+      "slot": "Mask",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Visionario",
+      "slot": "Mask",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "The Hollow Man",
+      "slot": "Mask",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Percussive Maintenance",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Liquid Engineer",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Hermano",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Strategic Alignment",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Lavoisier",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Momma Badger",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Battery Pack",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Anarchist's Cookbook",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Festive Delivery",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "The Courier",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Force Multiplier",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Cap'n",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Vigil",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Backbone",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Proxy",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "The Gift",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Bulldog",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Axel",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "The Setup",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Matador",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Devil's Due",
+      "slot": "Backpack",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Pristine Example",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Zero F's",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Everyday Carrier",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Henri",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Benefactor",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Caesar's Guard",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Ferocious Calm",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Pointman",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Hunter-Killer",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Door-Kicker's Knock",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Cherished",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Carpenter",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Combustor",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Vedmedytsya Vest",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "The Sacrifice",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Robin",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Equalizer",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Sleight",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Closer",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Chainkiller",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Impetus",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Bober",
+      "slot": "Chest",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Deathgrips",
+      "slot": "Gloves",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Motherly Love",
+      "slot": "Gloves",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Contractor's Gloves",
+      "slot": "Gloves",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Firm Handshake",
+      "slot": "Gloves",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Eagles Grasp",
+      "slot": "Gloves",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Ammo Dump",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Picaros Holster",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Forge",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Salvo",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Spot-On",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Claws Out",
+      "slot": "Holster",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Snow Machine",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Cloak",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Emperor's Guard",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Fox's Prayer",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Grease",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Turmoil",
+      "slot": "Kneepads",
+      "source": "prototrack-2026"
+    }
+  ],
   "exotics": [
     {
       "name": "Acosta's Go-Bag",
@@ -250,41 +2333,154 @@
   ],
   "mods": [],
   "brands": [
-    "5.11 Tactical",
-    "Airaldi Holdings",
-    "Alps Summit Armament",
-    "Badger Tuff",
-    "Belstone Armory",
-    "Brazos de Arcabuz",
-    "Česká Výroba s.r.o.",
-    "Douglas & Harding",
-    "Edelweiss GP-2",
-    "Electrique",
-    "Empress International",
-    "Fenris Group AB",
-    "Gila Guard",
-    "Golan Gear Ltd",
-    "Grupo Sombra S.A.",
-    "Habsburg Guard",
-    "Hana-U Corporation",
-    "Legatus S.p.A.",
-    "Lengmo",
-    "Murakami Industries",
-    "Overlord Armaments",
-    "Palisade Steelworks",
-    "Petrov Defense Group",
-    "Providence Defense",
-    "Richter & Kaiser GmbH",
-    "Royal Works",
-    "Shiny Monkey Gear",
-    "Sokolov Concern",
-    "Svadovka Sp. z o.o.",
-    "Unit Alloys",
-    "Urban Lookout",
-    "Uzina Getica",
-    "Walker, Harris & Co.",
-    "Wyvern Wear",
-    "Yaahl Gear"
+    {
+      "name": "5.11 Tactical",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Airaldi Holdings",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Alps Summit Armament",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Badger Tuff",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Belstone Armory",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Brazos de Arcabuz",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Česká Výroba s.r.o.",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "China Light Industries Corporation",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Douglas & Harding",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Edelweiss GPz",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Electrique",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Empress International",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Fenris Group AB",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Gila Guard",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Golan Gear Ltd",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Grupo Sombra S.A.",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Habsburg Guard",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Hana-U Corporation",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Imminence Armaments",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Legatus S.p.A.",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Lengmo",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Murakami Industries",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Overlord Armaments",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Palisade Steelworks",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Petrov Defense Group",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Providence Defense",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Richter & Kaiser GmbH",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Royal Works",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Shiny Monkey Gear",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Sokolov Concern",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Unit Alloys",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Urban Lookout",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Uzina Getica",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Walker, Harris & Co.",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Wyvern Wear",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Yaahl Gear",
+      "source": "prototrack-2026"
+    },
+    {
+      "name": "Zwiadowka Sp. z o.o.",
+      "source": "prototrack-2026"
+    }
   ],
   "gearSets": [
     "Aces & Eights",

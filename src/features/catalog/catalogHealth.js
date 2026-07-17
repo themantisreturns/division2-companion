@@ -10,12 +10,20 @@ function escapeHtml(value) {
 const CATEGORY_LABELS = {
   weapons: 'Weapons',
   namedGear: 'Named Gear',
-  exotics: 'Exotics',
+  exotics: 'Exotic Gear',
   brands: 'Brands',
   gearSets: 'Gear Sets',
   skills: 'Skills',
   specializations: 'Specializations',
   mods: 'Mods',
+}
+
+function getExpectedCount(catalog, categoryName) {
+  const expected = catalog?.expectedCounts?.[categoryName]
+
+  if (typeof expected === 'number') return expected
+  if (expected && typeof expected.total === 'number') return expected.total
+  return null
 }
 
 function normalize(value) {
@@ -47,7 +55,7 @@ function getDuplicateNames(items = []) {
   return duplicates
 }
 
-function analyzeCategory(name, items) {
+function analyzeCategory(name, items, expectedCount = null) {
   const safeItems = Array.isArray(items) ? items : []
   const missingNames = safeItems.filter(
     (item) => !String(item?.name ?? '').trim(),
@@ -65,6 +73,11 @@ function analyzeCategory(name, items) {
     missingIds,
     duplicateNames,
     isEmpty: safeItems.length === 0,
+    expectedCount,
+    coveragePercent: expectedCount
+      ? Math.min(100, Math.round((safeItems.length / expectedCount) * 100))
+      : null,
+    isIncomplete: expectedCount !== null && safeItems.length !== expectedCount,
     hasErrors:
       missingNames > 0 ||
       missingIds > 0 ||
@@ -79,6 +92,7 @@ export function analyzeCatalog(catalog) {
       analyzeCategory(
         categoryName,
         categories[categoryName],
+        getExpectedCount(catalog, categoryName),
       ),
   )
 
@@ -86,7 +100,11 @@ export function analyzeCatalog(catalog) {
   const errors = []
 
   analyses.forEach((analysis) => {
-    if (analysis.isEmpty) {
+    if (analysis.isIncomplete) {
+      warnings.push(
+        `${analysis.label} coverage is ${analysis.count}/${analysis.expectedCount}.`,
+      )
+    } else if (analysis.isEmpty) {
       warnings.push(`${analysis.label} is empty.`)
     }
 
@@ -138,6 +156,10 @@ function formatDate(value) {
 function renderStatusBadge(analysis) {
   if (analysis.hasErrors) {
     return '<span class="catalog-status error">Error</span>'
+  }
+
+  if (analysis.isIncomplete) {
+    return '<span class="catalog-status warning">Incomplete</span>'
   }
 
   if (analysis.isEmpty) {
@@ -276,6 +298,13 @@ export function renderCatalogHealthPage(catalog) {
                     <span>
                       Duplicates: ${analysis.duplicateNames.length}
                     </span>
+
+                    ${analysis.expectedCount !== null ? `
+                      <span>
+                        Coverage: ${analysis.count}/${analysis.expectedCount}
+                        (${analysis.coveragePercent}%)
+                      </span>
+                    ` : ''}
                   </div>
                 </article>
               `,

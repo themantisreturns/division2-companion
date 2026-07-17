@@ -246,7 +246,7 @@ export function renderExpertisePage(progress, catalog) {
         )}
 
         ${renderChecklistSection(
-          'Exotics',
+          'Exotic Gear',
           'exotics',
           catalog.exotics,
           progress.individual?.exotics,

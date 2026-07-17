@@ -65,15 +65,48 @@ function isExotic(item) {
   return rarityText(item).includes('exotic')
 }
 
+const WEAPON_CATEGORY_ALIASES = {
+  'assault rifle': 'Assault Rifles',
+  'assault rifles': 'Assault Rifles',
+  rifle: 'Rifles',
+  rifles: 'Rifles',
+  smg: 'SMGs',
+  smgs: 'SMGs',
+  'submachine gun': 'SMGs',
+  lmg: 'LMGs',
+  lmgs: 'LMGs',
+  shotgun: 'Shotguns',
+  shotguns: 'Shotguns',
+  'marksman rifle': 'Marksman Rifles',
+  'marksman rifles': 'Marksman Rifles',
+  pistol: 'Pistols',
+  pistols: 'Pistols',
+  sidearm: 'Pistols',
+}
+
 function weaponType(item) {
-  return clean(
+  const raw = clean(
     item?.weaponType ||
     item?.type ||
     item?.category ||
     item?.class ||
     'Uncategorized',
   )
+
+  return WEAPON_CATEGORY_ALIASES[raw.toLowerCase()] || raw
 }
+
+function canonicalWeaponName(item) {
+  const name = clean(item?.name)
+
+  if (isNamed(item)) {
+    const parts = name.split(/\s+[–—-]\s+/)
+    if (parts.length > 1) return parts[0].trim()
+  }
+
+  return name
+}
+
 
 function gearSlot(item) {
   return clean(item?.slot || 'Gear')
@@ -115,22 +148,25 @@ const weeklyNamedGear = weeklyGear
     source: 'weekly-vendor-seed',
   }))
 
-const weeklyExotics = [
-  ...weeklyGear.filter(isExotic).map((item) => ({
+const GEAR_SLOTS = new Set([
+  'mask', 'chest', 'body armor', 'backpack', 'gloves', 'holster', 'kneepads',
+])
+
+function isGearExotic(item) {
+  return GEAR_SLOTS.has(clean(item?.category).toLowerCase())
+}
+
+const weeklyExotics = weeklyGear
+  .filter(isExotic)
+  .map((item) => ({
     name: clean(item.name),
     category: gearSlot(item),
     source: 'weekly-vendor-seed',
-  })),
-  ...weeklyWeapons.filter(isExotic).map((item) => ({
-    name: clean(item.name),
-    category: weaponType(item),
-    source: 'weekly-vendor-seed',
-  })),
-]
+  }))
 
 const weapons = uniqueByName([
   ...weeklyWeapons.map((item) => ({
-    name: clean(item.name),
+    name: canonicalWeaponName(item),
     category: weaponType(item),
     rarity: clean(item.rarity),
     source: 'weekly-vendor-seed',
@@ -145,7 +181,7 @@ const namedGear = uniqueByName([
 
 const exotics = uniqueByName([
   ...weeklyExotics,
-  ...(manual.exotics ?? []),
+  ...(manual.exotics ?? []).filter(isGearExotic),
 ])
 
 const brands = uniqueByName(manual.brands ?? [])
@@ -168,15 +204,33 @@ const mods = uniqueByName([
 ])
 
 const catalog = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
+  expectedCounts: {
+    weapons: {
+      total: 271,
+    },
+    namedGear: 65,
+    exotics: 18,
+    brands: 37,
+    gearSets: 27,
+    skills: 43,
+    specializations: 6,
+  },
+  sourceInfo: {
+    catalog: 'ProtoTrack Y8S1 snapshot',
+    verifiedAt: '2026-07-17',
+    notes: 'Weapons include standard, named, and exotic weapons. Exotic Gear excludes exotic weapons to prevent duplicate proficiency entries.',
+  },
   sourceSummary: {
     weeklyGear: weeklyGear.length,
     weeklyWeapons: weeklyWeapons.length,
     weeklyMods: weeklyMods.length,
     manualWeapons: (manual.weapons ?? []).length,
+    catalogWeaponRecords: weapons.length,
     manualNamedGear: (manual.namedGear ?? []).length,
     manualExotics: (manual.exotics ?? []).length,
+    catalogExoticGearRecords: exotics.length,
   },
   categories: {
     weapons,
