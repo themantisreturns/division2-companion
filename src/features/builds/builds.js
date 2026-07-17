@@ -64,33 +64,127 @@ export function normalizeBuildsState(value) {
   }
 }
 
-function inventoryQuantity(inventory, category, name) {
-  return Number(inventory?.items?.[category]?.[name]) || 0
+function normalizeSlotName(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .replace(/\s+/g, '')
 }
 
-function getCatalogOptions(catalog, categories) {
-  return categories
+function itemMatchesGearSlot(item, slot) {
+  if (!item || !slot) {
+    return true
+  }
+
+  const itemSlot = item.slot ?? item.category ?? ''
+
+  if (!itemSlot) {
+    return true
+  }
+
+  return normalizeSlotName(itemSlot) === normalizeSlotName(slot.label)
+}
+
+function itemMatchesWeaponSlot(item, slot) {
+  if (!item || !slot) {
+    return true
+  }
+
+  const weaponCategory = String(item.category ?? '').toLowerCase()
+
+  if (slot.key === 'sidearm') {
+    return weaponCategory.includes('pistol')
+  }
+
+  return !weaponCategory.includes('pistol')
+}
+
+function parseBuildSelection(value, fallbackSlotKey = '') {
+  if (!value) {
+    return null
+  }
+
+  const [category, name = '', encodedSlotKey = ''] = String(value).split('|')
+  const slotKey = encodedSlotKey || fallbackSlotKey
+  const slot = BUILD_SLOTS.find((entry) => entry.key === slotKey)
+  const isGenericGear = category === 'brands' || category === 'gearSets'
+
+  return {
+    category,
+    name,
+    slotKey,
+    displayName: isGenericGear && slot
+      ? `${name} ${slot.label}`
+      : name,
+  }
+}
+
+function inventoryQuantity(inventory, selectedItem) {
+  if (!selectedItem) {
+    return 0
+  }
+
+  const categoryItems = inventory?.items?.[selectedItem.category] ?? {}
+
+  // Support a future slot-specific inventory key while retaining the
+  // existing brand/set-level inventory records.
+  return (
+    Number(categoryItems[selectedItem.displayName]) ||
+    Number(categoryItems[selectedItem.name]) ||
+    0
+  )
+}
+
+function getCatalogOptions(catalog, slot) {
+  return slot.categories
     .flatMap((category) =>
-      (catalog?.categories?.[category] ?? []).map((item) => ({
-        category,
-        name: item.name,
-        label: `${item.name} · ${CATEGORY_LABELS[category] ?? category}`,
-      })),
+      (catalog?.categories?.[category] ?? [])
+        .filter((item) => {
+          if (category === 'namedGear' || category === 'exotics') {
+            if (slot.key === 'primary' || slot.key === 'secondary' || slot.key === 'sidearm') {
+              // Exotic weapons live in the weapons catalog in Catalog v2.
+              return false
+            }
+
+            return itemMatchesGearSlot(item, slot)
+          }
+
+          if (category === 'weapons') {
+            return itemMatchesWeaponSlot(item, slot)
+          }
+
+          return true
+        })
+        .map((item) => {
+          const isGenericGear = category === 'brands' || category === 'gearSets'
+          const displayName = isGenericGear
+            ? `${item.name} ${slot.label}`
+            : item.name
+
+          return {
+            category,
+            name: item.name,
+            displayName,
+            value: isGenericGear
+              ? `${category}|${item.name}|${slot.key}`
+              : `${category}|${item.name}`,
+            legacyValue: `${category}|${item.name}`,
+            label: `${displayName} · ${CATEGORY_LABELS[category] ?? category}`,
+          }
+        }),
     )
     .sort((a, b) => a.label.localeCompare(b.label))
 }
 
 function renderSlot(build, slot, catalog, inventory) {
   const selected = build.slots?.[slot.key] ?? ''
-  const options = getCatalogOptions(catalog, slot.categories)
+  const selectedItem = parseBuildSelection(selected, slot.key)
+  const options = getCatalogOptions(catalog, slot)
 
   let ownedText = 'Not selected'
   let ownedClass = ''
 
-  if (selected) {
-    const [category, ...nameParts] = selected.split('|')
-    const name = nameParts.join('|')
-    const quantity = inventoryQuantity(inventory, category, name)
+  if (selectedItem) {
+    const quantity = inventoryQuantity(inventory, selectedItem)
 
     ownedText = quantity > 0
       ? `Owned: ${quantity}`
@@ -98,29 +192,42 @@ function renderSlot(build, slot, catalog, inventory) {
     ownedClass = quantity > 0 ? 'owned' : 'missing'
   }
 
+  const groups = slot.categories
+    .map((category) => {
+      const groupOptions = options.filter((option) => option.category === category)
+
+      if (!groupOptions.length) {
+        return ''
+      }
+
+      return `
+        <optgroup label="${escapeHtml(CATEGORY_LABELS[category] ?? category)}">
+          ${groupOptions
+            .map((option) => {
+              const isSelected = selected === option.value || selected === option.legacyValue
+
+              return `
+                <option
+                  value="${escapeHtml(option.value)}"
+                  ${isSelected ? 'selected' : ''}
+                >
+                  ${escapeHtml(option.displayName)}
+                </option>
+              `
+            })
+            .join('')}
+        </optgroup>
+      `
+    })
+    .join('')
+
   return `
     <label class="build-slot">
       <span>${escapeHtml(slot.label)}</span>
 
-      <select
-        data-build-slot="${escapeHtml(slot.key)}"
-      >
+      <select data-build-slot="${escapeHtml(slot.key)}">
         <option value="">Not selected</option>
-
-        ${options
-          .map((option) => {
-            const value = `${option.category}|${option.name}`
-
-            return `
-              <option
-                value="${escapeHtml(value)}"
-                ${selected === value ? 'selected' : ''}
-              >
-                ${escapeHtml(option.label)}
-              </option>
-            `
-          })
-          .join('')}
+        ${groups}
       </select>
 
       <small class="build-owned-status ${ownedClass}">
@@ -141,16 +248,10 @@ function normalizeText(value) {
 function getSelectedBuildItems(build) {
   return Object.entries(build?.slots ?? {})
     .filter(([, value]) => Boolean(value))
-    .map(([slotKey, value]) => {
-      const [category, ...nameParts] = value.split('|')
-
-      return {
-        slotKey,
-        category,
-        name: nameParts.join('|'),
-      }
-    })
+    .map(([slotKey, value]) => parseBuildSelection(value, slotKey))
+    .filter(Boolean)
 }
+
 
 function getVendorItems(vendorData) {
   return [
@@ -173,29 +274,35 @@ function getVendorItems(vendorData) {
 
 function findVendorMatches(selectedItem, vendorData) {
   const targetName = normalizeText(selectedItem.name)
+  const selectedSlot = BUILD_SLOTS.find(
+    (entry) => entry.key === selectedItem.slotKey,
+  )
+  const targetSlot = normalizeText(selectedSlot?.label)
 
   return getVendorItems(vendorData).filter((vendorItem) => {
     const vendorName = normalizeText(vendorItem.name)
     const vendorBrand = normalizeText(vendorItem.brand)
+    const vendorSlot = normalizeText(
+      vendorItem.slot ?? vendorItem.type ?? vendorItem.category,
+    )
+
+    const slotMatches = !targetSlot || !vendorSlot || vendorSlot.includes(targetSlot)
 
     if (
       selectedItem.category === 'brands' ||
       selectedItem.category === 'gearSets'
     ) {
-      return vendorBrand === targetName
+      return vendorBrand === targetName && slotMatches
     }
 
-    return vendorName === targetName
+    return vendorName === targetName && slotMatches
   })
 }
 
+
 function getBuildShoppingRows(build, inventory, vendorData) {
   return getSelectedBuildItems(build).map((item) => {
-    const quantity = inventoryQuantity(
-      inventory,
-      item.category,
-      item.name,
-    )
+    const quantity = inventoryQuantity(inventory, item)
 
     const matches = quantity > 0
       ? []
@@ -282,7 +389,7 @@ function renderBuildShoppingList(build, inventory, vendorData) {
                       ${escapeHtml(slot?.label ?? row.slotKey)}
                     </span>
 
-                    <strong>${escapeHtml(row.name)}</strong>
+                    <strong>${escapeHtml(row.displayName)}</strong>
 
                     <p>Already in inventory · Quantity ${row.quantity}</p>
                   </div>
@@ -302,7 +409,7 @@ function renderBuildShoppingList(build, inventory, vendorData) {
                       ${escapeHtml(slot?.label ?? row.slotKey)}
                     </span>
 
-                    <strong>${escapeHtml(row.name)}</strong>
+                    <strong>${escapeHtml(row.displayName)}</strong>
 
                     <p>
                       ${row.matches
@@ -329,7 +436,7 @@ function renderBuildShoppingList(build, inventory, vendorData) {
                     ${escapeHtml(slot?.label ?? row.slotKey)}
                   </span>
 
-                  <strong>${escapeHtml(row.name)}</strong>
+                  <strong>${escapeHtml(row.displayName)}</strong>
 
                   <p>Not owned and no exact vendor match found.</p>
                 </div>
