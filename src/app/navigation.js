@@ -13,6 +13,7 @@ export function connectNavigation({
   openVendors,
   openLibrary,
   openInventory,
+  openBuilds,
   openSettings,
 }) {
   document.querySelectorAll('.nav-item').forEach((button) => {
@@ -42,6 +43,11 @@ export function connectNavigation({
       if (page === 'Inventory') {
         setActivePage('Inventory')
         openInventory()
+      }
+
+      if (page === 'Builds') {
+        setActivePage('Builds')
+        openBuilds()
       }
 
       if (page === 'Settings') {

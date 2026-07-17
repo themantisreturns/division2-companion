@@ -1,7 +1,10 @@
 import './style.css'
 
-import { loadVendorData } from './features/vendors/vendorData.js'
 import { updateDashboardMetrics } from './app/dashboardMetrics.js'
+import {
+  ensureGameCatalog,
+  ensureVendorData,
+} from './app/dataLoaders.js'
 import {
   connectPurchaseButtons,
   connectVendorFilters,
@@ -20,11 +23,7 @@ import {
   serializeExpertiseProgress,
 } from './features/expertise/expertise.js'
 import { fallbackExpertiseCatalog } from './features/expertise/expertiseData.js'
-import {
-  clearCatalogCache,
-  getExpertiseCatalog,
-  loadCatalog,
-} from './services/catalog.js'
+import { getExpertiseCatalog } from './services/catalog.js'
 import {
   getDashboardElements,
   renderDashboard,
@@ -40,7 +39,7 @@ import {
   signOut,
 } from './services/auth.js'
 import { loadUserProfile, saveUserProfile } from './services/profile.js'
-import { renderCatalogHealthPage } from './features/catalog/catalogHealth.js'
+import { openSettingsPage } from './features/catalog/catalogHealthPageController.js'
 import {
   connectCatalogBrowser,
   renderCatalogBrowser,
@@ -50,33 +49,18 @@ import {
   normalizeInventory,
   renderInventoryPage,
 } from './features/inventory/inventory.js'
+import {
+  connectBuildsPage,
+  normalizeBuildsState,
+  renderBuildsPage,
+} from './features/builds/builds.js'
 
 let currentVendorData = null
 let currentRecommendations = []
-let currentGameCatalog = null
 
 function getDisplayName(user) {
   const metadata = user.user_metadata ?? {}
   return metadata.full_name || metadata.name || metadata.user_name || user.email || 'Agent'
-}
-
-async function ensureVendorData() {
-  if (!currentVendorData) currentVendorData = await loadVendorData()
-  return currentVendorData
-}
-
-async function ensureGameCatalog() {
-  if (currentGameCatalog) {
-    return currentGameCatalog
-  }
-
-  try {
-    currentGameCatalog = await loadCatalog()
-    return currentGameCatalog
-  } catch (error) {
-    console.warn('Generated catalog is unavailable:', error)
-    return null
-  }
 }
 
 async function refreshDashboardMetrics() {
@@ -285,6 +269,7 @@ async function openVendorPage() {
 
   try {
     const vendorData = await ensureVendorData()
+    currentVendorData = vendorData
     currentRecommendations = []
 
     if (appState.activeProfile) {
@@ -532,13 +517,23 @@ async function saveInventory() {
   }
 }
 
-async function openSettingsPage() {
+
+let selectedBuildId = null
+
+async function openBuildsPage() {
+  if (!appState.activeUser || !appState.activeProfile) {
+    window.alert(
+      'Sign in with GitHub before editing builds.',
+    )
+    return
+  }
+
   const mainContent = document.querySelector('.main-content')
 
   mainContent.innerHTML = `
     <section class="feature-page">
       <div class="panel empty-state">
-        <strong>Loading catalog health…</strong>
+        <strong>Loading builds…</strong>
       </div>
     </section>
   `
@@ -552,36 +547,120 @@ async function openSettingsPage() {
       )
     }
 
-    mainContent.innerHTML =
-      renderCatalogHealthPage(catalog)
+    const vendorData = await ensureVendorData()
 
-    document
-      .querySelector('#refresh-catalog-health')
-      ?.addEventListener('click', async () => {
-        const button = document.querySelector(
-          '#refresh-catalog-health',
-        )
+    const inventory = normalizeInventory(
+      appState.activeProfile.app_settings?.inventory,
+    )
 
-        if (button) {
-          button.disabled = true
-          button.textContent = 'Refreshing…'
-        }
+    const buildsState = normalizeBuildsState(
+      appState.activeProfile.saved_builds,
+    )
 
-        clearCatalogCache()
-        currentGameCatalog = null
-        await openSettingsPage()
+    appState.inventory = inventory
+    appState.buildsState = buildsState
+
+    if (
+      !selectedBuildId ||
+      !buildsState.builds.some(
+        (build) => build.id === selectedBuildId,
+      )
+    ) {
+      selectedBuildId = buildsState.builds[0]?.id ?? null
+    }
+
+    const renderPage = () => {
+      mainContent.innerHTML = renderBuildsPage({
+        catalog,
+        buildsState,
+        inventory,
+        vendorData,
+        selectedBuildId,
       })
+
+      connectBuildsPage({
+        catalog,
+        buildsState,
+        inventory,
+        selectedBuildId,
+        onSelectedBuildChange: (nextId) => {
+          selectedBuildId = nextId
+        },
+        onBuildsChange: scheduleBuildsSave,
+        rerender: renderPage,
+      })
+    }
+
+    renderPage()
   } catch (error) {
     console.error(error)
 
     mainContent.innerHTML = `
       <section class="feature-page">
         <div class="panel empty-state">
-          <strong>Could not load catalog health</strong>
+          <strong>Could not load builds</strong>
           <p>${error.message}</p>
         </div>
       </section>
     `
+  }
+}
+
+function scheduleBuildsSave() {
+  const status = document.querySelector(
+    '#builds-save-status',
+  )
+
+  if (status) {
+    status.textContent = 'Saving changes…'
+    status.className = 'save-status saving'
+  }
+
+  window.clearTimeout(appState.saveTimer)
+
+  appState.saveTimer = window.setTimeout(
+    saveBuilds,
+    700,
+  )
+}
+
+async function saveBuilds() {
+  const status = document.querySelector(
+    '#builds-save-status',
+  )
+
+  if (
+    !appState.activeUser ||
+    !appState.activeProfile ||
+    !appState.buildsState
+  ) {
+    return
+  }
+
+  try {
+    appState.buildsState.updatedAt =
+      new Date().toISOString()
+
+    const savedProfile = await saveUserProfile(
+      appState.activeUser.id,
+      {
+        saved_builds: appState.buildsState,
+      },
+    )
+
+    appState.activeProfile = savedProfile
+
+    if (status) {
+      status.textContent = 'Saved to cloud'
+      status.className = 'save-status saved'
+    }
+  } catch (error) {
+    console.error(error)
+
+    if (status) {
+      status.textContent = 'Could not save'
+      status.className = 'save-status error'
+    }
   }
 }
 
@@ -595,6 +674,7 @@ async function initializeApp() {
     openVendors: openVendorPage,
     openLibrary: openLibraryPage,
     openInventory: openInventoryPage,
+    openBuilds: openBuildsPage,
     openSettings: openSettingsPage,
   })
 
