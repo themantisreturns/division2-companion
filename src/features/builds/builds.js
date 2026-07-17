@@ -125,13 +125,14 @@ function inventoryQuantity(inventory, selectedItem) {
 
   const categoryItems = inventory?.items?.[selectedItem.category] ?? {}
 
-  // Support a future slot-specific inventory key while retaining the
-  // existing brand/set-level inventory records.
-  return (
-    Number(categoryItems[selectedItem.displayName]) ||
-    Number(categoryItems[selectedItem.name]) ||
-    0
-  )
+  if (
+    selectedItem.category === 'brands' ||
+    selectedItem.category === 'gearSets'
+  ) {
+    return Number(categoryItems[selectedItem.displayName]) || 0
+  }
+
+  return Number(categoryItems[selectedItem.name]) || 0
 }
 
 function getCatalogOptions(catalog, slot) {

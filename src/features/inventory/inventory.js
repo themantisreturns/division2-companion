@@ -17,6 +17,55 @@ const CATEGORY_LABELS = {
   specializations: 'Specializations',
 }
 
+const GEAR_SLOTS = [
+  'Mask',
+  'Chest',
+  'Holster',
+  'Backpack',
+  'Gloves',
+  'Kneepads',
+]
+
+function isGenericGearCategory(category) {
+  return category === 'brands' || category === 'gearSets'
+}
+
+function getInventoryEntries(catalog, category, inventory) {
+  const items = getCategoryItems(catalog, category)
+
+  if (!isGenericGearCategory(category)) {
+    return items.map((item) => ({
+      ...item,
+      inventoryName: item.name,
+      displayName: item.name,
+    }))
+  }
+
+  const expanded = items.flatMap((item) =>
+    GEAR_SLOTS.map((slot) => ({
+      ...item,
+      slot,
+      inventoryName: `${item.name} ${slot}`,
+      displayName: `${item.name} ${slot}`,
+    })),
+  )
+
+  // Preserve older brand/set-level inventory records so they remain visible
+  // and can be cleared instead of silently disappearing.
+  const knownNames = new Set(items.map((item) => item.name))
+  const legacyEntries = Object.keys(inventory?.items?.[category] ?? {})
+    .filter((name) => knownNames.has(name))
+    .map((name) => ({
+      name,
+      inventoryName: name,
+      displayName: `${name} (unassigned slot)`,
+      slot: 'Unassigned',
+      legacy: true,
+    }))
+
+  return [...legacyEntries, ...expanded]
+}
+
 function getCategoryItems(catalog, category) {
   return catalog?.categories?.[category] ?? []
 }
@@ -67,7 +116,7 @@ function renderInventoryCard(
   const quantity = getQuantity(
     inventory,
     category,
-    item.name,
+    item.inventoryName ?? item.name,
   )
 
   const details = [
@@ -82,7 +131,7 @@ function renderInventoryCard(
     .join(' · ')
 
   const searchText = [
-    item.name,
+    item.displayName ?? item.name,
     CATEGORY_LABELS[category],
     details,
   ]
@@ -103,7 +152,7 @@ function renderInventoryCard(
           ${escapeHtml(CATEGORY_LABELS[category])}
         </span>
 
-        <strong>${escapeHtml(item.name)}</strong>
+        <strong>${escapeHtml(item.displayName ?? item.name)}</strong>
 
         <p>
           ${escapeHtml(details || 'Catalog item')}
@@ -115,7 +164,7 @@ function renderInventoryCard(
           type="button"
           data-inventory-action="decrease"
           data-inventory-category="${escapeHtml(category)}"
-          data-inventory-name="${escapeHtml(item.name)}"
+          data-inventory-name="${escapeHtml(item.inventoryName ?? item.name)}"
           aria-label="Decrease quantity"
         >
           −
@@ -128,7 +177,7 @@ function renderInventoryCard(
           value="${quantity}"
           data-inventory-quantity
           data-inventory-category="${escapeHtml(category)}"
-          data-inventory-name="${escapeHtml(item.name)}"
+          data-inventory-name="${escapeHtml(item.inventoryName ?? item.name)}"
           aria-label="Owned quantity"
         >
 
@@ -136,7 +185,7 @@ function renderInventoryCard(
           type="button"
           data-inventory-action="increase"
           data-inventory-category="${escapeHtml(category)}"
-          data-inventory-name="${escapeHtml(item.name)}"
+          data-inventory-name="${escapeHtml(item.inventoryName ?? item.name)}"
           aria-label="Increase quantity"
         >
           +
@@ -157,7 +206,7 @@ export function renderInventoryPage({
 
   const cards = categories
     .flatMap((category) =>
-      getCategoryItems(catalog, category).map(
+      getInventoryEntries(catalog, category, inventory).map(
         (item) =>
           renderInventoryCard(
             category,
@@ -186,7 +235,7 @@ export function renderInventoryPage({
   const totalCatalogItems = categories.reduce(
     (sum, category) =>
       sum +
-      getCategoryItems(catalog, category).length,
+      getInventoryEntries(catalog, category, { items: {} }).length,
     0,
   )
 
