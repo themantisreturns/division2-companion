@@ -38,19 +38,23 @@ export async function loadCatalog({ force = false } = {}) {
   return cachedCatalog
 }
 
+function cloneItems(items) {
+  return (items ?? []).map((item) =>
+    typeof item === 'string' ? { name: item } : { ...item },
+  )
+}
+
 export function getExpertiseCatalog(catalog) {
   const categories = catalog?.categories ?? {}
 
   return {
-    weapons: (categories.weapons ?? []).map((item) => item.name),
-    namedGear: (categories.namedGear ?? []).map((item) => item.name),
-    exotics: (categories.exotics ?? []).map((item) => item.name),
-    skills: (categories.skills ?? []).map((item) => item.name),
-    specializations: (categories.specializations ?? []).map(
-      (item) => item.name,
-    ),
-    brands: (categories.brands ?? []).map((item) => item.name),
-    gearSets: (categories.gearSets ?? []).map((item) => item.name),
+    weapons: cloneItems(categories.weapons),
+    namedGear: cloneItems(categories.namedGear),
+    exotics: cloneItems(categories.exotics),
+    skills: cloneItems(categories.skills),
+    specializations: cloneItems(categories.specializations),
+    brands: cloneItems(categories.brands),
+    gearSets: cloneItems(categories.gearSets),
   }
 }
 
