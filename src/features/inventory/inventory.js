@@ -1,4 +1,4 @@
-import { getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
+import { evaluateGearItem, getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
 import { scanInventoryImages } from './inventoryScanner.js'
 
 function escapeHtml(value) {
@@ -83,8 +83,10 @@ function getQuantity(inventory, category, name) {
 
 export function createEmptyInventory() {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     items: {},
+    wishlist: [],
+    lootHistory: [],
     updatedAt: null,
   }
 }
@@ -108,6 +110,12 @@ export function normalizeInventory(savedInventory) {
       typeof savedInventory.items === 'object'
         ? structuredClone(savedInventory.items)
         : {},
+    wishlist: Array.isArray(savedInventory.wishlist)
+      ? [...new Set(savedInventory.wishlist.map(String))]
+      : [],
+    lootHistory: Array.isArray(savedInventory.lootHistory)
+      ? savedInventory.lootHistory.slice(0, 200)
+      : [],
   }
 }
 
@@ -134,6 +142,9 @@ function renderInventoryCard(
     .join(' · ')
 
   const guidance = getCollectionGuidance(item, category)
+  const inventoryName = item.inventoryName ?? item.name
+  const wishlistKey = `${category}|||${inventoryName}`
+  const isWishlisted = inventory.wishlist?.includes(wishlistKey)
 
   const searchText = [
     item.displayName ?? item.name,
@@ -170,7 +181,17 @@ function renderInventoryCard(
         </div>
       </div>
 
-      <div class="inventory-quantity-control">
+      <div class="inventory-card-actions">
+        <button
+          type="button"
+          class="wishlist-button ${isWishlisted ? 'active' : ''}"
+          data-wishlist-toggle
+          data-inventory-category="${escapeHtml(category)}"
+          data-inventory-name="${escapeHtml(inventoryName)}"
+          aria-pressed="${isWishlisted}"
+          title="${isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}"
+        >★</button>
+        <div class="inventory-quantity-control">
         <button
           type="button"
           data-inventory-action="decrease"
@@ -201,6 +222,7 @@ function renderInventoryCard(
         >
           +
         </button>
+        </div>
       </div>
     </article>
   `
@@ -249,6 +271,14 @@ export function renderInventoryPage({
       getInventoryEntries(catalog, category, { items: {} }).length,
     0,
   )
+
+  const wishlistCount = inventory.wishlist?.length ?? 0
+  const recentLoot = (inventory.lootHistory ?? []).slice(0, 8)
+  const historyCounts = (inventory.lootHistory ?? []).reduce((counts, entry) => {
+    const action = entry.action ?? 'kept'
+    counts[action] = (counts[action] ?? 0) + 1
+    return counts
+  }, {})
 
   return `
     <section class="feature-page inventory-page">
@@ -310,12 +340,12 @@ export function renderInventoryPage({
         </article>
 
         <article class="summary-card">
-          <span class="card-label">Catalog size</span>
-          <strong class="metric">
-            ${totalCatalogItems}
+          <span class="card-label">Wishlist targets</span>
+          <strong class="metric" id="inventory-wishlist-count">
+            ${wishlistCount}
           </strong>
           <span class="metric-note">
-            Trackable entries
+            Items you are hunting
           </span>
         </article>
       </section>
@@ -335,6 +365,29 @@ export function renderInventoryPage({
         <div id="inventory-scan-status" class="inventory-scan-status" hidden></div>
         <div id="inventory-scan-results" class="inventory-scan-results"></div>
         <p class="inventory-scan-note">Best results come from a clear screenshot with the full item details panel visible. OCR runs in your browser; screenshots are not uploaded to our server.</p>
+      </section>
+
+      <section class="panel loot-assistant-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Personal Loot Assistant</p>
+            <h2>Recent loot decisions</h2>
+            <p class="subtitle">Scanned drops are compared with your collection and wishlist. Mark each one kept, donated, or dismantled to build a useful history.</p>
+          </div>
+          <div class="loot-history-stats">
+            <span><strong>${historyCounts.kept ?? 0}</strong> kept</span>
+            <span><strong>${historyCounts.donated ?? 0}</strong> donated</span>
+            <span><strong>${historyCounts.dismantled ?? 0}</strong> dismantled</span>
+          </div>
+        </div>
+        <div id="loot-history-list" class="loot-history-list">
+          ${recentLoot.length ? recentLoot.map((entry) => `
+            <article>
+              <div><strong>${escapeHtml(entry.name)}</strong><small>${escapeHtml(entry.categoryLabel ?? entry.category)} · ${escapeHtml(new Date(entry.createdAt).toLocaleDateString())}</small></div>
+              <span class="loot-action loot-action-${escapeHtml(entry.action)}">${escapeHtml(entry.action)}</span>
+            </article>
+          `).join('') : '<p class="muted-copy">No loot decisions recorded yet. Scan an item to begin.</p>'}
+        </div>
       </section>
 
       <section class="panel">
@@ -600,6 +653,23 @@ export function connectInventoryPage({
     'change',
     applyFilters,
   )
+  document.querySelectorAll('[data-wishlist-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const key = `${button.dataset.inventoryCategory}|||${button.dataset.inventoryName}`
+      inventory.wishlist ??= []
+      const index = inventory.wishlist.indexOf(key)
+      if (index >= 0) inventory.wishlist.splice(index, 1)
+      else inventory.wishlist.push(key)
+      const active = inventory.wishlist.includes(key)
+      button.classList.toggle('active', active)
+      button.setAttribute('aria-pressed', String(active))
+      button.title = active ? 'Remove from wishlist' : 'Add to wishlist'
+      const count = document.querySelector('#inventory-wishlist-count')
+      if (count) count.textContent = inventory.wishlist.length
+      onInventoryChange()
+    })
+  })
+
   const scanInput = document.querySelector('#inventory-scan-input')
   const scanStatus = document.querySelector('#inventory-scan-status')
   const scanResults = document.querySelector('#inventory-scan-results')
@@ -608,59 +678,117 @@ export function connectInventoryPage({
     return CATEGORY_LABELS[category] ?? category
   }
 
+  function findCatalogItem(category, name) {
+    const baseName = name.replace(/ (Mask|Chest|Holster|Backpack|Gloves|Kneepads)$/, '')
+    return (catalog?.categories?.[category] ?? []).find((item) => item.name === name || item.name === baseName) ?? { name }
+  }
+
+  function getLootAssessment(category, name, result) {
+    const owned = getQuantity(inventory, category, name)
+    const wishlistKey = `${category}|||${name}`
+    const wishlisted = inventory.wishlist?.includes(wishlistKey)
+    const item = findCatalogItem(category, name)
+    const slot = result.match?.slot ?? name.match(/(Mask|Chest|Holster|Backpack|Gloves|Kneepads)$/)?.[1] ?? ''
+    const evaluation = evaluateGearItem({
+      ...item,
+      itemType: category === 'weapons' ? 'weapon' : 'armor',
+      category: category === 'weapons' ? (item.category ?? item.family ?? '') : '',
+      slot,
+      attributes: result.attributes.join(' '),
+      talent: result.talent,
+      rarity: item.rarity ?? (category === 'exotics' ? 'Exotic' : ''),
+    })
+
+    if (wishlisted) return { verdict: 'KEEP · WISHLIST MATCH', tier: 'excellent', reason: 'This matches an item you marked as Looking For.', evaluation, owned }
+    if (owned === 0) return { verdict: 'KEEP', tier: evaluation.tier ?? 'good', reason: `You do not own this item yet. ${evaluation.reason}`, evaluation, owned }
+    if (evaluation.score >= 78) return { verdict: 'COMPARE & KEEP BEST', tier: evaluation.tier ?? 'good', reason: `You own ${owned}. This scan looks valuable enough to compare against your current copy.`, evaluation, owned }
+    if (owned >= 2) return { verdict: 'DONATE DUPLICATE', tier: 'situational', reason: `You already own ${owned} copies and this did not score as a priority upgrade.`, evaluation, owned }
+    return { verdict: 'COMPARE', tier: evaluation.tier ?? 'general', reason: `You own ${owned} copy. Compare rolls before deciding.`, evaluation, owned }
+  }
+
+  function addHistory(category, name, action, result) {
+    inventory.lootHistory ??= []
+    inventory.lootHistory.unshift({
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      category,
+      categoryLabel: categoryLabel(category),
+      name,
+      action,
+      confidence: result.confidence,
+      attributes: result.attributes,
+      talent: result.talent,
+      createdAt: new Date().toISOString(),
+    })
+    inventory.lootHistory = inventory.lootHistory.slice(0, 200)
+    onInventoryChange()
+  }
+
   function renderScanResults(results) {
     scanResults.innerHTML = results.map((result) => {
       const choices = [result.match, ...result.alternatives].filter(Boolean)
+      const initial = result.match ? getLootAssessment(result.match.category, result.match.name, result) : null
       return `
         <article class="inventory-scan-result" data-scan-result="${escapeHtml(result.id)}">
           <img src="${escapeHtml(result.imageUrl)}" alt="${escapeHtml(result.fileName)} screenshot preview">
           <div class="inventory-scan-copy">
             <div class="inventory-scan-heading">
-              <div>
-                <span class="vendor-item-kind">${escapeHtml(result.fileName)}</span>
-                <strong>${escapeHtml(result.match?.displayName ?? 'Review needed')}</strong>
-              </div>
+              <div><span class="vendor-item-kind">${escapeHtml(result.fileName)}</span><strong data-scan-title>${escapeHtml(result.match?.displayName ?? 'Review needed')}</strong></div>
               <span class="advisor-badge advisor-tier-${result.confidence >= 75 ? 'excellent' : result.confidence >= 50 ? 'good' : 'situational'}">${result.confidence}% match</span>
             </div>
-            <label>
-              <span>Catalog match</span>
-              <select data-scan-match>
-                ${choices.length ? choices.map((choice, index) => `
-                  <option value="${escapeHtml(choice.category)}|||${escapeHtml(choice.name)}" ${index === 0 ? 'selected' : ''}>
-                    ${escapeHtml(choice.displayName)} · ${escapeHtml(categoryLabel(choice.category))}
-                  </option>
-                `).join('') : '<option value="">No confident match</option>'}
-              </select>
-            </label>
+            <label><span>Catalog match</span><select data-scan-match>
+              ${choices.length ? choices.map((choice, index) => `<option value="${escapeHtml(choice.category)}|||${escapeHtml(choice.name)}" ${index === 0 ? 'selected' : ''}>${escapeHtml(choice.displayName)} · ${escapeHtml(categoryLabel(choice.category))}</option>`).join('') : '<option value="">No confident match</option>'}
+            </select></label>
+            <div class="loot-verdict" data-loot-verdict ${initial ? '' : 'hidden'}>
+              <span class="advisor-badge advisor-tier-${escapeHtml(initial?.tier ?? 'general')}" data-loot-badge>${escapeHtml(initial?.verdict ?? '')}</span>
+              <strong data-loot-score>${initial ? `${initial.evaluation.score}/100` : ''}</strong>
+              <p data-loot-reason>${escapeHtml(initial?.reason ?? '')}</p>
+              <small data-loot-recalibration>${escapeHtml(initial?.evaluation.recalibration ?? '')}</small>
+            </div>
             ${result.attributes.length ? `<div class="inventory-scan-details"><strong>Detected rolls</strong><ul>${result.attributes.map((attribute) => `<li>${escapeHtml(attribute)}</li>`).join('')}</ul></div>` : ''}
             ${result.talent ? `<p><strong>Possible talent:</strong> ${escapeHtml(result.talent)}</p>` : ''}
-            <details>
-              <summary>Show OCR text</summary>
-              <pre>${escapeHtml(result.rawText)}</pre>
-            </details>
+            <details><summary>Show OCR text</summary><pre>${escapeHtml(result.rawText)}</pre></details>
             <div class="inventory-scan-actions">
-              <button type="button" class="primary-button" data-scan-add>Add to inventory</button>
+              <button type="button" class="primary-button" data-loot-action="kept">Keep + add</button>
+              <button type="button" class="secondary-button" data-loot-action="donated">Donate</button>
+              <button type="button" class="text-button" data-loot-action="dismantled">Dismantle</button>
               <button type="button" class="text-button" data-scan-dismiss>Dismiss</button>
             </div>
           </div>
-        </article>
-      `
+        </article>`
     }).join('')
 
-    scanResults.querySelectorAll('[data-scan-add]').forEach((button) => {
+    scanResults.querySelectorAll('[data-scan-match]').forEach((select) => {
+      select.addEventListener('change', () => {
+        const card = select.closest('[data-scan-result]')
+        const result = results.find((entry) => entry.id === card.dataset.scanResult)
+        const [category, name] = select.value.split('|||')
+        if (!category || !name || !result) return
+        const assessment = getLootAssessment(category, name, result)
+        card.querySelector('[data-scan-title]').textContent = name
+        const verdict = card.querySelector('[data-loot-verdict]')
+        verdict.hidden = false
+        const badge = card.querySelector('[data-loot-badge]')
+        badge.className = `advisor-badge advisor-tier-${assessment.tier}`
+        badge.textContent = assessment.verdict
+        card.querySelector('[data-loot-score]').textContent = `${assessment.evaluation.score}/100`
+        card.querySelector('[data-loot-reason]').textContent = assessment.reason
+        card.querySelector('[data-loot-recalibration]').textContent = assessment.evaluation.recalibration ?? ''
+      })
+    })
+
+    scanResults.querySelectorAll('[data-loot-action]').forEach((button) => {
       button.addEventListener('click', () => {
         const card = button.closest('[data-scan-result]')
+        const result = results.find((entry) => entry.id === card.dataset.scanResult)
         const value = card.querySelector('[data-scan-match]')?.value ?? ''
-        if (!value) {
-          window.alert('Choose a catalog match before adding this item.')
-          return
-        }
+        if (!value || !result) return window.alert('Choose a catalog match first.')
         const [category, name] = value.split('|||')
-        const current = getQuantity(inventory, category, name)
-        setQuantity(category, name, current + 1)
+        const action = button.dataset.lootAction
+        if (action === 'kept') setQuantity(category, name, getQuantity(inventory, category, name) + 1)
+        addHistory(category, name, action, result)
         card.classList.add('added')
-        button.disabled = true
-        button.textContent = 'Added'
+        card.querySelectorAll('button').forEach((entry) => { entry.disabled = true })
+        button.textContent = action === 'kept' ? 'Kept' : action === 'donated' ? 'Donated' : 'Dismantled'
       })
     })
 

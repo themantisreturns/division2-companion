@@ -2284,3 +2284,90 @@ h2 {
   .build-priority-list > span { grid-template-columns: auto 1fr; }
   .build-priority-list small { grid-column: 2; }
 }
+
+
+/* Personal Loot Assistant v0.9.0 */
+.inventory-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wishlist-button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 18px;
+}
+.wishlist-button.active {
+  border-color: var(--accent);
+  background: rgba(255, 151, 43, 0.14);
+  color: var(--accent);
+}
+.loot-assistant-panel { margin-top: 18px; }
+.loot-history-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.loot-history-stats span {
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.loot-history-stats strong { color: var(--text); }
+.loot-history-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.loot-history-list article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+.loot-history-list small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+}
+.loot-action {
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.loot-action-kept { background: rgba(78, 201, 126, 0.14); color: #78dda0; }
+.loot-action-donated { background: rgba(246, 196, 83, 0.14); color: #f6c453; }
+.loot-action-dismantled { background: rgba(255, 255, 255, 0.08); color: var(--muted); }
+.loot-verdict {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: rgba(255, 255, 255, 0.035);
+}
+.loot-verdict > strong { font-size: 20px; }
+.loot-verdict p { grid-column: 1 / -1; margin: 0; }
+.loot-verdict small { grid-column: 1 / -1; color: var(--muted); }
+.muted-copy { color: var(--muted); }
+@media (max-width: 700px) {
+  .inventory-card-actions { align-items: flex-end; flex-direction: column; }
+  .loot-history-list article { align-items: flex-start; }
+  .loot-verdict { grid-template-columns: 1fr; }
+  .loot-verdict p, .loot-verdict small { grid-column: auto; }
+}
