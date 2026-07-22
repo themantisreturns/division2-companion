@@ -1,3 +1,4 @@
+import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
 import { evaluateGearItem, getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
 import { scanInventoryImages } from './inventoryScanner.js'
 import { assessScannedCopy, buildDuplicateGroups, getInventoryHealth, rankCopy } from './inventoryIntelligence.js'
@@ -164,7 +165,7 @@ function renderInventoryCard(
 
   return `
     <article
-      class="inventory-card"
+      class="inventory-card ${rarityClass(item, category)}"
       data-inventory-card
       data-inventory-category="${escapeHtml(category)}"
       data-inventory-search="${escapeHtml(searchText)}"
@@ -174,6 +175,7 @@ function renderInventoryCard(
         <span class="vendor-item-kind">
           ${escapeHtml(CATEGORY_LABELS[category])}
         </span>
+        ${renderRarityBadge(item, category)}
 
         <strong>${escapeHtml(item.displayName ?? item.name)}</strong>
 

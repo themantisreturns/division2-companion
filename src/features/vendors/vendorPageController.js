@@ -1,3 +1,4 @@
+import { renderShdLoader } from '../../ui/loading.js'
 import { appState } from '../../app/state.js'
 import { ensureVendorData } from '../../app/dataLoaders.js'
 import { renderVendorStatusPanel } from '../../app/vendorStatus.js'
@@ -190,11 +191,7 @@ export async function openVendorPage() {
 
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state">
-        <strong>
-          Loading weekly vendor data…
-        </strong>
-      </div>
+      ${renderShdLoader('SYNCING VENDOR INTELLIGENCE')}
     </section>
   `
 

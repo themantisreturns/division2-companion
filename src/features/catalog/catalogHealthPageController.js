@@ -1,3 +1,4 @@
+import { renderShdLoader } from '../../ui/loading.js'
 import { appState } from '../../app/state.js'
 import {
   clearVendorDataCache,
@@ -72,11 +73,7 @@ export async function openSettingsPage() {
 
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state">
-        <strong>
-          Loading application settings…
-        </strong>
-      </div>
+      ${renderShdLoader('LOADING APPLICATION SETTINGS')}
     </section>
   `
 

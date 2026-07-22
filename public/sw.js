@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'division2-companion-v2.0.0'
+const CACHE_VERSION = 'division2-companion-v2-1.0.0'
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 const scopeUrl = new URL(self.registration.scope)
 const basePath = scopeUrl.pathname.endsWith('/') ? scopeUrl.pathname : `${scopeUrl.pathname}/`

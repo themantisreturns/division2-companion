@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## 2.1.0 - Operation Home Base
+
+- Added a shared Division-inspired rarity color system for High-End, Named, Gear Set, Exotic, Superior, Specialized, and Normal items.
+- Applied rarity borders, labels, and item-name colors across inventory, vendors, recommendations, collection, and the catalog library.
+- Added a reusable SHD-inspired loading animation for data-heavy pages.
+- Added reduced-motion support for loading animations.
+
 ## [2.0.0] - 2026-07-22
 
 ### Added

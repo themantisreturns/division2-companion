@@ -1,3 +1,4 @@
+import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -99,7 +100,7 @@ function renderRecommendationItems(
 
       return `
         <article
-          class="recommendation-item ${
+          class="recommendation-item ${rarityClass({ rarity: recommendation.kind }, recommendation.kind)} ${
             isPurchased ? 'purchased' : ''
           }"
         >
@@ -123,6 +124,7 @@ function renderRecommendationItems(
             <span class="vendor-item-kind">
               ${escapeHtml(recommendation.kind)}
             </span>
+            ${renderRarityBadge({ rarity: recommendation.kind }, recommendation.kind)}
 
             <strong>
               ${escapeHtml(recommendation.name)}
@@ -430,7 +432,7 @@ export function renderVendorGroups(groupedItems) {
               .map(
                 (item) => `
                   <article
-                    class="vendor-inventory-item"
+                    class="vendor-inventory-item ${rarityClass(item, item.kind)}"
                     data-search="${escapeHtml(
                       [
                         item.name,
@@ -452,6 +454,7 @@ export function renderVendorGroups(groupedItems) {
                       <span class="vendor-item-kind">
                         ${escapeHtml(item.kind)}
                       </span>
+                      ${renderRarityBadge(item, item.kind)}
 
                       <strong>
                         ${escapeHtml(item.name)}

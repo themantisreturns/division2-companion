@@ -1,4 +1,5 @@
 import './style.css'
+import { renderShdLoader } from './ui/loading.js'
 
 import { updateDashboardIntelligence, updateDashboardMetrics } from './app/dashboardMetrics.js'
 import {
@@ -335,7 +336,7 @@ async function openVendorPage() {
   const mainContent = document.querySelector('.main-content')
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state"><strong>Loading weekly vendor data…</strong></div>
+      ${renderShdLoader('SYNCING VENDOR INTELLIGENCE')}
     </section>
   `
 
@@ -369,9 +370,7 @@ async function openLibraryPage() {
 
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state">
-        <strong>Loading item library…</strong>
-      </div>
+      ${renderShdLoader('LOADING ITEM LIBRARY')}
     </section>
   `
 
@@ -472,7 +471,7 @@ async function saveLibraryProgress() {
 async function openCollectionPage() {
   const mainContent = document.querySelector('.main-content')
   mainContent.innerHTML = `
-    <section class="feature-page"><div class="panel empty-state"><strong>Loading collection…</strong></div></section>
+    <section class="feature-page">${renderShdLoader('SYNCING AGENT COLLECTION')}</section>
   `
 
   try {
@@ -505,9 +504,7 @@ async function openInventoryPage() {
 
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state">
-        <strong>Loading inventory…</strong>
-      </div>
+      ${renderShdLoader('ANALYZING INVENTORY')}
     </section>
   `
 
@@ -637,9 +634,7 @@ async function openBuildsPage() {
 
   mainContent.innerHTML = `
     <section class="feature-page">
-      <div class="panel empty-state">
-        <strong>Loading builds…</strong>
-      </div>
+      ${renderShdLoader('LOADING AGENT LOADOUTS')}
     </section>
   `
 

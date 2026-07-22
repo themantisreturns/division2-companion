@@ -1,3 +1,4 @@
+import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
 const CATEGORY_LABELS = {
   weapons: 'Weapons',
   namedGear: 'Named Gear',
@@ -99,11 +100,12 @@ function renderPlanner(rows) {
 
 function renderCard(item) {
   const label = item.owned ? `${item.quantity} owned` : item.wishlisted ? 'Wishlist' : 'Missing'
-  return `<button class="collection-item-card ${item.owned ? 'owned' : 'missing'}"
+  return `<button class="collection-item-card ${rarityClass(item, item.categoryKey)} ${item.owned ? 'owned' : 'missing'}"
     data-collection-item data-category="${escapeHtml(item.categoryKey)}" data-name="${escapeHtml(item.name)}"
     data-owned="${item.owned}" data-wishlisted="${item.wishlisted}"
     data-search="${escapeHtml(`${item.name} ${item.categoryLabel} ${getDetails(item)}`.toLowerCase())}">
     <span class="collection-item-type">${escapeHtml(item.categoryLabel)}</span>
+    ${renderRarityBadge(item, item.categoryKey)}
     <strong>${escapeHtml(item.name)}</strong>
     <small>${escapeHtml(getDetails(item) || 'Catalog item')}</small>
     <span class="collection-status ${item.owned ? 'owned' : item.wishlisted ? 'wishlist' : 'missing'}">${escapeHtml(label)}</span>

@@ -1,3 +1,4 @@
+import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -127,7 +128,7 @@ function renderCatalogCard(category, item, progress) {
 
   return `
     <article
-      class="catalog-browser-card"
+      class="catalog-browser-card ${rarityClass(item, category)}"
       data-library-card
       data-library-category="${escapeHtml(category)}"
       data-library-search="${escapeHtml(searchable)}"
@@ -136,6 +137,7 @@ function renderCatalogCard(category, item, progress) {
         <span class="vendor-item-kind">
           ${escapeHtml(CATEGORY_LABELS[category])}
         </span>
+        ${renderRarityBadge(item, category)}
 
         <strong>${escapeHtml(item.name)}</strong>
 
