@@ -1,3 +1,5 @@
+import { evaluateVendorGear } from '../knowledge/knowledgeEngine.js'
+
 const WEAPON_CATEGORY_ALIASES = {
   rifle: 'Rifles', rifles: 'Rifles',
   'assault rifle': 'Assault Rifles', 'assault rifles': 'Assault Rifles', ar: 'Assault Rifles',
@@ -48,13 +50,14 @@ function exactStatus(progress, kind, name) {
 
 function createGearRecommendations(gear, progress) {
   return gear.map((item) => {
+    const lootAdvice = evaluateVendorGear(item)
     if (isNamed(item)) {
       if (exactStatus(progress, 'namedGear', item.name) === true) return null
       return {
         id: ['gear', item.vendor, item.name].join('|'),
         kind: 'Named Gear', name: item.name, vendor: item.vendor || 'Unknown Vendor',
-        priority: 5, reason: 'This exact named item is not marked proficient.',
-        progressLabel: 'Exact item', recommendationType: 'exact-item', sourceItem: item,
+        priority: 5, reason: `This exact named item is not marked proficient. Gear advice: ${lootAdvice.verdict}.`,
+        lootAdvice, progressLabel: 'Exact item', recommendationType: 'exact-item', sourceItem: item,
       }
     }
 
@@ -64,8 +67,8 @@ function createGearRecommendations(gear, progress) {
     return {
       id: ['gear', item.vendor, item.name, item.brand].join('|'),
       kind: 'Gear', name: item.name || `${item.brand} gear`, vendor: item.vendor || 'Unknown Vendor',
-      priority: priorityFromRank(rank), reason: `${item.brand} proficiency is rank ${rank}/10`,
-      progressLabel: `${rank}/10`, recommendationType: 'expertise', sourceItem: item,
+      priority: Math.max(priorityFromRank(rank), lootAdvice.score >= 90 ? 5 : 0), reason: `${item.brand} proficiency is rank ${rank}/10. Gear advice: ${lootAdvice.verdict}.`,
+      lootAdvice, progressLabel: `${rank}/10`, recommendationType: 'expertise', sourceItem: item,
     }
   }).filter(Boolean)
 }

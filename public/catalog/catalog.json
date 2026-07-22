@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-17T16:42:28.336Z",
+  "generatedAt": "2026-07-22T16:43:26.185Z",
   "expectedCounts": {
     "weapons": {
       "total": 271
@@ -18,9 +18,9 @@
     "notes": "Weapons include standard, named, and exotic weapons. Exotic Gear excludes exotic weapons to prevent duplicate proficiency entries."
   },
   "sourceSummary": {
-    "weeklyGear": 38,
-    "weeklyWeapons": 37,
-    "weeklyMods": 52,
+    "weeklyGear": 48,
+    "weeklyWeapons": 42,
+    "weeklyMods": 54,
     "manualWeapons": 271,
     "catalogWeaponRecords": 271,
     "manualNamedGear": 65,
@@ -792,10 +792,10 @@
       {
         "name": "Huntsman",
         "category": "Assault Rifles",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "huntsman"
+        "id": "huntsman",
+        "itemType": "named"
       },
       {
         "name": "Infantry MG5",
@@ -1434,10 +1434,10 @@
       {
         "name": "Pyromaniac",
         "category": "Assault Rifles",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "pyromaniac"
+        "id": "pyromaniac",
+        "itemType": "named"
       },
       {
         "name": "Quickstep",
@@ -1569,10 +1569,10 @@
       {
         "name": "Shield Splinterer",
         "category": "Assault Rifles",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "shield-splinterer"
+        "id": "shield-splinterer",
+        "itemType": "named"
       },
       {
         "name": "SIG 556",
@@ -2297,8 +2297,16 @@
         "id": "hermano"
       },
       {
+        "name": "Hermano Backpack",
+        "slot": "Backpack",
+        "brand": "Brazos de Arcabuz",
+        "source": "weekly-vendor-seed",
+        "id": "hermano-backpack"
+      },
+      {
         "name": "Hunter-Killer",
         "slot": "Chest",
+        "brand": "Golan Gear Ltd",
         "source": "prototrack-2026",
         "id": "hunter-killer"
       },
@@ -3345,6 +3353,12 @@
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "shape-memory-alloy"
+      },
+      {
+        "name": "Smart UHMWPE Lexicon",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "smart-uhmwpe-lexicon"
       },
       {
         "name": "Super Glue",

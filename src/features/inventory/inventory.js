@@ -1,3 +1,5 @@
+import { getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
+
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -130,10 +132,14 @@ function renderInventoryCard(
     .filter(Boolean)
     .join(' · ')
 
+  const guidance = getCollectionGuidance(item, category)
+
   const searchText = [
     item.displayName ?? item.name,
     CATEGORY_LABELS[category],
     details,
+    guidance.verdict,
+    guidance.reason,
   ]
     .filter(Boolean)
     .join(' ')
@@ -157,6 +163,10 @@ function renderInventoryCard(
         <p>
           ${escapeHtml(details || 'Catalog item')}
         </p>
+        <div class="inventory-advice">
+          <span class="advisor-badge advisor-tier-${escapeHtml(guidance.tier)}">${escapeHtml(guidance.verdict)}</span>
+          <small>${escapeHtml(guidance.reason)}</small>
+        </div>
       </div>
 
       <div class="inventory-quantity-control">
