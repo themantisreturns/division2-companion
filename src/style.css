@@ -2710,3 +2710,65 @@ h2 {
 .duplicate-group li small { color:var(--muted-text, #9ca3af); overflow-wrap:anywhere; }
 @media (max-width:900px){ .inventory-health-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
 @media (max-width:560px){ .inventory-health-grid{grid-template-columns:1fr;} .duplicate-group li{grid-template-columns:1fr;} }
+
+/* v1.6.0 build optimizer */
+.optimizer-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.optimizer-summary-grid article {
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: rgba(255,255,255,0.025);
+}
+
+.optimizer-summary-grid span,
+.optimizer-best-copy span {
+  display: block;
+  color: var(--muted-text, #9ba3ad);
+  font-size: 0.76rem;
+  margin-bottom: 0.25rem;
+}
+
+.optimizer-summary-grid strong { font-size: 1.35rem; }
+.optimizer-slot-list { display: grid; gap: 0.7rem; }
+
+.optimizer-slot-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+}
+
+.optimizer-slot-row.upgrade { border-color: rgba(89, 211, 141, 0.55); }
+.optimizer-slot-title strong,
+.optimizer-best-copy strong { display: block; }
+.optimizer-slot-title small,
+.optimizer-best-copy small { color: var(--muted-text, #9ba3ad); }
+
+.optimizer-status {
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: rgba(255,255,255,0.08);
+}
+.optimizer-status.upgrade { background: rgba(89,211,141,0.16); color: #8af0b2; }
+.optimizer-status.optimal { background: rgba(83,164,255,0.16); color: #9bcbff; }
+.optimizer-status.candidate { background: rgba(255,190,74,0.16); color: #ffd17e; }
+
+@media (max-width: 900px) {
+  .optimizer-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .optimizer-slot-row { grid-template-columns: 1fr; }
+  .optimizer-status { justify-self: start; }
+}

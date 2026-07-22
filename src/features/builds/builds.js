@@ -1,4 +1,5 @@
 import { BUILD_ARCHETYPES } from '../knowledge/knowledgeData.js'
+import { optimizeBuild } from '../../services/builds/buildOptimizer.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -326,6 +327,75 @@ function renderSimulatorSlot(build, slotKey) {
         </label>
       </div>
     </article>
+  `
+}
+
+
+function optimizerStatusCopy(row) {
+  if (row.status === 'upgrade') return { label: `UPGRADE +${row.improvement}`, className: 'upgrade' }
+  if (row.status === 'optimal') return { label: 'BEST REVIEWED', className: 'optimal' }
+  if (row.status === 'missing-reviewed-copy') return { label: 'ALTERNATIVE FOUND', className: 'candidate' }
+  if (row.status === 'candidate') return { label: 'BEST OWNED', className: 'candidate' }
+  if (row.status === 'empty') return { label: 'NO SCANNED COPY', className: 'unreviewed' }
+  return { label: 'SCAN TO COMPARE', className: 'unreviewed' }
+}
+
+function renderBuildOptimizer(build, inventory, catalog) {
+  const analysis = optimizeBuild({ build, inventory, catalog })
+  const configuredRows = analysis.slots.filter((row) => row.selected || row.best)
+
+  return `
+    <section class="panel build-optimizer-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Best-in-stash analysis</p>
+          <h2>Build optimizer</h2>
+        </div>
+        <span class="build-score-badge">Potential ${analysis.potentialScore}/100</span>
+      </div>
+
+      <p class="simulator-disclaimer">The optimizer compares screenshot-reviewed copies in your inventory. Scan gear to make its recommendations more complete.</p>
+
+      <div class="optimizer-summary-grid">
+        <article><span>Current reviewed score</span><strong>${analysis.currentScore || '—'}</strong></article>
+        <article><span>Potential score</span><strong>${analysis.potentialScore || '—'}</strong></article>
+        <article><span>Possible gain</span><strong>${analysis.improvement ? `+${analysis.improvement}` : '0'}</strong></article>
+        <article><span>Upgrade slots</span><strong>${analysis.upgradeCount}</strong></article>
+        <article><span>Reviewed slots</span><strong>${analysis.reviewedSlots}/${analysis.configuredSlots}</strong></article>
+      </div>
+
+      ${configuredRows.length ? `
+        <div class="optimizer-slot-list">
+          ${configuredRows.map((row) => {
+            const slot = BUILD_SLOTS.find((entry) => entry.key === row.slotKey)
+            const status = optimizerStatusCopy(row)
+            const currentName = row.current?.name ?? row.selected?.displayName ?? 'Not selected'
+            const bestName = row.best?.name ?? 'No screenshot-reviewed candidate'
+            return `
+              <article class="optimizer-slot-row ${status.className}">
+                <div class="optimizer-slot-title">
+                  <span class="vendor-item-kind">${escapeHtml(slot?.label ?? row.slotKey)}</span>
+                  <strong>${escapeHtml(currentName)}</strong>
+                  <small>${row.current ? `Current score ${row.current.fitScore}` : 'Current copy has not been screenshot-reviewed'}</small>
+                </div>
+                <div class="optimizer-best-copy">
+                  <span>Best reviewed</span>
+                  <strong>${escapeHtml(bestName)}</strong>
+                  ${row.best ? `<small>Score ${row.best.fitScore}${row.best.attributes ? ` · ${escapeHtml(row.best.attributes)}` : ''}${row.best.talent ? ` · ${escapeHtml(row.best.talent)}` : ''}</small>` : '<small>Use Inventory Scanner to add roll data.</small>'}
+                </div>
+                <span class="optimizer-status ${status.className}">${escapeHtml(status.label)}</span>
+              </article>
+            `
+          }).join('')}
+        </div>
+      ` : `
+        <div class="empty-state compact-empty-state">
+          <div class="empty-icon">◇</div>
+          <strong>No optimizer candidates yet</strong>
+          <p>Select build items and keep screenshot-scanned copies in Inventory.</p>
+        </div>
+      `}
+    </section>
   `
 }
 
@@ -964,6 +1034,8 @@ function renderBuildEditor(build, catalog, inventory, vendorData) {
     </section>
 
     ${renderBuildSimulator(build)}
+
+    ${renderBuildOptimizer(build, inventory, catalog)}
 
     ${renderBuildIntelligence(build, inventory, vendorData)}
 
