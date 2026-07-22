@@ -5,6 +5,7 @@ const navigation = [
   { label: 'Library', icon: '◫' },
   { label: 'Inventory', icon: '▣' },
   { label: 'Builds', icon: '△' },
+  { label: 'Gear Advisor', icon: '★' },
   { label: 'Settings', icon: '⚙' },
 ]
 
