@@ -1,4 +1,6 @@
 import { evaluateVendorGear } from '../knowledge/knowledgeEngine.js'
+import { getInventoryQuantity, getSavedBuildMatches, isWishlisted } from '../../services/intelligence/context.js'
+import { createPersonalScore, scoreToVerdict } from '../../services/intelligence/scoring.js'
 
 const WEAPON_CATEGORY_ALIASES = {
   rifle: 'Rifles', rifles: 'Rifles',
@@ -40,46 +42,6 @@ function exactStatus(progress, kind, name) {
   return progress?.individual?.[kind]?.[name]
 }
 
-function getInventoryQuantity(inventory, candidates) {
-  const targets = candidates.map(normalizeText).filter(Boolean)
-  let quantity = 0
-
-  Object.values(inventory?.items ?? {}).forEach((categoryItems) => {
-    Object.entries(categoryItems ?? {}).forEach(([name, count]) => {
-      const normalizedName = normalizeText(name)
-      if (targets.some((target) => normalizedName === target || normalizedName.includes(target))) {
-        quantity += Number(count) || 0
-      }
-    })
-  })
-
-  return quantity
-}
-
-function isWishlisted(inventory, candidates) {
-  const targets = candidates.map(normalizeText).filter(Boolean)
-  return (inventory?.wishlist ?? []).some((key) => {
-    const name = String(key).split('|||').at(-1)
-    const normalizedName = normalizeText(name)
-    return targets.some((target) => normalizedName === target || normalizedName.includes(target))
-  })
-}
-
-function getBuildMatches(buildsState, candidates) {
-  const targets = candidates.map(normalizeText).filter(Boolean)
-  const matches = []
-
-  for (const build of buildsState?.builds ?? []) {
-    const used = Object.values(build.slots ?? {}).some((selection) => {
-      const normalizedSelection = normalizeText(selection)
-      return targets.some((target) => normalizedSelection.includes(target))
-    })
-    if (used) matches.push(build.name)
-  }
-
-  return matches
-}
-
 function getGearIdentity(item) {
   const name = item.name || `${item.brand || 'Unknown'} ${item.slot || 'Gear'}`
   const candidates = [name, item.brand && item.slot ? `${item.brand} ${item.slot}` : '', item.brand]
@@ -93,14 +55,6 @@ function getGearIdentity(item) {
 function getWeaponIdentity(item) {
   const name = item.name || 'Unknown weapon'
   return { name, candidates: [name], category: 'weapons', inventoryName: name }
-}
-
-function scoreToVerdict(score) {
-  if (score >= 85) return 'BUY NOW'
-  if (score >= 70) return 'STRONG BUY'
-  if (score >= 55) return 'CONSIDER'
-  if (score >= 40) return 'EXPERTISE BUY'
-  return 'SKIP'
 }
 
 function createReasons({ wishlist, owned, buildMatches, expertiseReason, lootAdvice, named }) {
@@ -118,7 +72,7 @@ function createGearRecommendation(item, progress, context) {
   const lootAdvice = evaluateVendorGear(item)
   const owned = getInventoryQuantity(context.inventory, identity.candidates)
   const wishlist = isWishlisted(context.inventory, identity.candidates)
-  const buildMatches = getBuildMatches(context.buildsState, identity.candidates)
+  const buildMatches = getSavedBuildMatches(context.buildsState, identity.candidates)
   const named = isNamed(item)
 
   let expertiseReason = ''
@@ -136,12 +90,14 @@ function createGearRecommendation(item, progress, context) {
     }
   }
 
-  let score = Math.round((lootAdvice?.score ?? 45) * 0.35)
-  if (wishlist) score += 38
-  if (buildMatches.length) score += 24
-  if (!owned) score += named ? 20 : 10
-  score += expertisePoints
-  score = Math.min(100, score)
+  const score = createPersonalScore({
+    baseScore: lootAdvice?.score ?? 45,
+    wishlist,
+    buildMatches,
+    owned,
+    named,
+    expertisePoints,
+  })
 
   const reasons = createReasons({ wishlist, owned, buildMatches, expertiseReason, lootAdvice, named })
 
@@ -169,18 +125,19 @@ function createWeaponRecommendation(item, progress, context) {
   const identity = getWeaponIdentity(item)
   const owned = getInventoryQuantity(context.inventory, identity.candidates)
   const wishlist = isWishlisted(context.inventory, identity.candidates)
-  const buildMatches = getBuildMatches(context.buildsState, identity.candidates)
+  const buildMatches = getSavedBuildMatches(context.buildsState, identity.candidates)
   const exact = exactStatus(progress, 'weapons', item.name)
   const needsExpertise = exact !== true
   const category = getWeaponCategory(item)
 
-  let score = 20
-  if (wishlist) score += 40
-  if (buildMatches.length) score += 25
-  if (!owned) score += 15
-  if (needsExpertise) score += 20
-  if (item.talent && item.talent !== '-') score += 5
-  score = Math.min(100, score)
+  const score = Math.min(100, createPersonalScore({
+    baseScore: item.talent && item.talent !== '-' ? 58 : 45,
+    wishlist,
+    buildMatches,
+    owned,
+    named: false,
+    expertisePoints: needsExpertise ? 20 : 0,
+  }))
 
   const expertiseReason = needsExpertise
     ? exact === false

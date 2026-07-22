@@ -51,8 +51,10 @@ function renderEvaluation(result) {
         <strong>${escapeHtml(result.recalibration)}</strong>
       </div>
       <div>
-        <span class="card-label">Build uses</span>
-        <strong>${escapeHtml(result.builds?.length ? result.builds.join(' · ') : 'No specific build match')}</strong>
+        <span class="card-label">Build compatibility</span>
+        <strong>${result.compatibility?.length
+          ? result.compatibility.slice(0, 4).map((match) => `${escapeHtml(match.name)} (${escapeHtml(match.score)}%)`).join(' · ')
+          : escapeHtml(result.builds?.length ? result.builds.join(' · ') : 'No specific build match')}</strong>
       </div>
     </div>
   `
