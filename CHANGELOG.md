@@ -117,3 +117,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 - Build Intelligence templates
 - Inventory completion and vendor-match guidance
+
+
+## v2.2.0
+- SHD interface overhaul foundation.
+- Tactical dashboard styling.
+- Animated scan line accents.
+- Unified SHD color variables.
