@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "status": "success",
   "source": "Ruben Alamina",
-  "lastCheckedAt": "2026-07-21T11:51:25.311Z",
-  "lastSuccessfulSyncAt": "2026-07-21T11:51:25.311Z",
+  "lastCheckedAt": "2026-07-22T11:51:27.495Z",
+  "lastSuccessfulSyncAt": "2026-07-22T11:51:27.495Z",
   "lastChangedAt": "2026-07-21T11:51:25.311Z",
-  "dataChanged": true,
+  "dataChanged": false,
   "counts": {
     "gear": 48,
     "weapons": 42,
