@@ -1,5 +1,6 @@
 import { evaluateGearItem, getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
 import { scanInventoryImages } from './inventoryScanner.js'
+import { assessScannedCopy, buildDuplicateGroups, getInventoryHealth, rankCopy } from './inventoryIntelligence.js'
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -83,10 +84,11 @@ function getQuantity(inventory, category, name) {
 
 export function createEmptyInventory() {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     items: {},
     wishlist: [],
     lootHistory: [],
+    scannedCopies: [],
     updatedAt: null,
   }
 }
@@ -115,6 +117,9 @@ export function normalizeInventory(savedInventory) {
       : [],
     lootHistory: Array.isArray(savedInventory.lootHistory)
       ? savedInventory.lootHistory.slice(0, 200)
+      : [],
+    scannedCopies: Array.isArray(savedInventory.scannedCopies)
+      ? savedInventory.scannedCopies.slice(0, 500)
       : [],
   }
 }
@@ -279,6 +284,8 @@ export function renderInventoryPage({
     counts[action] = (counts[action] ?? 0) + 1
     return counts
   }, {})
+  const health = getInventoryHealth(inventory)
+  const duplicateGroups = buildDuplicateGroups(inventory)
 
   return `
     <section class="feature-page inventory-page">
@@ -348,6 +355,33 @@ export function renderInventoryPage({
             Items you are hunting
           </span>
         </article>
+      </section>
+
+      <section class="panel inventory-intelligence-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Inventory Intelligence</p>
+            <h2>Collection health</h2>
+            <p class="subtitle">Use duplicate counts and reviewed screenshots to decide what deserves stash space.</p>
+          </div>
+        </div>
+        <div class="inventory-health-grid">
+          <article><span>Duplicate copies</span><strong id="inventory-duplicate-count">${health.duplicateCopies}</strong><small>Copies beyond your first</small></article>
+          <article><span>Reviewed rolls</span><strong id="inventory-reviewed-count">${health.reviewedCopies}</strong><small>Saved from screenshot scans</small></article>
+          <article><span>Strong reviewed rolls</span><strong id="inventory-strong-count">${health.strongCopies}</strong><small>Scored 78 or higher</small></article>
+          <article><span>Potential donations</span><strong id="inventory-donation-count">${health.duplicateCopies}</strong><small>Review before donating</small></article>
+        </div>
+        <details class="duplicate-analyzer" ${duplicateGroups.length ? '' : 'hidden'}>
+          <summary>Analyze ${duplicateGroups.length} duplicate group${duplicateGroups.length === 1 ? '' : 's'}</summary>
+          <div class="duplicate-groups">
+            ${duplicateGroups.map((group) => `
+              <article class="duplicate-group">
+                <header><div><strong>${escapeHtml(group.name)}</strong><small>${escapeHtml(CATEGORY_LABELS[group.category] ?? group.category)}</small></div><span>${group.quantity} copies</span></header>
+                ${group.copies.length ? `<ol>${group.copies.map((copy, index) => { const rank = rankCopy(copy, index); return `<li><span class="advisor-badge advisor-tier-${escapeHtml(rank.tier)}">${escapeHtml(rank.verdict)}</span><strong>${Number(copy.score) || 0}/100</strong><small>${escapeHtml((copy.attributes ?? []).join(' · ') || 'No rolls recorded')}${copy.talent ? ` · ${escapeHtml(copy.talent)}` : ''}</small></li>` }).join('')}</ol>` : '<p class="muted-copy">These copies were entered manually. Scan them to rank their rolls.</p>'}
+                ${group.unreviewed ? `<small>${group.unreviewed} cop${group.unreviewed === 1 ? 'y is' : 'ies are'} not roll-reviewed.</small>` : ''}
+              </article>`).join('')}
+          </div>
+        </details>
       </section>
 
       <section class="panel inventory-scanner-panel">
@@ -689,15 +723,7 @@ export function connectInventoryPage({
     const wishlisted = inventory.wishlist?.includes(wishlistKey)
     const item = findCatalogItem(category, name)
     const slot = result.match?.slot ?? name.match(/(Mask|Chest|Holster|Backpack|Gloves|Kneepads)$/)?.[1] ?? ''
-    const evaluation = evaluateGearItem({
-      ...item,
-      itemType: category === 'weapons' ? 'weapon' : 'armor',
-      category: category === 'weapons' ? (item.category ?? item.family ?? '') : '',
-      slot,
-      attributes: result.attributes.join(' '),
-      talent: result.talent,
-      rarity: item.rarity ?? (category === 'exotics' ? 'Exotic' : ''),
-    })
+    const evaluation = assessScannedCopy({ category, name, item, result: { ...result, match: { ...(result.match ?? {}), slot } } })
 
     if (wishlisted) return { verdict: 'KEEP · WISHLIST MATCH', tier: 'excellent', reason: 'This matches an item you marked as Looking For.', evaluation, owned }
     if (owned === 0) return { verdict: 'KEEP', tier: evaluation.tier ?? 'good', reason: `You do not own this item yet. ${evaluation.reason}`, evaluation, owned }
@@ -784,7 +810,23 @@ export function connectInventoryPage({
         if (!value || !result) return window.alert('Choose a catalog match first.')
         const [category, name] = value.split('|||')
         const action = button.dataset.lootAction
-        if (action === 'kept') setQuantity(category, name, getQuantity(inventory, category, name) + 1)
+        if (action === 'kept') {
+          const assessment = getLootAssessment(category, name, result)
+          setQuantity(category, name, getQuantity(inventory, category, name) + 1)
+          inventory.scannedCopies ??= []
+          inventory.scannedCopies.unshift({
+            id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+            category,
+            name,
+            score: assessment.evaluation.score,
+            verdict: assessment.evaluation.verdict,
+            attributes: result.attributes,
+            talent: result.talent,
+            confidence: result.confidence,
+            createdAt: new Date().toISOString(),
+          })
+          inventory.scannedCopies = inventory.scannedCopies.slice(0, 500)
+        }
         addHistory(category, name, action, result)
         card.classList.add('added')
         card.querySelectorAll('button').forEach((entry) => { entry.disabled = true })
