@@ -1,3 +1,4 @@
+import { createCommandCenterSummary } from '../services/commandCenter.js'
 function clampPercentage(value) {
   return Math.max(0, Math.min(100, Math.round(value)))
 }
@@ -186,9 +187,22 @@ function escapeDashboardHtml(value) {
     .replaceAll("'", '&#039;')
 }
 
-export function updateDashboardIntelligence({ inventory, buildsState }) {
+export function updateDashboardIntelligence({
+  inventory,
+  buildsState,
+  recommendations = [],
+  purchasedIds = [],
+  expertiseProgress = {},
+}) {
   const summary = getInventorySummary(inventory)
   const builds = Array.isArray(buildsState?.builds) ? buildsState.builds : []
+  const commandCenter = createCommandCenterSummary({
+    inventory,
+    buildsState,
+    recommendations,
+    purchasedIds,
+    expertiseProgress,
+  })
 
   const setText = (selector, value) => {
     const element = document.querySelector(selector)
@@ -198,12 +212,9 @@ export function updateDashboardIntelligence({ inventory, buildsState }) {
   setText('#dashboard-owned-count', summary.total)
   setText('#dashboard-unique-count', `${summary.unique} unique entr${summary.unique === 1 ? 'y' : 'ies'}`)
   setText('#dashboard-wishlist-count', summary.wishlist)
-  setText('#dashboard-build-count', builds.length)
-  setText(
-    '#dashboard-build-note',
-    builds.length ? `${builds.filter((build) => Object.keys(build?.slots ?? {}).length >= 9).length} fully configured` : 'Start a guided build',
-  )
   setText('#dashboard-loot-count', summary.history.length)
+  setText('#command-duplicate-count', commandCenter.inventory.duplicates)
+  setText('#command-reviewed-count', `${commandCenter.inventory.reviewed} reviewed cop${commandCenter.inventory.reviewed === 1 ? 'y' : 'ies'}`)
 
   const decisionCounts = summary.history.reduce((counts, entry) => {
     const key = formatLootDecision(entry?.decision)
@@ -218,29 +229,35 @@ export function updateDashboardIntelligence({ inventory, buildsState }) {
 
   setText('#dashboard-loot-note', lootNote || 'No scans recorded yet')
 
-  const activityList = document.querySelector('#dashboard-activity-list')
-  if (!activityList) return
+  setText('#command-farm-title', commandCenter.farmPriority.title)
+  setText('#command-farm-detail', `${commandCenter.farmPriority.detail} · ${commandCenter.farmPriority.reason}`)
 
-  const recent = summary.history.slice(0, 5)
-  if (!recent.length) return
+  if (commandCenter.vendorPriority) {
+    setText('#command-vendor-title', commandCenter.vendorPriority.name)
+    setText(
+      '#command-vendor-detail',
+      `${commandCenter.vendorPriority.vendor} · ${commandCenter.vendorPriority.verdict} · ${commandCenter.vendorPriority.score}/100`,
+    )
+  } else {
+    setText('#command-vendor-title', 'No priority purchase')
+    setText('#command-vendor-detail', 'You are caught up on current recommendations')
+  }
 
-  activityList.innerHTML = recent.map((entry) => {
-    const itemName = entry.itemName || entry.name || entry.matchedName || 'Scanned item'
-    const decision = formatLootDecision(entry.decision)
-    const dateValue = entry.createdAt || entry.timestamp || entry.date
-    const date = dateValue ? new Date(dateValue) : null
-    const dateLabel = date && !Number.isNaN(date.getTime())
-      ? date.toLocaleDateString([], { month: 'short', day: 'numeric' })
-      : 'Recent'
+  if (commandCenter.buildPriority) {
+    setText('#command-build-title', commandCenter.buildPriority.build?.name || 'Saved build')
+    setText('#command-build-detail', `${commandCenter.buildPriority.completion}% configured · lowest-progress saved build`)
+  } else {
+    setText('#command-build-title', 'Create a saved build')
+    setText('#command-build-detail', 'Use the guided build generator')
+  }
 
-    return `
-      <article class="dashboard-activity-item">
-        <div>
-          <strong>${escapeDashboardHtml(itemName)}</strong>
-          <span>${escapeDashboardHtml(decision)}</span>
-        </div>
-        <time>${escapeDashboardHtml(dateLabel)}</time>
-      </article>
-    `
-  }).join('')
+  const checklist = document.querySelector('#command-checklist')
+  if (checklist) {
+    checklist.innerHTML = commandCenter.checklist.map((item) => `
+      <div class="command-check-item ${item.done ? 'done' : ''}">
+        <span class="checkmark">${item.done ? '✓' : '·'}</span>
+        <span>${escapeDashboardHtml(item.label)}</span>
+      </div>
+    `).join('')
+  }
 }

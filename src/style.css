@@ -2859,3 +2859,18 @@ h2 {
     flex-direction: column;
   }
 }
+
+/* v1.9 Command Center */
+.command-center-version{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent,#f4a62a);border:1px solid rgba(244,166,42,.35);padding:.35rem .55rem;border-radius:999px}
+.command-priority-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.command-priority-card{padding:16px;border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.08);min-height:112px;display:flex;flex-direction:column;gap:7px}
+.command-priority-card span{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#98a0ad)}
+.command-priority-card strong{font-size:1rem;line-height:1.25}
+.command-priority-card small{color:var(--muted,#98a0ad);line-height:1.35}
+.command-priority-card[data-command="vendor"]{border-color:rgba(244,166,42,.28)}
+.command-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0}
+.command-check-item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:.86rem}
+.command-check-item .checkmark{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);font-size:.72rem}
+.command-check-item.done{opacity:.62}
+.command-check-item.done .checkmark{background:rgba(73,209,125,.15);border-color:rgba(73,209,125,.45);color:#49d17d}
+@media(max-width:900px){.command-priority-grid{grid-template-columns:1fr}.command-checklist{grid-template-columns:1fr}}

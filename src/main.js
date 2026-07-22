@@ -90,6 +90,9 @@ async function refreshDashboardMetrics() {
     updateDashboardIntelligence({
       inventory: normalizeInventory(appState.activeProfile.app_settings?.inventory),
       buildsState: normalizeBuildsState(appState.activeProfile.saved_builds),
+      recommendations: currentRecommendations,
+      purchasedIds,
+      expertiseProgress,
     })
   } catch (error) {
     console.error('Could not update dashboard metrics:', error)

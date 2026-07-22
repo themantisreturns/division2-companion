@@ -226,25 +226,44 @@ export function renderDashboard() {
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Personal command center</p>
-                <h2>Collection intelligence</h2>
+                <h2>What should I do next?</h2>
               </div>
+              <span class="command-center-version">v1.9</span>
+            </div>
+
+            <div class="command-priority-grid">
+              <article class="command-priority-card" data-command="farm">
+                <span>Farm next</span>
+                <strong id="command-farm-title">Scan new loot</strong>
+                <small id="command-farm-detail">More data improves recommendations</small>
+              </article>
+              <article class="command-priority-card" data-command="vendor">
+                <span>Buy this week</span>
+                <strong id="command-vendor-title">No priority yet</strong>
+                <small id="command-vendor-detail">Vendor data will appear here</small>
+              </article>
+              <article class="command-priority-card" data-command="build">
+                <span>Build focus</span>
+                <strong id="command-build-title">Create a saved build</strong>
+                <small id="command-build-detail">Use the guided build generator</small>
+              </article>
             </div>
 
             <div class="command-center-grid">
               <article class="command-stat">
-                <span>Owned items</span>
+                <span>Inventory</span>
                 <strong id="dashboard-owned-count">0</strong>
                 <small id="dashboard-unique-count">0 unique entries</small>
+              </article>
+              <article class="command-stat">
+                <span>Duplicates</span>
+                <strong id="command-duplicate-count">0</strong>
+                <small id="command-reviewed-count">0 reviewed copies</small>
               </article>
               <article class="command-stat">
                 <span>Wishlist</span>
                 <strong id="dashboard-wishlist-count">0</strong>
                 <small>Items you are hunting</small>
-              </article>
-              <article class="command-stat">
-                <span>Saved builds</span>
-                <strong id="dashboard-build-count">0</strong>
-                <small id="dashboard-build-note">Start a guided build</small>
               </article>
               <article class="command-stat">
                 <span>Loot decisions</span>
@@ -253,17 +272,12 @@ export function renderDashboard() {
               </article>
             </div>
 
-            <div class="dashboard-activity-list" id="dashboard-activity-list">
-              <div class="empty-state compact">
-                <strong>No loot history yet</strong>
-                <p>Scan an item in Inventory to begin building your personal activity feed.</p>
-              </div>
-            </div>
+            <div class="command-checklist" id="command-checklist"></div>
 
             <div class="dashboard-quick-actions">
               <button class="primary-button" data-page="Inventory">Scan loot</button>
-              <button class="secondary-button" data-page="Builds">Review builds</button>
-              <button class="secondary-button" data-page="Gear Advisor">Evaluate gear</button>
+              <button class="secondary-button" data-page="Weekly Vendors">Review vendors</button>
+              <button class="secondary-button" data-page="Builds">Improve a build</button>
             </div>
           </article>
         </section>
