@@ -1,94 +1,93 @@
 # Division 2 Companion
 
-A modern companion app for **Tom Clancy's The Division 2** focused on helping players make smarter decisions about their gear, builds, inventory, and weekly vendors.
+A browser-based companion app for **Tom Clancy's The Division 2** that helps players manage inventory, evaluate loot, plan builds, track Expertise, and decide what is worth buying from weekly vendors.
 
-> Find better gear. Build stronger loadouts. Spend less time sorting inventory.
+**Live app:** https://themantisreturns.github.io/division2-companion/
 
----
+> Spend less time sorting gear and more time playing.
 
-## Features
+## Highlights
 
-### Weekly Vendor Intelligence
-- Automatic weekly vendor updates
-- Personalized shopping recommendations
-- Vendor history
-- Shopping list
-
-### Inventory Management
-- Track owned gear and weapons
-- Duplicate detection
-- Gear evaluation
-- Wishlist support
-
-### Build Tools
-- Build library
-- Build optimizer
-- Intelligent build generator
-- Build simulator
-
-### Collection Tracking
-- Named items
-- Exotics
-- Brands
-- Gear Sets
-- Completion progress
-
-### Expertise
-- Track Expertise progress
-- Donation recommendations
-- Vendor suggestions based on missing proficiency
-
-### OCR Loot Scanner
-- Scan item screenshots
-- Automatically identify gear
-- Evaluate new drops
-- Import directly into inventory
-
----
+- **Personalized Command Center** with suggested next actions
+- **Weekly Vendor Intelligence** with shopping scores, purchase tracking, and reset history
+- **Inventory Management** with OCR-assisted scanning, duplicate analysis, wishlist support, and loot decisions
+- **Build Tools** including guided templates, a live stat simulator, best-in-stash optimization, and an inventory-aware build generator
+- **Gear Advisor** for armor and weapons, including recalibration guidance and build compatibility
+- **Collection Tracking** for weapons, named gear, Exotics, brands, and gear sets
+- **Expertise Tracking** with searchable categories and proficiency progress
+- **Installable PWA** with offline access to previously loaded app resources and data
+- **Cloud Profiles** through Supabase authentication
 
 ## Screenshots
 
-> *(Add screenshots once the UI is more polished.)*
+Screenshots and a guided tour will be added as the public interface is finalized.
 
----
+## Getting Started
 
-## Technology
+### Requirements
 
-- Vite
-- JavaScript (ES Modules)
-- Supabase Authentication
-- GitHub Pages
-- GitHub Actions
+- Node.js 20 or newer
+- npm
+- A Supabase project for authentication and cloud profile storage
 
----
-
-## Development
+### Local setup
 
 ```bash
+git clone https://github.com/themantisreturns/division2-companion.git
+cd division2-companion
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-Build for production:
+Add your Supabase values to `.env.local`:
 
-```bash
-npm run build
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
 ```
 
----
+### Available commands
 
-## Roadmap
+```bash
+npm run dev              # Validate catalog and start the development server
+npm run build            # Validate catalog and create a production build
+npm run preview          # Preview the production build
+npm run catalog:build    # Regenerate the catalog
+npm run catalog:validate # Validate catalog structure and content
+npm run catalog:check    # Build and validate the catalog
+```
 
-- Improved OCR
-- Cloud profile backup
-- Mobile improvements
-- Automatic build optimization
-- Community build sharing
+## Project Structure
 
----
+```text
+src/                 Application code
+public/catalog/      Generated catalog and reviewed source data
+public/data/         Current vendor data and reset history
+scripts/             Catalog and vendor maintenance scripts
+docs/                Architecture, roadmap, design notes, and release notes
+.github/workflows/   Deployment and scheduled vendor synchronization
+```
+
+More technical detail is available in [docs/architecture.md](docs/architecture.md). Planned work is tracked in [docs/roadmap.md](docs/roadmap.md).
+
+## Data and Privacy
+
+- OCR item screenshots are processed in the browser.
+- Supabase is used for authentication and cloud profile storage.
+- Fresh vendor data, cloud login, and cloud saves require an internet connection.
+- Offline mode uses previously cached application resources and data.
+
+## Contributing
+
+Contributions and bug reports are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Disclaimer
 
-This is a fan-made project and is not affiliated with Ubisoft or Massive Entertainment.
+This is an unofficial, fan-made project and is not affiliated with or endorsed by Ubisoft or Massive Entertainment.
 
-The Division 2 and all related trademarks belong to their respective owners.
+*Tom Clancy's The Division 2* and related names, logos, and trademarks belong to their respective owners.
+
+## License
+
+This project is available under the [MIT License](LICENSE).
