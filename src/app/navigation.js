@@ -14,6 +14,7 @@ export function connectNavigation({
   openLibrary,
   openInventory,
   openBuilds,
+  openGearAdvisor,
   openSettings,
 }) {
   document.querySelectorAll('.nav-item').forEach((button) => {
@@ -48,6 +49,11 @@ export function connectNavigation({
       if (page === 'Builds') {
         setActivePage('Builds')
         openBuilds()
+      }
+
+      if (page === 'Gear Advisor') {
+        setActivePage('Gear Advisor')
+        openGearAdvisor()
       }
 
       if (page === 'Settings') {
