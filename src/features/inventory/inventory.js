@@ -1,4 +1,4 @@
-import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
+import { rarityClass, renderRarityBadge, renderRarityLegend } from '../../ui/rarity.js'
 import { evaluateGearItem, getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
 import { scanInventoryImages } from './inventoryScanner.js'
 import { assessScannedCopy, buildDuplicateGroups, getInventoryHealth, rankCopy } from './inventoryIntelligence.js'

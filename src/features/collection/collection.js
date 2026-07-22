@@ -1,4 +1,4 @@
-import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
+import { rarityClass, renderRarityBadge, renderRarityLegend } from '../../ui/rarity.js'
 const CATEGORY_LABELS = {
   weapons: 'Weapons',
   namedGear: 'Named Gear',

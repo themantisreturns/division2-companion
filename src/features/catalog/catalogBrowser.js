@@ -1,4 +1,4 @@
-import { rarityClass, renderRarityBadge } from '../../ui/rarity.js'
+import { rarityClass, renderRarityBadge, renderRarityLegend } from '../../ui/rarity.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')

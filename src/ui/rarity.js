@@ -35,3 +35,27 @@ export function renderRarityBadge(item, category) {
   const rarity = getRarity(item, category)
   return `<span class="rarity-badge rarity-badge-${rarity.key}">${rarity.label}</span>`
 }
+
+
+export function renderRarityLegend({ compact = false } = {}) {
+  const entries = [
+    RARITIES.highend,
+    RARITIES.named,
+    RARITIES.gearset,
+    RARITIES.exotic,
+    RARITIES.superior,
+    RARITIES.specialized,
+    RARITIES.normal,
+  ]
+
+  return `
+    <div class="rarity-legend ${compact ? 'compact' : ''}" aria-label="Item rarity colors">
+      ${entries.map((rarity) => `
+        <span class="rarity-legend-item rarity-legend-${rarity.key}">
+          <span class="rarity-legend-swatch" aria-hidden="true"></span>
+          ${rarity.label}
+        </span>
+      `).join('')}
+    </div>
+  `
+}

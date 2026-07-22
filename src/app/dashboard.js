@@ -76,6 +76,12 @@ export function renderDashboard() {
       </aside>
 
       <main class="main-content">
+        <div class="agent-status-strip" aria-label="Agent system status">
+          <span><b>SHD</b> NETWORK ONLINE</span>
+          <span>DC THEATER // PERSONAL OPERATIONS</span>
+          <span id="agent-status-time">LOCAL SESSION</span>
+        </div>
+
         <header class="topbar">
           <div>
             <p class="eyebrow">Agent dashboard</p>
@@ -228,7 +234,7 @@ export function renderDashboard() {
                 <p class="eyebrow">Personal command center</p>
                 <h2>What should I do next?</h2>
               </div>
-              <span class="command-center-version">v1.9</span>
+              <span class="command-center-version">v2.1</span>
             </div>
 
             <div class="command-priority-grid">

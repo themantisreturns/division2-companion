@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## 2.1.1 - Tactical Interface Polish
+
+- Added a compact rarity-color legend to inventory, vendors, collection, and catalog pages.
+- Added a tactical SHD status strip to the dashboard.
+- Refined panels, buttons, navigation, controls, and headings with a more angular Division-inspired visual language.
+- Improved hover, focus, and mobile navigation states while preserving reduced-motion accessibility.
+
 ## 2.1.0 - Operation Home Base
 
 - Added a shared Division-inspired rarity color system for High-End, Named, Gear Set, Exotic, Superior, Specialized, and Normal items.
