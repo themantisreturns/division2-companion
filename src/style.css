@@ -2457,3 +2457,35 @@ h2 {
     flex: 1 1 100%;
   }
 }
+
+/* v1.1 Collection & Farming Planner */
+.collection-total{display:flex;flex-direction:column;align-items:flex-end;padding:18px 22px;border:1px solid var(--border-color);border-radius:18px;background:rgba(255,255,255,.03)}
+.collection-total strong{font-size:2rem;line-height:1}.collection-total span{margin-top:6px;color:var(--muted-text)}
+.collection-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.collection-summary-card{padding:16px;border:1px solid var(--border-color);border-radius:16px;background:var(--panel-background)}
+.collection-summary-card span,.collection-summary-card small{display:block;color:var(--muted-text)}
+.collection-summary-card strong{display:block;margin:8px 0;font-size:1.25rem}
+.collection-progress{height:6px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}
+.collection-progress i{display:block;height:100%;border-radius:inherit;background:var(--accent)}
+.collection-summary-card small{margin-top:8px}
+.collection-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.7fr);gap:18px;align-items:start}
+.collection-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 180px 180px;gap:10px;margin:16px 0}
+.collection-toolbar input,.collection-toolbar select{width:100%;padding:11px 12px;border:1px solid var(--border-color);border-radius:10px;background:rgba(0,0,0,.18);color:inherit}
+.collection-results-meta{display:flex;justify-content:space-between;color:var(--muted-text);font-size:.85rem;margin-bottom:12px}
+.collection-item-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:900px;overflow:auto;padding-right:4px}
+.collection-item-card{text-align:left;padding:14px;border:1px solid var(--border-color);border-radius:14px;background:rgba(255,255,255,.025);color:inherit;cursor:pointer;transition:.16s ease}
+.collection-item-card:hover,.collection-item-card.selected{transform:translateY(-1px);border-color:var(--accent);background:rgba(255,255,255,.055)}
+.collection-item-card strong,.collection-item-card small,.collection-item-card span{display:block}
+.collection-item-card strong{margin:5px 0}.collection-item-card small{min-height:18px;color:var(--muted-text)}
+.collection-item-type{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted-text)}
+.collection-status{width:max-content;margin-top:10px;padding:4px 8px;border-radius:999px;font-size:.74rem;font-weight:700}
+.collection-status.owned{background:rgba(93,211,158,.14);color:#7ee3b5}.collection-status.wishlist{background:rgba(255,190,70,.14);color:#ffca66}.collection-status.missing{background:rgba(255,255,255,.07);color:var(--muted-text)}
+.collection-sidebar{display:grid;gap:18px;position:sticky;top:18px}.farming-list{display:grid;gap:10px}
+.farming-priority{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--border-color)}
+.farming-priority:last-child{border-bottom:0}.priority-number{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);font-weight:700}
+.farming-priority strong,.farming-priority small{display:block}.farming-priority small{margin-top:3px;color:var(--muted-text)}.farming-priority p{margin:7px 0 0;font-size:.86rem;line-height:1.4;color:var(--muted-text)}
+.collection-detail-panel>strong{display:block;margin:8px 0;font-size:1.3rem}.collection-detail-panel>p{color:var(--muted-text);line-height:1.5}
+.collection-detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.collection-detail-stats div{padding:12px;border-radius:12px;background:rgba(255,255,255,.04)}.collection-detail-stats span,.collection-detail-stats strong{display:block}.collection-detail-stats span{font-size:.75rem;color:var(--muted-text);margin-bottom:5px}
+.collection-farm-tip{padding:14px;border-left:3px solid var(--accent);background:rgba(255,255,255,.035);border-radius:0 12px 12px 0}.collection-farm-tip span{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-text)}.collection-farm-tip p{margin:7px 0 0;line-height:1.5}
+@media(max-width:1100px){.collection-summary-grid{grid-template-columns:repeat(3,1fr)}.collection-layout{grid-template-columns:1fr}.collection-sidebar{position:static}.collection-toolbar{grid-template-columns:1fr 1fr}.collection-toolbar input{grid-column:1/-1}}
+@media(max-width:700px){.collection-summary-grid{grid-template-columns:1fr 1fr}.collection-item-grid{grid-template-columns:1fr}.collection-toolbar{grid-template-columns:1fr}.collection-toolbar input{grid-column:auto}.collection-total{align-items:flex-start}.feature-heading{align-items:flex-start}}

@@ -3,6 +3,7 @@ const navigation = [
   { label: 'Expertise', icon: '◎' },
   { label: 'Weekly Vendors', icon: '◆' },
   { label: 'Library', icon: '◫' },
+  { label: 'Collection', icon: '◇' },
   { label: 'Inventory', icon: '▣' },
   { label: 'Builds', icon: '△' },
   { label: 'Gear Advisor', icon: '★' },

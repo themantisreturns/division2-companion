@@ -12,6 +12,7 @@ export function connectNavigation({
   openExpertise,
   openVendors,
   openLibrary,
+  openCollection,
   openInventory,
   openBuilds,
   openGearAdvisor,
@@ -39,6 +40,11 @@ export function connectNavigation({
       if (page === 'Library') {
         setActivePage('Library')
         openLibrary()
+      }
+
+      if (page === 'Collection') {
+        setActivePage('Collection')
+        openCollection()
       }
 
       if (page === 'Inventory') {

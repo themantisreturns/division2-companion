@@ -60,6 +60,10 @@ import {
   connectGearAdvisorPage,
   renderGearAdvisorPage,
 } from './features/gearAdvisor/gearAdvisor.js'
+import {
+  connectCollectionPage,
+  renderCollectionPage,
+} from './features/collection/collection.js'
 
 let currentVendorData = null
 let currentRecommendations = []
@@ -458,6 +462,30 @@ async function saveLibraryProgress() {
 }
 
 
+async function openCollectionPage() {
+  const mainContent = document.querySelector('.main-content')
+  mainContent.innerHTML = `
+    <section class="feature-page"><div class="panel empty-state"><strong>Loading collection…</strong></div></section>
+  `
+
+  try {
+    const catalog = await ensureGameCatalog()
+    if (!catalog) throw new Error('The generated catalog could not be loaded.')
+
+    const inventory = normalizeInventory(
+      appState.activeProfile?.app_settings?.inventory,
+    )
+
+    mainContent.innerHTML = renderCollectionPage({ catalog, inventory })
+    connectCollectionPage({ catalog, inventory })
+  } catch (error) {
+    console.error(error)
+    mainContent.innerHTML = `
+      <section class="feature-page"><div class="panel empty-state"><strong>Could not load collection</strong><p>${error.message}</p></div></section>
+    `
+  }
+}
+
 async function openInventoryPage() {
   if (!appState.activeUser || !appState.activeProfile) {
     window.alert(
@@ -743,6 +771,7 @@ async function initializeApp() {
     openExpertise: openExpertisePage,
     openVendors: openVendorPage,
     openLibrary: openLibraryPage,
+    openCollection: openCollectionPage,
     openInventory: openInventoryPage,
     openBuilds: openBuildsPage,
     openGearAdvisor: openGearAdvisorPage,
