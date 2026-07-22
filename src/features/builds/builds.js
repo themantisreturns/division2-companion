@@ -1,3 +1,4 @@
+import { BUILD_ARCHETYPES } from '../knowledge/knowledgeData.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -27,6 +28,137 @@ const BUILD_SLOTS = [
   { key: 'kneepads', label: 'Kneepads', categories: ['namedGear', 'exotics', 'brands', 'gearSets'] },
 ]
 
+const BUILD_TEMPLATES = [
+  {
+    id: 'striker-dps',
+    name: "Striker's DPS",
+    role: 'DPS',
+    difficulty: 'Easy to assemble',
+    description: 'Fast-stacking weapon damage build for solo play, Countdown, and general PvE.',
+    rolls: 'Weapon Damage cores. Add Critical Hit Chance until near 60%, then Critical Hit Damage.',
+    talents: 'Use the Striker chest or backpack when you can maintain stacks; otherwise pair four pieces with a strong high-end chest or backpack.',
+    slots: {
+      mask: ['gearSets', "Striker's Battlegear"],
+      chest: ['gearSets', "Striker's Battlegear"],
+      holster: ['gearSets', "Striker's Battlegear"],
+      backpack: ['gearSets', "Striker's Battlegear"],
+      gloves: ['brands', 'Fenris Group AB'],
+      kneepads: ['brands', 'Grupo Sombra S.A.'],
+    },
+  },
+  {
+    id: 'ar-crit',
+    name: 'AR Crit DPS',
+    role: 'DPS',
+    difficulty: 'Flexible',
+    description: 'Classic high-end assault-rifle build with reusable double-crit pieces.',
+    rolls: 'Weapon Damage, Critical Hit Chance, and Critical Hit Damage.',
+    talents: 'Obliterate or Glass Cannon on chest; Vigilance or Composure on backpack.',
+    slots: {
+      mask: ['brands', 'Česká Výroba s.r.o.'],
+      chest: ['brands', 'Fenris Group AB'],
+      holster: ['brands', 'Grupo Sombra S.A.'],
+      backpack: ['brands', 'Providence Defense'],
+      gloves: ['namedGear', "Contractor's Gloves"],
+      kneepads: ['namedGear', "Fox's Prayer"],
+    },
+  },
+  {
+    id: 'turret-drone',
+    name: 'Turret & Drone',
+    role: 'Skill',
+    difficulty: 'Easy to play',
+    description: 'Reliable skill-damage setup for solo farming and difficult PvE content.',
+    rolls: 'Skill Tier cores with Skill Damage first and Skill Haste second.',
+    talents: 'Kinetic Momentum on chest; Combined Arms or Tech Support on backpack.',
+    slots: {
+      mask: ['brands', 'Empress International'],
+      chest: ['brands', 'Empress International'],
+      holster: ['brands', 'Empress International'],
+      backpack: ['brands', 'Hana-U Corporation'],
+      gloves: ['brands', 'Wyvern Wear'],
+      kneepads: ['brands', 'Hana-U Corporation'],
+    },
+  },
+  {
+    id: 'status-effects',
+    name: 'Status Effects',
+    role: 'Crowd control',
+    difficulty: 'Team focused',
+    description: 'Eclipse-based status build that spreads crowd control and damage-over-time effects.',
+    rolls: 'Skill Tier cores with Status Effects on every possible piece; Skill Haste where available.',
+    talents: 'Eclipse chest and backpack are the safest default for maximum spread and damage.',
+    slots: {
+      mask: ['gearSets', 'Eclipse Protocol'],
+      chest: ['gearSets', 'Eclipse Protocol'],
+      holster: ['gearSets', 'Eclipse Protocol'],
+      backpack: ['gearSets', 'Eclipse Protocol'],
+      gloves: ['brands', 'Electrique'],
+      kneepads: ['brands', 'Golan Gear Ltd'],
+    },
+  },
+  {
+    id: 'healer',
+    name: 'Healer / Support',
+    role: 'Support',
+    difficulty: 'Team focused',
+    description: 'Repair-focused loadout for raids, Incursion groups, and difficult team content.',
+    rolls: 'Skill Tier cores with Repair Skills and Skill Haste.',
+    talents: 'Future Initiative chest where available; Safeguard or Opportunistic backpack depending on role.',
+    slots: {
+      mask: ['gearSets', 'Future Initiative'],
+      chest: ['gearSets', 'Future Initiative'],
+      holster: ['gearSets', 'Future Initiative'],
+      backpack: ['gearSets', 'Future Initiative'],
+      gloves: ['brands', 'Alps Summit Armament'],
+      kneepads: ['brands', 'Murakami Industries'],
+    },
+  },
+  {
+    id: 'armor-bruiser',
+    name: 'Armor / Bruiser',
+    role: 'Tank',
+    difficulty: 'Flexible',
+    description: 'Durable close-range setup that balances survivability with usable weapon damage.',
+    rolls: 'Armor cores with Armor Regeneration, Hazard Protection, or crit rolls based on playstyle.',
+    talents: 'Intimidate, Unbreakable, Vanguard, Adrenaline Rush, or Bloodsucker.',
+    slots: {
+      mask: ['brands', 'Gila Guard'],
+      chest: ['brands', 'Uzina Getica'],
+      holster: ['brands', 'Belstone Armory'],
+      backpack: ['brands', 'Golan Gear Ltd'],
+      gloves: ['brands', 'Gila Guard'],
+      kneepads: ['brands', 'Belstone Armory'],
+    },
+  },
+]
+
+function buildSelectionValue(category, name, slotKey) {
+  return category === 'brands' || category === 'gearSets'
+    ? `${category}|${name}|${slotKey}`
+    : `${category}|${name}`
+}
+
+function templateToSlots(template, catalog) {
+  return Object.fromEntries(
+    Object.entries(template.slots ?? {}).flatMap(([slotKey, spec]) => {
+      const [category, requestedName] = spec
+      const items = catalog?.categories?.[category] ?? []
+      const match = items.find((item) => normalizeText(item.name) === normalizeText(requestedName))
+      if (!match) return []
+      return [[slotKey, buildSelectionValue(category, match.name, slotKey)]]
+    }),
+  )
+}
+
+function getBuildArchetype(build) {
+  const explicit = BUILD_TEMPLATES.find((template) => template.id === build?.archetypeId)
+  if (explicit) return explicit
+  const name = normalizeText(build?.name)
+  return BUILD_TEMPLATES.find((template) => name.includes(normalizeText(template.name))) ?? null
+}
+
+
 function createId() {
   return crypto.randomUUID?.() ??
     `${Date.now()}-${Math.random().toString(16).slice(2)}`
@@ -52,6 +184,7 @@ export function normalizeBuildsState(value) {
           id: String(build.id || createId()),
           name: String(build.name || 'Untitled build'),
           notes: String(build.notes || ''),
+          archetypeId: String(build.archetypeId || ''),
           slots:
             build.slots && typeof build.slots === 'object'
               ? { ...build.slots }
@@ -454,6 +587,114 @@ function renderBuildShoppingList(build, inventory, vendorData) {
   `
 }
 
+
+function getBuildIntelligence(build, inventory, vendorData) {
+  const rows = getBuildShoppingRows(build, inventory, vendorData)
+  const selected = rows.length
+  const owned = rows.filter((row) => row.isOwned).length
+  const available = rows.filter((row) => !row.isOwned && row.matches.length > 0).length
+  const completion = selected ? Math.round((owned / selected) * 100) : 0
+  const configured = Math.round((selected / BUILD_SLOTS.length) * 100)
+  return { rows, selected, owned, available, completion, configured, missing: selected - owned }
+}
+
+function renderBuildIntelligence(build, inventory, vendorData) {
+  const stats = getBuildIntelligence(build, inventory, vendorData)
+  const archetype = getBuildArchetype(build)
+  const missing = stats.rows.filter((row) => !row.isOwned)
+
+  return `
+    <section class="panel build-intelligence-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Build intelligence</p>
+          <h2>${stats.completion}% inventory completion</h2>
+        </div>
+        <span class="build-score-badge">${stats.owned}/${stats.selected || 0} owned</span>
+      </div>
+
+      <div class="build-progress-track" aria-label="Build completion">
+        <span style="width: ${stats.completion}%"></span>
+      </div>
+
+      <div class="build-intelligence-grid">
+        <article>
+          <span>Configured</span>
+          <strong>${stats.configured}%</strong>
+          <small>${stats.selected} of ${BUILD_SLOTS.length} slots selected</small>
+        </article>
+        <article>
+          <span>Missing</span>
+          <strong>${stats.missing}</strong>
+          <small>${stats.available} exact vendor match${stats.available === 1 ? '' : 'es'} this week</small>
+        </article>
+        <article>
+          <span>Archetype</span>
+          <strong>${escapeHtml(archetype?.role ?? 'Custom')}</strong>
+          <small>${escapeHtml(archetype?.difficulty ?? 'Player-defined loadout')}</small>
+        </article>
+      </div>
+
+      ${archetype ? `
+        <div class="build-guidance-card">
+          <div>
+            <span class="vendor-item-kind">Recommended rolls</span>
+            <p>${escapeHtml(archetype.rolls)}</p>
+          </div>
+          <div>
+            <span class="vendor-item-kind">Talent direction</span>
+            <p>${escapeHtml(archetype.talents)}</p>
+          </div>
+        </div>
+      ` : `
+        <p class="build-intelligence-note">
+          Start from a guided template or keep this as a custom build. Inventory completion updates as you select pieces.
+        </p>
+      `}
+
+      ${missing.length ? `
+        <div class="build-priority-list">
+          <strong>Next priorities</strong>
+          ${missing.slice(0, 4).map((row) => `
+            <span>
+              ${row.matches.length ? '◆' : '○'}
+              ${escapeHtml(row.displayName)}
+              <small>${row.matches.length ? 'Available from a vendor' : 'Farm or scan into inventory'}</small>
+            </span>
+          `).join('')}
+        </div>
+      ` : ''}
+    </section>
+  `
+}
+
+function renderTemplateLibrary() {
+  return `
+    <section class="panel build-template-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Build wizard</p>
+          <h2>Start from a proven archetype</h2>
+        </div>
+      </div>
+      <div class="build-template-grid">
+        ${BUILD_TEMPLATES.map((template) => `
+          <article class="build-template-card">
+            <div>
+              <span class="vendor-item-kind">${escapeHtml(template.role)} · ${escapeHtml(template.difficulty)}</span>
+              <strong>${escapeHtml(template.name)}</strong>
+              <p>${escapeHtml(template.description)}</p>
+            </div>
+            <button class="secondary-button" type="button" data-create-template="${escapeHtml(template.id)}">
+              Use template
+            </button>
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `
+}
+
 function renderBuildEditor(build, catalog, inventory, vendorData) {
   return `
     <section class="panel build-editor" data-build-editor>
@@ -502,6 +743,8 @@ function renderBuildEditor(build, catalog, inventory, vendorData) {
           .join('')}
       </div>
     </section>
+
+    ${renderBuildIntelligence(build, inventory, vendorData)}
 
     ${renderBuildShoppingList(
       build,
@@ -636,6 +879,8 @@ export function renderBuildsPage({
         </article>
       </section>
 
+      ${renderTemplateLibrary()}
+
       <div class="builds-layout">
         <aside class="panel builds-sidebar">
           <div class="panel-heading">
@@ -698,6 +943,7 @@ export function connectBuildsPage({
         id: createId(),
         name: `Build ${buildsState.builds.length + 1}`,
         notes: '',
+        archetypeId: '',
         slots: {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -707,6 +953,28 @@ export function connectBuildsPage({
       onSelectedBuildChange(build.id)
       onBuildsChange()
       rerender()
+    })
+
+  document
+    .querySelectorAll('[data-create-template]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const template = BUILD_TEMPLATES.find((entry) => entry.id === button.dataset.createTemplate)
+        if (!template) return
+        const build = {
+          id: createId(),
+          name: template.name,
+          notes: template.description,
+          archetypeId: template.id,
+          slots: templateToSlots(template, catalog),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+        buildsState.builds.push(build)
+        onSelectedBuildChange(build.id)
+        onBuildsChange()
+        rerender()
+      })
     })
 
   document
