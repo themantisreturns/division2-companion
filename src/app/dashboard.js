@@ -221,22 +221,48 @@ export function renderDashboard() {
             </div>
           </article>
 
-          <article class="panel activity-panel">
+          <article class="panel activity-panel command-center-panel">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Account activity</p>
-                <h2>Recent changes</h2>
+                <p class="eyebrow">Personal command center</p>
+                <h2>Collection intelligence</h2>
               </div>
             </div>
 
-            <div class="empty-state">
-              <div class="empty-icon">◎</div>
-              <strong>No synced activity yet</strong>
+            <div class="command-center-grid">
+              <article class="command-stat">
+                <span>Owned items</span>
+                <strong id="dashboard-owned-count">0</strong>
+                <small id="dashboard-unique-count">0 unique entries</small>
+              </article>
+              <article class="command-stat">
+                <span>Wishlist</span>
+                <strong id="dashboard-wishlist-count">0</strong>
+                <small>Items you are hunting</small>
+              </article>
+              <article class="command-stat">
+                <span>Saved builds</span>
+                <strong id="dashboard-build-count">0</strong>
+                <small id="dashboard-build-note">Start a guided build</small>
+              </article>
+              <article class="command-stat">
+                <span>Loot decisions</span>
+                <strong id="dashboard-loot-count">0</strong>
+                <small id="dashboard-loot-note">No scans recorded yet</small>
+              </article>
+            </div>
 
-              <p>
-                Your purchases, donations, and Expertise changes
-                will appear here.
-              </p>
+            <div class="dashboard-activity-list" id="dashboard-activity-list">
+              <div class="empty-state compact">
+                <strong>No loot history yet</strong>
+                <p>Scan an item in Inventory to begin building your personal activity feed.</p>
+              </div>
+            </div>
+
+            <div class="dashboard-quick-actions">
+              <button class="primary-button" data-page="Inventory">Scan loot</button>
+              <button class="secondary-button" data-page="Builds">Review builds</button>
+              <button class="secondary-button" data-page="Gear Advisor">Evaluate gear</button>
             </div>
           </article>
         </section>

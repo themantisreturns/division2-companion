@@ -2371,3 +2371,89 @@ h2 {
   .loot-verdict { grid-template-columns: 1fr; }
   .loot-verdict p, .loot-verdict small { grid-column: auto; }
 }
+
+/* v1.0 personal command center */
+.command-center-panel {
+  grid-column: 1 / -1;
+}
+
+.command-center-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.command-stat {
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.command-stat span,
+.command-stat small {
+  display: block;
+  color: var(--muted-text, #97a0ad);
+}
+
+.command-stat strong {
+  display: block;
+  margin: 7px 0 3px;
+  font-size: 1.75rem;
+}
+
+.dashboard-activity-list {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.dashboard-activity-item strong,
+.dashboard-activity-item span {
+  display: block;
+}
+
+.dashboard-activity-item span,
+.dashboard-activity-item time {
+  color: var(--muted-text, #97a0ad);
+  font-size: 0.85rem;
+}
+
+.dashboard-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.empty-state.compact {
+  min-height: 0;
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .command-center-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .command-center-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-quick-actions > * {
+    flex: 1 1 100%;
+  }
+}

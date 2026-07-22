@@ -1,6 +1,6 @@
 import './style.css'
 
-import { updateDashboardMetrics } from './app/dashboardMetrics.js'
+import { updateDashboardIntelligence, updateDashboardMetrics } from './app/dashboardMetrics.js'
 import {
   ensureGameCatalog,
   ensureVendorData,
@@ -79,6 +79,11 @@ async function refreshDashboardMetrics() {
     const purchasedIds = getPurchasedIdsForCurrentReset(appState.activeProfile.purchased_items ?? [])
 
     updateDashboardMetrics({ expertiseProgress, recommendations: currentRecommendations, purchasedIds })
+
+    updateDashboardIntelligence({
+      inventory: normalizeInventory(appState.activeProfile.app_settings?.inventory),
+      buildsState: normalizeBuildsState(appState.activeProfile.saved_builds),
+    })
   } catch (error) {
     console.error('Could not update dashboard metrics:', error)
   }

@@ -76,4 +76,15 @@ export function connectNavigation({
       setActivePage('Weekly Vendors')
       openVendors()
     })
+
+
+  document
+    .querySelectorAll('.dashboard-quick-actions [data-page]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        document
+          .querySelector(`.nav-item[data-page="${button.dataset.page}"]`)
+          ?.click()
+      })
+    })
 }
