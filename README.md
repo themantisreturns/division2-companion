@@ -26,7 +26,7 @@ Screenshots and a guided tour will be added as the public interface is finalized
 
 ### Requirements
 
-- Node.js 20 or newer
+- Node.js 20.19 or newer, or Node.js 22.12 or newer
 - npm
 - A Supabase project for authentication and cloud profile storage
 

@@ -32,8 +32,12 @@ jobs:
       - name: Synchronize vendor data
         run: node scripts/sync-vendor-data.mjs
 
+      - name: Validate synchronized vendor files
+        if: success()
+        run: node scripts/validate-vendor-files.mjs
+
       - name: Commit synchronization result
-        if: always()
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
@@ -47,5 +51,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add public/data
-          git commit -m "Sync weekly vendor data"
+          git commit -m "Sync weekly vendor data and history"
           git push
