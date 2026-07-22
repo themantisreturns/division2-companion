@@ -1956,3 +1956,40 @@ h2 {
   .gear-advisor-filter-grid, .gear-advisor-details { grid-template-columns: 1fr; }
   .advisor-verdict { grid-template-columns: 1fr; }
 }
+
+/* Gear & Weapon Advisor expansion */
+.advisor-help {
+  margin: 14px 0 18px;
+  color: var(--muted-text, #9ca6b8);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.advisor-library-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 220px);
+  gap: 16px;
+  align-items: end;
+}
+
+.advisor-library-filters label,
+.gear-advisor-filter-grid label {
+  min-width: 0;
+}
+
+.advisor-library-filters select,
+.gear-advisor-filter-grid input,
+.gear-advisor-filter-grid select {
+  width: 100%;
+}
+
+[data-advisor-for][hidden],
+[data-rule-search][hidden] {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .advisor-library-filters {
+    grid-template-columns: 1fr;
+  }
+}
