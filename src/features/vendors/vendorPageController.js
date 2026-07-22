@@ -4,6 +4,8 @@ import { renderVendorStatusPanel } from '../../app/vendorStatus.js'
 import { saveUserProfile } from '../../services/profile.js'
 import { loadVendorMeta } from '../../services/vendorMeta.js'
 import { mergeExpertiseProgress } from '../expertise/expertise.js'
+import { normalizeInventory } from '../inventory/inventory.js'
+import { normalizeBuildsState } from '../builds/builds.js'
 import {
   connectPurchaseButtons,
   connectVendorFilters,
@@ -45,7 +47,7 @@ function renderCurrentVendorPage() {
   )
 
   connectVendorFilters()
-  connectPurchaseButtons(handleTogglePurchase)
+  connectPurchaseButtons(handleTogglePurchase, handleToggleWishlist)
 }
 
 async function handleTogglePurchase(
@@ -98,6 +100,55 @@ async function handleTogglePurchase(
   }
 }
 
+
+async function handleToggleWishlist(wishlistKey) {
+  if (!appState.activeUser || !appState.activeProfile) {
+    window.alert('Sign in before saving wishlist items.')
+    return
+  }
+
+  try {
+    const inventory = normalizeInventory(
+      appState.activeProfile.app_settings?.inventory,
+    )
+
+    const index = inventory.wishlist.indexOf(wishlistKey)
+    if (index >= 0) inventory.wishlist.splice(index, 1)
+    else inventory.wishlist.push(wishlistKey)
+    inventory.updatedAt = new Date().toISOString()
+
+    appState.activeProfile = await saveUserProfile(
+      appState.activeUser.id,
+      {
+        app_settings: {
+          ...(appState.activeProfile.app_settings ?? {}),
+          inventory,
+        },
+      },
+    )
+
+    const progress = mergeExpertiseProgress(
+      appState.activeProfile.expertise_progress,
+    )
+    currentRecommendations = createVendorRecommendations(
+      currentVendorData,
+      progress,
+      {
+        inventory,
+        buildsState: normalizeBuildsState(
+          appState.activeProfile.saved_builds,
+        ),
+      },
+    )
+
+    renderCurrentVendorPage()
+  } catch (error) {
+    console.error(error)
+    window.alert(`Could not save wishlist: ${error.message}`)
+    renderCurrentVendorPage()
+  }
+}
+
 export async function openVendorPage() {
   const mainContent =
     document.querySelector('.main-content')
@@ -134,6 +185,14 @@ export async function openVendorPage() {
         createVendorRecommendations(
           currentVendorData,
           progress,
+          {
+            inventory: normalizeInventory(
+              appState.activeProfile.app_settings?.inventory,
+            ),
+            buildsState: normalizeBuildsState(
+              appState.activeProfile.saved_builds,
+            ),
+          },
         )
     }
 

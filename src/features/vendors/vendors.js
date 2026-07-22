@@ -108,6 +108,10 @@ function renderRecommendationItems(
               recommendation.priority,
             )}
 
+            <span class="vendor-buy-score">
+              ${escapeHtml(recommendation.score ?? recommendation.priority * 20)}/100
+            </span>
+
             <span>
               ${escapeHtml(
                 recommendation.progressLabel,
@@ -124,6 +128,10 @@ function renderRecommendationItems(
               ${escapeHtml(recommendation.name)}
             </strong>
 
+            <span class="vendor-verdict vendor-verdict-${escapeHtml(String(recommendation.verdict ?? 'consider').toLowerCase().replaceAll(' ', '-'))}">
+              ${escapeHtml(recommendation.verdict ?? 'CONSIDER')}
+            </span>
+
             <p>
               ${escapeHtml(recommendation.reason)}
             </p>
@@ -135,26 +143,40 @@ function renderRecommendationItems(
             </strong>
 
             <span>
-              ${
-                recommendation.recommendationType ===
-                'verify-weapon'
-                  ? 'Verify exact proficiency'
-                  : 'Buy for brand Expertise'
-              }
+              ${escapeHtml(
+                recommendation.buildMatches?.length
+                  ? `Helps ${recommendation.buildMatches.length} saved build${recommendation.buildMatches.length === 1 ? '' : 's'}`
+                  : recommendation.wishlist
+                    ? 'Personal wishlist match'
+                    : recommendation.recommendationType === 'expertise'
+                      ? 'Useful for Expertise'
+                      : 'Personalized recommendation',
+              )}
             </span>
           </div>
 
-          <button
-            class="purchase-toggle ${
-              isPurchased ? 'purchased' : ''
-            }"
-            data-recommendation-id="${escapeHtml(
-              recommendation.id,
-            )}"
-            type="button"
-          >
-            ${isPurchased ? 'Purchased ✓' : 'Mark purchased'}
-          </button>
+          <div class="vendor-recommendation-actions">
+            <button
+              class="purchase-toggle ${
+                isPurchased ? 'purchased' : ''
+              }"
+              data-recommendation-id="${escapeHtml(
+                recommendation.id,
+              )}"
+              type="button"
+            >
+              ${isPurchased ? 'Purchased ✓' : 'Mark purchased'}
+            </button>
+
+            <button
+              class="secondary-button wishlist-toggle ${recommendation.wishlist ? 'active' : ''}"
+              data-wishlist-key="${escapeHtml(recommendation.wishlistKey ?? '')}"
+              type="button"
+              ${recommendation.wishlistKey ? '' : 'disabled'}
+            >
+              ${recommendation.wishlist ? 'Wishlisted ★' : 'Add to wishlist'}
+            </button>
+          </div>
         </article>
       `
     })
@@ -193,7 +215,7 @@ function renderRecommendations(
       <div class="panel-heading">
         <div>
           <p class="eyebrow">Personalized results</p>
-          <h2>What to consider buying</h2>
+          <h2>Personal shopping list</h2>
         </div>
 
         <span class="vendor-count">
@@ -271,8 +293,7 @@ export function renderVendorPage({
           <p class="eyebrow">Current weekly inventory</p>
           <h1>Weekly Vendors</h1>
           <p class="subtitle">
-            Personalized recommendations based on your saved
-            Expertise profile.
+            Personalized buy scores based on your inventory, wishlist, saved builds, and Expertise progress.
           </p>
         </div>
 
@@ -511,7 +532,7 @@ export function connectVendorFilters() {
   vendorFilter.addEventListener('change', applyFilters)
 }
 
-export function connectPurchaseButtons(onToggle) {
+export function connectPurchaseButtons(onToggle, onWishlistToggle) {
   document
     .querySelectorAll('.purchase-toggle')
     .forEach((button) => {
@@ -522,6 +543,17 @@ export function connectPurchaseButtons(onToggle) {
         await onToggle(
           button.dataset.recommendationId,
         )
+      })
+    })
+
+  document
+    .querySelectorAll('.wishlist-toggle')
+    .forEach((button) => {
+      button.addEventListener('click', async () => {
+        if (!onWishlistToggle || !button.dataset.wishlistKey) return
+        button.disabled = true
+        button.textContent = 'Saving…'
+        await onWishlistToggle(button.dataset.wishlistKey)
       })
     })
 }

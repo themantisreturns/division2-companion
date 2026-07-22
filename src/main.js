@@ -79,7 +79,10 @@ async function refreshDashboardMetrics() {
   try {
     const vendorData = await ensureVendorData()
     const expertiseProgress = mergeExpertiseProgress(appState.activeProfile.expertise_progress)
-    currentRecommendations = createVendorRecommendations(vendorData, expertiseProgress)
+    currentRecommendations = createVendorRecommendations(vendorData, expertiseProgress, {
+      inventory: normalizeInventory(appState.activeProfile.app_settings?.inventory),
+      buildsState: normalizeBuildsState(appState.activeProfile.saved_builds),
+    })
     const purchasedIds = getPurchasedIdsForCurrentReset(appState.activeProfile.purchased_items ?? [])
 
     updateDashboardMetrics({ expertiseProgress, recommendations: currentRecommendations, purchasedIds })

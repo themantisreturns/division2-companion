@@ -2624,3 +2624,71 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Vendor Intelligence v1.3.0 */
+.vendor-buy-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid rgba(255, 174, 0, 0.45);
+  border-radius: 999px;
+  font-weight: 800;
+  color: var(--accent, #ffae00);
+  background: rgba(255, 174, 0, 0.08);
+}
+
+.vendor-verdict {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 0.45rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.vendor-verdict-buy-now,
+.vendor-verdict-strong-buy {
+  color: #f9d36b;
+  border-color: rgba(249, 211, 107, 0.5);
+  background: rgba(249, 211, 107, 0.1);
+}
+
+.vendor-verdict-consider {
+  color: #b6d9ff;
+  border-color: rgba(182, 217, 255, 0.42);
+  background: rgba(182, 217, 255, 0.08);
+}
+
+.vendor-verdict-expertise-buy {
+  color: #b9f5c8;
+  border-color: rgba(185, 245, 200, 0.4);
+  background: rgba(185, 245, 200, 0.08);
+}
+
+.vendor-recommendation-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 148px;
+}
+
+.wishlist-toggle.active {
+  border-color: rgba(255, 174, 0, 0.6);
+  color: var(--accent, #ffae00);
+}
+
+@media (max-width: 850px) {
+  .vendor-recommendation-actions {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .vendor-recommendation-actions button {
+    width: 100%;
+  }
+}
