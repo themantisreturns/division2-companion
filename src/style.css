@@ -1993,3 +1993,181 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Inventory screenshot scanner */
+.inventory-scanner-panel {
+  margin-bottom: 1rem;
+}
+
+.inventory-scanner-panel .panel-heading {
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.inventory-scanner-panel .subtitle {
+  max-width: 760px;
+  margin-top: 0.45rem;
+}
+
+.inventory-scan-button {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.inventory-scan-note {
+  margin: 1rem 0 0;
+  color: var(--muted-text, #98a0ad);
+  font-size: 0.82rem;
+}
+
+.inventory-scan-status {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.inventory-scan-status strong,
+.inventory-scan-status span {
+  display: block;
+}
+
+.inventory-scan-status span {
+  margin-top: 0.25rem;
+  color: var(--muted-text, #98a0ad);
+  font-size: 0.85rem;
+}
+
+.inventory-scan-status.success {
+  border-color: rgba(92, 201, 130, 0.45);
+}
+
+.inventory-scan-status.error {
+  border-color: rgba(235, 86, 86, 0.5);
+}
+
+.scan-progress-track {
+  height: 5px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.scan-progress-track div {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent, #f28c28);
+  transition: width 180ms ease;
+}
+
+.inventory-scan-results {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.inventory-scan-result {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.inventory-scan-result.added {
+  border-color: rgba(92, 201, 130, 0.48);
+}
+
+.inventory-scan-result > img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.inventory-scan-copy {
+  min-width: 0;
+}
+
+.inventory-scan-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.inventory-scan-heading strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.08rem;
+}
+
+.inventory-scan-copy label span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--muted-text, #98a0ad);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.inventory-scan-copy select {
+  width: 100%;
+}
+
+.inventory-scan-details {
+  margin-top: 0.85rem;
+}
+
+.inventory-scan-details ul {
+  margin: 0.35rem 0 0 1.1rem;
+  padding: 0;
+  color: var(--muted-text, #b0b7c3);
+}
+
+.inventory-scan-copy details {
+  margin-top: 0.85rem;
+}
+
+.inventory-scan-copy summary {
+  cursor: pointer;
+  color: var(--muted-text, #a9b0bb);
+}
+
+.inventory-scan-copy pre {
+  max-height: 180px;
+  overflow: auto;
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+  color: #c6cbd4;
+  font-size: 0.75rem;
+}
+
+.inventory-scan-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 760px) {
+  .inventory-scanner-panel .panel-heading,
+  .inventory-scan-heading {
+    flex-direction: column;
+  }
+
+  .inventory-scan-result {
+    grid-template-columns: 1fr;
+  }
+
+  .inventory-scan-result > img {
+    max-height: 210px;
+  }
+}

@@ -1,4 +1,5 @@
 import { getCollectionGuidance } from '../knowledge/knowledgeEngine.js'
+import { scanInventoryImages } from './inventoryScanner.js'
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -319,6 +320,23 @@ export function renderInventoryPage({
         </article>
       </section>
 
+      <section class="panel inventory-scanner-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Screenshot import</p>
+            <h2>Scan inventory items</h2>
+            <p class="subtitle">Upload one or more item-detail screenshots. The scanner reads the item, suggests a catalog match, and lets you review everything before adding it.</p>
+          </div>
+          <label class="primary-button inventory-scan-button">
+            Choose screenshots
+            <input id="inventory-scan-input" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden>
+          </label>
+        </div>
+        <div id="inventory-scan-status" class="inventory-scan-status" hidden></div>
+        <div id="inventory-scan-results" class="inventory-scan-results"></div>
+        <p class="inventory-scan-note">Best results come from a clear screenshot with the full item details panel visible. OCR runs in your browser; screenshots are not uploaded to our server.</p>
+      </section>
+
       <section class="panel">
         <div class="inventory-controls">
           <label class="vendor-search">
@@ -376,6 +394,7 @@ export function renderInventoryPage({
 }
 
 export function connectInventoryPage({
+  catalog,
   inventory,
   onInventoryChange,
 }) {
@@ -581,4 +600,98 @@ export function connectInventoryPage({
     'change',
     applyFilters,
   )
+  const scanInput = document.querySelector('#inventory-scan-input')
+  const scanStatus = document.querySelector('#inventory-scan-status')
+  const scanResults = document.querySelector('#inventory-scan-results')
+
+  function categoryLabel(category) {
+    return CATEGORY_LABELS[category] ?? category
+  }
+
+  function renderScanResults(results) {
+    scanResults.innerHTML = results.map((result) => {
+      const choices = [result.match, ...result.alternatives].filter(Boolean)
+      return `
+        <article class="inventory-scan-result" data-scan-result="${escapeHtml(result.id)}">
+          <img src="${escapeHtml(result.imageUrl)}" alt="${escapeHtml(result.fileName)} screenshot preview">
+          <div class="inventory-scan-copy">
+            <div class="inventory-scan-heading">
+              <div>
+                <span class="vendor-item-kind">${escapeHtml(result.fileName)}</span>
+                <strong>${escapeHtml(result.match?.displayName ?? 'Review needed')}</strong>
+              </div>
+              <span class="advisor-badge advisor-tier-${result.confidence >= 75 ? 'excellent' : result.confidence >= 50 ? 'good' : 'situational'}">${result.confidence}% match</span>
+            </div>
+            <label>
+              <span>Catalog match</span>
+              <select data-scan-match>
+                ${choices.length ? choices.map((choice, index) => `
+                  <option value="${escapeHtml(choice.category)}|||${escapeHtml(choice.name)}" ${index === 0 ? 'selected' : ''}>
+                    ${escapeHtml(choice.displayName)} · ${escapeHtml(categoryLabel(choice.category))}
+                  </option>
+                `).join('') : '<option value="">No confident match</option>'}
+              </select>
+            </label>
+            ${result.attributes.length ? `<div class="inventory-scan-details"><strong>Detected rolls</strong><ul>${result.attributes.map((attribute) => `<li>${escapeHtml(attribute)}</li>`).join('')}</ul></div>` : ''}
+            ${result.talent ? `<p><strong>Possible talent:</strong> ${escapeHtml(result.talent)}</p>` : ''}
+            <details>
+              <summary>Show OCR text</summary>
+              <pre>${escapeHtml(result.rawText)}</pre>
+            </details>
+            <div class="inventory-scan-actions">
+              <button type="button" class="primary-button" data-scan-add>Add to inventory</button>
+              <button type="button" class="text-button" data-scan-dismiss>Dismiss</button>
+            </div>
+          </div>
+        </article>
+      `
+    }).join('')
+
+    scanResults.querySelectorAll('[data-scan-add]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-scan-result]')
+        const value = card.querySelector('[data-scan-match]')?.value ?? ''
+        if (!value) {
+          window.alert('Choose a catalog match before adding this item.')
+          return
+        }
+        const [category, name] = value.split('|||')
+        const current = getQuantity(inventory, category, name)
+        setQuantity(category, name, current + 1)
+        card.classList.add('added')
+        button.disabled = true
+        button.textContent = 'Added'
+      })
+    })
+
+    scanResults.querySelectorAll('[data-scan-dismiss]').forEach((button) => {
+      button.addEventListener('click', () => button.closest('[data-scan-result]')?.remove())
+    })
+  }
+
+  scanInput?.addEventListener('change', async () => {
+    const files = [...(scanInput.files ?? [])]
+    if (!files.length) return
+
+    scanInput.disabled = true
+    scanStatus.hidden = false
+    scanStatus.className = 'inventory-scan-status working'
+
+    try {
+      const results = await scanInventoryImages(files, catalog, ({ fileName, index, total, progress, status }) => {
+        scanStatus.innerHTML = `<strong>${escapeHtml(status)}</strong><span>${escapeHtml(fileName)} · ${index + 1} of ${total} · ${progress}%</span><div class="scan-progress-track"><div style="width:${progress}%"></div></div>`
+      })
+      renderScanResults(results)
+      scanStatus.className = 'inventory-scan-status success'
+      scanStatus.innerHTML = `<strong>Scan complete</strong><span>Review ${results.length} result${results.length === 1 ? '' : 's'} below before adding them.</span>`
+    } catch (error) {
+      console.error(error)
+      scanStatus.className = 'inventory-scan-status error'
+      scanStatus.innerHTML = `<strong>Scanner could not finish</strong><span>${escapeHtml(error.message || 'Try a clearer screenshot.')}</span>`
+    } finally {
+      scanInput.disabled = false
+      scanInput.value = ''
+    }
+  })
+
 }

@@ -492,6 +492,7 @@ async function openInventoryPage() {
     })
 
     connectInventoryPage({
+      catalog,
       inventory,
       onInventoryChange:
         scheduleInventorySave,
