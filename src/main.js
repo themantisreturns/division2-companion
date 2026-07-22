@@ -56,6 +56,10 @@ import {
   normalizeBuildsState,
   renderBuildsPage,
 } from './features/builds/builds.js'
+import {
+  connectGearAdvisorPage,
+  renderGearAdvisorPage,
+} from './features/gearAdvisor/gearAdvisor.js'
 
 let currentVendorData = null
 let currentRecommendations = []
@@ -572,6 +576,14 @@ async function saveInventory() {
 
 let selectedBuildId = null
 
+function openGearAdvisorPage() {
+  const mainContent = document.querySelector('.main-content')
+
+  mainContent.innerHTML = renderGearAdvisorPage()
+
+  connectGearAdvisorPage()
+}
+
 async function openBuildsPage() {
   if (!appState.activeUser || !appState.activeProfile) {
     window.alert(
@@ -727,6 +739,7 @@ async function initializeApp() {
     openLibrary: openLibraryPage,
     openInventory: openInventoryPage,
     openBuilds: openBuildsPage,
+    openGearAdvisor: openGearAdvisorPage,
     openSettings: openSettingsPage,
   })
 
