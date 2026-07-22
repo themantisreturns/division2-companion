@@ -1,5 +1,6 @@
 import { BUILD_ARCHETYPES } from '../knowledge/knowledgeData.js'
 import { optimizeBuild } from '../../services/builds/buildOptimizer.js'
+import { generateBuildFromTemplate } from '../../services/builds/buildGenerator.js'
 function escapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -29,7 +30,7 @@ const BUILD_SLOTS = [
   { key: 'kneepads', label: 'Kneepads', categories: ['namedGear', 'exotics', 'brands', 'gearSets'] },
 ]
 
-const BUILD_TEMPLATES = [
+export const BUILD_TEMPLATES = [
   {
     id: 'striker-dps',
     name: "Striker's DPS",
@@ -447,6 +448,40 @@ function renderBuildSimulator(build) {
 
       <div class="simulator-actions">
         <button type="button" class="secondary-button" data-reset-simulator>Reset simulator rolls</button>
+      </div>
+    </section>
+  `
+}
+
+
+function renderBuildGenerator() {
+  return `
+    <section class="panel build-generator-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Intelligent build wizard</p>
+          <h2>Generate a build</h2>
+        </div>
+        <span class="build-score-badge">Uses your inventory</span>
+      </div>
+      <p class="simulator-disclaimer">Choose a playstyle, then generate the best build from items you own or create a dream build with a personalized farming list.</p>
+      <div class="build-generator-controls">
+        <label>
+          <span>Playstyle</span>
+          <select id="build-generator-template">
+            ${BUILD_TEMPLATES.map((template) => `<option value="${escapeHtml(template.id)}">${escapeHtml(template.name)} · ${escapeHtml(template.role)}</option>`).join('')}
+          </select>
+        </label>
+        <label>
+          <span>Specialization</span>
+          <select id="build-generator-specialization">
+            <option>Gunner</option><option>Technician</option><option>Firewall</option><option>Survivalist</option><option>Sharpshooter</option><option>Demolitionist</option>
+          </select>
+        </label>
+        <div class="build-generator-actions">
+          <button type="button" class="primary-button" data-generate-build="owned">Use what I own</button>
+          <button type="button" class="secondary-button" data-generate-build="dream">Create dream build</button>
+        </div>
       </div>
     </section>
   `
@@ -1172,6 +1207,8 @@ export function renderBuildsPage({
         </article>
       </section>
 
+      ${renderBuildGenerator()}
+
       ${renderTemplateLibrary()}
 
       <div class="builds-layout">
@@ -1248,6 +1285,36 @@ export function connectBuildsPage({
       onBuildsChange()
       rerender()
     })
+
+  document.querySelectorAll('[data-generate-build]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const templateId = document.querySelector('#build-generator-template')?.value
+      const specialization = document.querySelector('#build-generator-specialization')?.value ?? 'Gunner'
+      const template = BUILD_TEMPLATES.find((entry) => entry.id === templateId)
+      if (!template) return
+      const result = generateBuildFromTemplate({
+        template,
+        catalog,
+        inventory,
+        ownedOnly: button.dataset.generateBuild === 'owned',
+      })
+      const build = {
+        id: createId(),
+        name: `${template.name}${button.dataset.generateBuild === 'owned' ? ' · Owned' : ' · Dream'}`,
+        notes: `${template.description}\nSpecialization: ${specialization}\n${result.summary}`,
+        archetypeId: template.id,
+        slots: result.slots,
+        simulator: createDefaultSimulatorState(),
+        generator: { mode: button.dataset.generateBuild, specialization, missing: result.missing },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+      buildsState.builds.push(build)
+      onSelectedBuildChange(build.id)
+      onBuildsChange()
+      rerender()
+    })
+  })
 
   document
     .querySelectorAll('[data-create-template]')

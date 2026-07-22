@@ -2772,3 +2772,10 @@ h2 {
   .optimizer-slot-row { grid-template-columns: 1fr; }
   .optimizer-status { justify-self: start; }
 }
+
+.build-generator-panel { margin-bottom: 1.25rem; }
+.build-generator-controls { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(180px, .7fr) auto; gap: 1rem; align-items: end; }
+.build-generator-controls label { display: grid; gap: .45rem; }
+.build-generator-controls label span { color: var(--muted-text, #9aa3ad); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.build-generator-actions { display: flex; gap: .7rem; flex-wrap: wrap; }
+@media (max-width: 850px) { .build-generator-controls { grid-template-columns: 1fr; } .build-generator-actions button { flex: 1 1 180px; } }
