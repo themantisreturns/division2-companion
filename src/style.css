@@ -2874,3 +2874,78 @@ h2 {
 .command-check-item.done{opacity:.62}
 .command-check-item.done .checkmark{background:rgba(73,209,125,.15);border-color:rgba(73,209,125,.45);color:#49d17d}
 @media(max-width:900px){.command-priority-grid{grid-template-columns:1fr}.command-checklist{grid-template-columns:1fr}}
+
+/* v2.0 installable app, offline state, and update notices */
+.app-status-host {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 9999;
+  display: grid;
+  width: min(420px, calc(100vw - 2rem));
+  gap: 0.7rem;
+  pointer-events: none;
+}
+
+.app-status-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-left: 4px solid var(--accent, #e67e22);
+  border-radius: 0.8rem;
+  background: rgba(19, 22, 27, 0.97);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  pointer-events: auto;
+}
+
+.app-status-notice > div:first-child {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.app-status-notice strong {
+  color: #fff;
+  font-size: 0.92rem;
+}
+
+.app-status-notice span {
+  color: var(--muted, #a4abb5);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.app-status-notice.success { border-left-color: #49d17d; }
+.app-status-notice.warning { border-left-color: #f0b64d; }
+.app-status-actions { display: flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; }
+.status-action,
+.status-dismiss {
+  border: 0;
+  border-radius: 0.55rem;
+  cursor: pointer;
+}
+.status-action {
+  padding: 0.55rem 0.75rem;
+  background: var(--accent, #e67e22);
+  color: #151719;
+  font-weight: 800;
+}
+.status-dismiss {
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  color: var(--muted, #a4abb5);
+  font-size: 1.25rem;
+}
+.status-action:hover,
+.status-dismiss:hover { filter: brightness(1.12); }
+.status-action:focus-visible,
+.status-dismiss:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .app-status-host { right: 0.65rem; bottom: 0.65rem; width: calc(100vw - 1.3rem); }
+  .app-status-notice { align-items: flex-start; }
+}

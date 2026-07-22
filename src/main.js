@@ -35,6 +35,7 @@ import {
 } from './app/dashboard.js'
 import { connectNavigation } from './app/navigation.js'
 import { appState } from './app/state.js'
+import { initializePwa } from './services/pwa.js'
 import {
   initializeAuthentication,
   signInWithGitHub,
@@ -769,6 +770,7 @@ async function saveBuilds() {
 }
 
 async function initializeApp() {
+  initializePwa()
   renderDashboard()
   startResetCountdown()
 
