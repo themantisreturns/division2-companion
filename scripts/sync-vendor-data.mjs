@@ -10,7 +10,10 @@ import process from 'node:process'
 
 const ROOT = process.cwd()
 const DATA_DIR = path.join(ROOT, 'public', 'data')
+const HISTORY_DIR = path.join(DATA_DIR, 'vendor-history')
+const HISTORY_INDEX_FILE = path.join(HISTORY_DIR, 'index.json')
 const META_FILE = path.join(DATA_DIR, 'vendor-meta.json')
+const MAX_HISTORY_ENTRIES = 20
 
 const SOURCES = {
   gear: 'https://rubenalamina.mx/division/gear.json',
@@ -24,6 +27,77 @@ function hash(value) {
     .digest('hex')
 }
 
+function clean(value) {
+  return String(value ?? '')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
+function itemKey(kind, item) {
+  return [
+    kind,
+    clean(item.vendor),
+    clean(item.name),
+    clean(item.brand),
+    clean(item.slot),
+    clean(item.weaponType ?? item.type ?? item.category),
+  ].join('|')
+}
+
+function itemSignature(kind, item) {
+  return hash({
+    key: itemKey(kind, item),
+    core: clean(item.core),
+    attributes: clean(item.attributes),
+    attribute1: clean(item.attribute1),
+    attribute2: clean(item.attribute2),
+    attribute3: clean(item.attribute3),
+    talent: clean(item.talent),
+    price: clean(item.price),
+  })
+}
+
+function flatten(data) {
+  return [
+    ...data.gear.map((item) => ({ kind: 'gear', item })),
+    ...data.weapons.map((item) => ({ kind: 'weapon', item })),
+    ...data.mods.map((item) => ({ kind: 'mod', item })),
+  ]
+}
+
+function compareVendorData(previous, next) {
+  const previousMap = new Map(
+    flatten(previous).map(({ kind, item }) => [
+      itemKey(kind, item),
+      itemSignature(kind, item),
+    ]),
+  )
+  const nextMap = new Map(
+    flatten(next).map(({ kind, item }) => [
+      itemKey(kind, item),
+      itemSignature(kind, item),
+    ]),
+  )
+
+  let added = 0
+  let removed = 0
+  let changed = 0
+
+  nextMap.forEach((signature, key) => {
+    if (!previousMap.has(key)) added += 1
+    else if (previousMap.get(key) !== signature) changed += 1
+  })
+
+  previousMap.forEach((_signature, key) => {
+    if (!nextMap.has(key)) removed += 1
+  })
+
+  return { added, removed, changed }
+}
+
 async function readJson(file, fallback = null) {
   try {
     return JSON.parse(await readFile(file, 'utf8'))
@@ -33,28 +107,20 @@ async function readJson(file, fallback = null) {
 }
 
 async function fetchJsonArray(label, url) {
-  const response = await fetch(
-    `${url}?sync=${Date.now()}`,
-    {
-      headers: {
-        'user-agent':
-          'division2-companion-vendor-sync/1.0',
-      },
+  const response = await fetch(`${url}?sync=${Date.now()}`, {
+    headers: {
+      'user-agent': 'division2-companion-vendor-sync/1.8',
     },
-  )
+  })
 
   if (!response.ok) {
-    throw new Error(
-      `${label} request failed: ${response.status}`,
-    )
+    throw new Error(`${label} request failed: ${response.status}`)
   }
 
   const value = await response.json()
 
   if (!Array.isArray(value)) {
-    throw new Error(
-      `${label} response was not a JSON array`,
-    )
+    throw new Error(`${label} response was not a JSON array`)
   }
 
   return value
@@ -62,32 +128,25 @@ async function fetchJsonArray(label, url) {
 
 async function writeJsonAtomically(file, value) {
   const temporaryFile = `${file}.tmp`
-
-  await writeFile(
-    temporaryFile,
-    `${JSON.stringify(value, null, 2)}\n`,
-    'utf8',
-  )
-
+  await writeFile(temporaryFile, `${JSON.stringify(value, null, 2)}\n`, 'utf8')
   await rename(temporaryFile, file)
 }
 
-await mkdir(DATA_DIR, { recursive: true })
+function createResetId(timestamp) {
+  return timestamp.replaceAll(':', '-').replaceAll('.', '-')
+}
+
+await Promise.all([
+  mkdir(DATA_DIR, { recursive: true }),
+  mkdir(HISTORY_DIR, { recursive: true }),
+])
 
 const previousMeta = await readJson(META_FILE, {})
+const previousHistory = await readJson(HISTORY_INDEX_FILE, { entries: [] })
 const previousData = {
-  gear: await readJson(
-    path.join(DATA_DIR, 'gear.json'),
-    [],
-  ),
-  weapons: await readJson(
-    path.join(DATA_DIR, 'weapons.json'),
-    [],
-  ),
-  mods: await readJson(
-    path.join(DATA_DIR, 'mods.json'),
-    [],
-  ),
+  gear: await readJson(path.join(DATA_DIR, 'gear.json'), []),
+  weapons: await readJson(path.join(DATA_DIR, 'weapons.json'), []),
+  mods: await readJson(path.join(DATA_DIR, 'mods.json'), []),
 }
 
 const checkedAt = new Date().toISOString()
@@ -100,45 +159,80 @@ try {
   ])
 
   const nextData = { gear, weapons, mods }
-
-  const dataChanged =
-    hash(previousData) !== hash(nextData)
+  const dataChanged = hash(previousData) !== hash(nextData)
+  const comparison = compareVendorData(previousData, nextData)
 
   await Promise.all([
-    writeJsonAtomically(
-      path.join(DATA_DIR, 'gear.json'),
-      gear,
-    ),
-    writeJsonAtomically(
-      path.join(DATA_DIR, 'weapons.json'),
-      weapons,
-    ),
-    writeJsonAtomically(
-      path.join(DATA_DIR, 'mods.json'),
-      mods,
-    ),
+    writeJsonAtomically(path.join(DATA_DIR, 'gear.json'), gear),
+    writeJsonAtomically(path.join(DATA_DIR, 'weapons.json'), weapons),
+    writeJsonAtomically(path.join(DATA_DIR, 'mods.json'), mods),
   ])
 
+  let historyEntries = Array.isArray(previousHistory?.entries)
+    ? previousHistory.entries
+    : []
+  let resetId = previousMeta.resetId ?? historyEntries[0]?.id ?? null
+
+  if (dataChanged || historyEntries.length === 0) {
+    resetId = createResetId(checkedAt)
+    const snapshotFilename = `${resetId}.json`
+    const snapshot = {
+      schemaVersion: 1,
+      id: resetId,
+      capturedAt: checkedAt,
+      counts: {
+        gear: gear.length,
+        weapons: weapons.length,
+        mods: mods.length,
+        total: gear.length + weapons.length + mods.length,
+      },
+      comparison,
+      gear,
+      weapons,
+      mods,
+    }
+
+    await writeJsonAtomically(
+      path.join(HISTORY_DIR, snapshotFilename),
+      snapshot,
+    )
+
+    historyEntries = [
+      {
+        id: resetId,
+        capturedAt: checkedAt,
+        file: snapshotFilename,
+        counts: snapshot.counts,
+        comparison,
+      },
+      ...historyEntries.filter((entry) => entry.id !== resetId),
+    ].slice(0, MAX_HISTORY_ENTRIES)
+
+    await writeJsonAtomically(HISTORY_INDEX_FILE, {
+      schemaVersion: 1,
+      updatedAt: checkedAt,
+      entries: historyEntries,
+    })
+  }
+
   const metadata = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'success',
     source: 'Ruben Alamina',
+    resetId,
     lastCheckedAt: checkedAt,
     lastSuccessfulSyncAt: checkedAt,
     lastChangedAt: dataChanged
       ? checkedAt
-      : previousMeta.lastChangedAt ??
-        previousMeta.lastSuccessfulSyncAt ??
-        checkedAt,
+      : previousMeta.lastChangedAt ?? previousMeta.lastSuccessfulSyncAt ?? checkedAt,
     dataChanged,
+    comparison,
+    historyCount: historyEntries.length,
     counts: {
       gear: gear.length,
       weapons: weapons.length,
       mods: mods.length,
-      total:
-        gear.length +
-        weapons.length +
-        mods.length,
+      total: gear.length + weapons.length + mods.length,
     },
     sourceUrls: SOURCES,
     error: null,
@@ -148,13 +242,12 @@ try {
 
   console.log('Vendor synchronization succeeded.')
   console.log(`Data changed: ${dataChanged}`)
-  console.log(`Gear: ${gear.length}`)
-  console.log(`Weapons: ${weapons.length}`)
-  console.log(`Mods: ${mods.length}`)
+  console.log(`History snapshots: ${historyEntries.length}`)
+  console.log(`Added: ${comparison.added}; changed: ${comparison.changed}; removed: ${comparison.removed}`)
 } catch (error) {
   const failureMetadata = {
     ...previousMeta,
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'error',
     source: 'Ruben Alamina',
     lastCheckedAt: checkedAt,
@@ -162,14 +255,7 @@ try {
     error: error.message,
   }
 
-  await writeJsonAtomically(
-    META_FILE,
-    failureMetadata,
-  )
-
-  console.error(
-    `Vendor synchronization failed: ${error.message}`,
-  )
-
+  await writeJsonAtomically(META_FILE, failureMetadata)
+  console.error(`Vendor synchronization failed: ${error.message}`)
   process.exitCode = 1
 }

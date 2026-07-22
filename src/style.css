@@ -2779,3 +2779,83 @@ h2 {
 .build-generator-controls label span { color: var(--muted-text, #9aa3ad); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .build-generator-actions { display: flex; gap: .7rem; flex-wrap: wrap; }
 @media (max-width: 850px) { .build-generator-controls { grid-template-columns: 1fr; } .build-generator-actions button { flex: 1 1 180px; } }
+
+/* v1.8.0 vendor history */
+.vendor-history-panel {
+  margin-top: 1rem;
+}
+
+.vendor-change-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.vendor-change-grid article {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.vendor-change-grid span,
+.vendor-history-controls label > span,
+.vendor-history-snapshot-heading span {
+  display: block;
+  color: var(--muted-text, #a7adb5);
+  font-size: 0.82rem;
+}
+
+.vendor-change-grid strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.55rem;
+}
+
+.vendor-history-controls {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.vendor-history-controls label {
+  flex: 1 1 320px;
+}
+
+.vendor-history-controls select {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.vendor-history-results {
+  margin-top: 1rem;
+}
+
+.vendor-history-snapshot-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.035);
+  margin-bottom: 0.75rem;
+}
+
+.vendor-history-snapshot-list .vendor-group {
+  margin-top: 0.75rem;
+  box-shadow: none;
+}
+
+@media (max-width: 720px) {
+  .vendor-change-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vendor-history-snapshot-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -10,6 +10,7 @@ function getVendorMetaUrl() {
 function normalizeVendorMeta(value) {
   return {
     schemaVersion: Number(value?.schemaVersion) || 1,
+    resetId: value?.resetId ?? null,
     status: value?.status ?? 'unknown',
     source: value?.source ?? 'Unknown source',
     lastCheckedAt: value?.lastCheckedAt ?? null,
@@ -17,6 +18,12 @@ function normalizeVendorMeta(value) {
       value?.lastSuccessfulSyncAt ?? null,
     lastChangedAt: value?.lastChangedAt ?? null,
     dataChanged: Boolean(value?.dataChanged),
+    comparison: {
+      added: Number(value?.comparison?.added) || 0,
+      changed: Number(value?.comparison?.changed) || 0,
+      removed: Number(value?.comparison?.removed) || 0,
+    },
+    historyCount: Number(value?.historyCount) || 0,
     counts: {
       gear: Number(value?.counts?.gear) || 0,
       weapons:

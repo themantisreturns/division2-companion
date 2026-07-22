@@ -556,4 +556,122 @@ export function connectPurchaseButtons(onToggle, onWishlistToggle) {
         await onWishlistToggle(button.dataset.wishlistKey)
       })
     })
+}function formatHistoryDate(value) {
+  if (!value) return 'Unknown date'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return String(value)
+  return date.toLocaleString([], {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+}
+
+export function renderVendorHistoryPanel(history, meta) {
+  const entries = history?.entries ?? []
+  const currentChange = meta?.comparison ?? {
+    added: 0,
+    changed: 0,
+    removed: 0,
+  }
+
+  return `
+    <section class="panel vendor-history-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Automatic reset tracking</p>
+          <h2>Weekly vendor history</h2>
+        </div>
+
+        <span class="vendor-count">
+          ${entries.length} snapshot${entries.length === 1 ? '' : 's'}
+        </span>
+      </div>
+
+      <div class="vendor-change-grid">
+        <article>
+          <span>New items</span>
+          <strong>${currentChange.added}</strong>
+        </article>
+        <article>
+          <span>Changed rolls</span>
+          <strong>${currentChange.changed}</strong>
+        </article>
+        <article>
+          <span>Removed items</span>
+          <strong>${currentChange.removed}</strong>
+        </article>
+      </div>
+
+      ${
+        entries.length
+          ? `
+            <div class="vendor-history-controls">
+              <label>
+                <span>Previous reset</span>
+                <select id="vendor-history-select">
+                  ${entries
+                    .map(
+                      (entry, index) => `
+                        <option value="${entry.file}" ${index === 0 ? 'selected' : ''}>
+                          ${formatHistoryDate(entry.capturedAt)} · ${entry.counts.total} items
+                        </option>
+                      `,
+                    )
+                    .join('')}
+                </select>
+              </label>
+
+              <button
+                class="secondary-button"
+                id="view-vendor-history"
+                type="button"
+              >
+                View snapshot
+              </button>
+            </div>
+
+            <div id="vendor-history-results" class="vendor-history-results">
+              <p class="metric-note">
+                Choose a saved reset to browse its complete vendor inventory.
+              </p>
+            </div>
+          `
+          : `
+            <div class="empty-state compact-empty-state">
+              <strong>History starts with the next automatic sync</strong>
+              <p>
+                GitHub Actions will save a snapshot whenever vendor data changes.
+              </p>
+            </div>
+          `
+      }
+    </section>
+  `
+}
+
+export function renderVendorHistorySnapshot(snapshot) {
+  const allItems = getAllItems({
+    gear: snapshot?.gear ?? [],
+    weapons: snapshot?.weapons ?? [],
+    mods: snapshot?.mods ?? [],
+  })
+  const groupedItems = groupItemsByVendor(allItems)
+
+  return `
+    <div class="vendor-history-snapshot-heading">
+      <div>
+        <strong>${escapeHtml(formatHistoryDate(snapshot?.capturedAt))}</strong>
+        <span>${allItems.length} total items</span>
+      </div>
+      <span>
+        +${Number(snapshot?.comparison?.added) || 0} new ·
+        ${Number(snapshot?.comparison?.changed) || 0} changed ·
+        -${Number(snapshot?.comparison?.removed) || 0} removed
+      </span>
+    </div>
+
+    <div class="vendor-history-snapshot-list">
+      ${renderVendorGroups(groupedItems)}
+    </div>
+  `
 }

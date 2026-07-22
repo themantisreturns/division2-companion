@@ -2,7 +2,12 @@ import { appState } from '../../app/state.js'
 import { ensureVendorData } from '../../app/dataLoaders.js'
 import { renderVendorStatusPanel } from '../../app/vendorStatus.js'
 import { saveUserProfile } from '../../services/profile.js'
-import { loadVendorMeta } from '../../services/vendorMeta.js'
+import { loadVendorMeta, clearVendorMetaCache } from '../../services/vendorMeta.js'
+import {
+  clearVendorHistoryCache,
+  loadVendorHistoryIndex,
+  loadVendorHistorySnapshot,
+} from '../../services/vendorHistory.js'
 import { mergeExpertiseProgress } from '../expertise/expertise.js'
 import { normalizeInventory } from '../inventory/inventory.js'
 import { normalizeBuildsState } from '../builds/builds.js'
@@ -10,6 +15,8 @@ import {
   connectPurchaseButtons,
   connectVendorFilters,
   renderVendorPage,
+  renderVendorHistoryPanel,
+  renderVendorHistorySnapshot,
 } from './vendors.js'
 import { createVendorRecommendations } from './recommendationEngine.js'
 import {
@@ -20,6 +27,7 @@ import {
 let currentRecommendations = []
 let currentVendorData = null
 let currentVendorMeta = null
+let currentVendorHistory = { entries: [] }
 
 function renderCurrentVendorPage() {
   const purchasedIds =
@@ -43,11 +51,38 @@ function renderCurrentVendorPage() {
 
   header?.insertAdjacentHTML(
     'afterend',
-    renderVendorStatusPanel(currentVendorMeta),
+    `${renderVendorStatusPanel(currentVendorMeta)}${renderVendorHistoryPanel(currentVendorHistory, currentVendorMeta)}`,
   )
 
   connectVendorFilters()
+  connectVendorHistoryPanel()
   connectPurchaseButtons(handleTogglePurchase, handleToggleWishlist)
+}
+
+
+function connectVendorHistoryPanel() {
+  const button = document.querySelector('#view-vendor-history')
+  const select = document.querySelector('#vendor-history-select')
+  const results = document.querySelector('#vendor-history-results')
+
+  if (!button || !select || !results) return
+
+  button.addEventListener('click', async () => {
+    button.disabled = true
+    button.textContent = 'Loading…'
+    results.innerHTML = '<p class="metric-note">Loading saved reset…</p>'
+
+    try {
+      const snapshot = await loadVendorHistorySnapshot(select.value)
+      results.innerHTML = renderVendorHistorySnapshot(snapshot)
+    } catch (error) {
+      console.error(error)
+      results.innerHTML = `<p class="save-status error">Could not load snapshot: ${error.message}</p>`
+    } finally {
+      button.disabled = false
+      button.textContent = 'View snapshot'
+    }
+  })
 }
 
 async function handleTogglePurchase(
@@ -164,12 +199,17 @@ export async function openVendorPage() {
   `
 
   try {
+    clearVendorMetaCache()
+    clearVendorHistoryCache()
+
     ;[
       currentVendorData,
       currentVendorMeta,
+      currentVendorHistory,
     ] = await Promise.all([
       ensureVendorData(),
-      loadVendorMeta(),
+      loadVendorMeta({ force: true }),
+      loadVendorHistoryIndex({ force: true }),
     ])
 
     currentRecommendations = []

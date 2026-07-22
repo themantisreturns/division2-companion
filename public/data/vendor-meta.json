@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "success",
   "source": "Ruben Alamina",
   "lastCheckedAt": "2026-07-22T11:51:27.495Z",
@@ -17,5 +17,12 @@
     "weapons": "https://rubenalamina.mx/division/weapons.json",
     "mods": "https://rubenalamina.mx/division/mods.json"
   },
-  "error": null
+  "error": null,
+  "resetId": "2026-07-22T11-51-27-495Z",
+  "historyCount": 1,
+  "comparison": {
+    "added": 0,
+    "changed": 0,
+    "removed": 0
+  }
 }
