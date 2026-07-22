@@ -164,9 +164,227 @@ function createId() {
     `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+
+const ARMOR_SLOT_KEYS = ['mask', 'chest', 'holster', 'backpack', 'gloves', 'kneepads']
+const ATTRIBUTE_OPTIONS = [
+  ['none', 'None'],
+  ['chc', 'Critical Hit Chance'],
+  ['chd', 'Critical Hit Damage'],
+  ['hsd', 'Headshot Damage'],
+  ['skillDamage', 'Skill Damage'],
+  ['skillHaste', 'Skill Haste'],
+  ['repairSkills', 'Repair Skills'],
+  ['armorRegen', 'Armor Regeneration'],
+  ['hazard', 'Hazard Protection'],
+]
+
+function defaultSlotSimulator() {
+  return {
+    coreType: 'weapon',
+    coreValue: 15,
+    attribute1: 'chc',
+    attribute1Value: 6,
+    attribute2: 'chd',
+    attribute2Value: 12,
+  }
+}
+
+function createDefaultSimulatorState() {
+  return {
+    baseArmor: 726015,
+    weapon: {
+      baseDamage: 100000,
+      rpm: 700,
+      magazine: 30,
+      extraWeaponDamage: 0,
+    },
+    slots: Object.fromEntries(ARMOR_SLOT_KEYS.map((key) => [key, defaultSlotSimulator()])),
+  }
+}
+
+function finiteNumber(value, fallback = 0) {
+  const number = Number(value)
+  return Number.isFinite(number) ? number : fallback
+}
+
+function normalizeSimulatorState(value) {
+  const defaults = createDefaultSimulatorState()
+  const source = value && typeof value === 'object' ? value : {}
+  const weapon = source.weapon && typeof source.weapon === 'object' ? source.weapon : {}
+  const slots = source.slots && typeof source.slots === 'object' ? source.slots : {}
+
+  return {
+    baseArmor: finiteNumber(source.baseArmor, defaults.baseArmor),
+    weapon: {
+      baseDamage: finiteNumber(weapon.baseDamage, defaults.weapon.baseDamage),
+      rpm: finiteNumber(weapon.rpm, defaults.weapon.rpm),
+      magazine: finiteNumber(weapon.magazine, defaults.weapon.magazine),
+      extraWeaponDamage: finiteNumber(weapon.extraWeaponDamage, defaults.weapon.extraWeaponDamage),
+    },
+    slots: Object.fromEntries(ARMOR_SLOT_KEYS.map((key) => {
+      const slot = slots[key] && typeof slots[key] === 'object' ? slots[key] : {}
+      const fallback = defaults.slots[key]
+      return [key, {
+        coreType: ['weapon', 'armor', 'skill'].includes(slot.coreType) ? slot.coreType : fallback.coreType,
+        coreValue: finiteNumber(slot.coreValue, fallback.coreValue),
+        attribute1: ATTRIBUTE_OPTIONS.some(([id]) => id === slot.attribute1) ? slot.attribute1 : fallback.attribute1,
+        attribute1Value: finiteNumber(slot.attribute1Value, fallback.attribute1Value),
+        attribute2: ATTRIBUTE_OPTIONS.some(([id]) => id === slot.attribute2) ? slot.attribute2 : fallback.attribute2,
+        attribute2Value: finiteNumber(slot.attribute2Value, fallback.attribute2Value),
+      }]
+    })),
+  }
+}
+
+function formatCompactNumber(value) {
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.round(value || 0))
+}
+
+function calculateBuildStats(build) {
+  const simulator = normalizeSimulatorState(build?.simulator)
+  const totals = {
+    weaponDamage: simulator.weapon.extraWeaponDamage,
+    armor: simulator.baseArmor,
+    skillTier: 0,
+    chc: 0,
+    chd: 0,
+    hsd: 0,
+    skillDamage: 0,
+    skillHaste: 0,
+    repairSkills: 0,
+    armorRegen: 0,
+    hazard: 0,
+  }
+
+  for (const slot of Object.values(simulator.slots)) {
+    if (slot.coreType === 'weapon') totals.weaponDamage += slot.coreValue
+    if (slot.coreType === 'armor') totals.armor += slot.coreValue
+    if (slot.coreType === 'skill') totals.skillTier += slot.coreValue
+    if (slot.attribute1 !== 'none') totals[slot.attribute1] += slot.attribute1Value
+    if (slot.attribute2 !== 'none') totals[slot.attribute2] += slot.attribute2Value
+  }
+
+  const effectiveChc = Math.min(60, Math.max(0, totals.chc))
+  const shotDamage = simulator.weapon.baseDamage * (1 + totals.weaponDamage / 100)
+  const averageShot = shotDamage * (1 + (effectiveChc / 100) * (totals.chd / 100))
+  const burstDps = averageShot * Math.max(0, simulator.weapon.rpm) / 60
+  const magazineDamage = averageShot * Math.max(0, simulator.weapon.magazine)
+  const configuredSlots = Object.values(build?.slots ?? {}).filter(Boolean).length
+  const score = Math.max(0, Math.min(100, Math.round(
+    (configuredSlots / BUILD_SLOTS.length) * 45 +
+    Math.min(25, effectiveChc / 60 * 25) +
+    Math.min(20, totals.chd / 180 * 20) +
+    Math.min(10, (totals.weaponDamage + totals.skillTier * 15 + Math.max(0, totals.armor - simulator.baseArmor) / 17000) / 90),
+  )))
+
+  const warnings = []
+  if (totals.chc > 60) warnings.push(`${(totals.chc - 60).toFixed(1)}% Critical Hit Chance is above the 60% cap.`)
+  if (simulator.weapon.baseDamage <= 0 || simulator.weapon.rpm <= 0) warnings.push('Enter weapon base damage and RPM for a useful DPS estimate.')
+  if (totals.skillTier > 6) warnings.push(`Skill Tier ${totals.skillTier} exceeds the normal tier-6 cap.`)
+
+  return { simulator, totals, effectiveChc, shotDamage, averageShot, burstDps, magazineDamage, score, warnings }
+}
+
+function renderAttributeOptions(selected) {
+  return ATTRIBUTE_OPTIONS.map(([value, label]) => `<option value="${value}" ${selected === value ? 'selected' : ''}>${label}</option>`).join('')
+}
+
+function renderSimulatorSlot(build, slotKey) {
+  const slot = normalizeSimulatorState(build.simulator).slots[slotKey]
+  const slotLabel = BUILD_SLOTS.find((entry) => entry.key === slotKey)?.label ?? slotKey
+  return `
+    <article class="simulator-slot-card">
+      <strong>${escapeHtml(slotLabel)}</strong>
+      <div class="simulator-field-grid">
+        <label>
+          <span>Core</span>
+          <select data-sim-slot="${slotKey}" data-sim-field="coreType">
+            <option value="weapon" ${slot.coreType === 'weapon' ? 'selected' : ''}>Weapon Damage %</option>
+            <option value="armor" ${slot.coreType === 'armor' ? 'selected' : ''}>Armor</option>
+            <option value="skill" ${slot.coreType === 'skill' ? 'selected' : ''}>Skill Tier</option>
+          </select>
+        </label>
+        <label>
+          <span>Core value</span>
+          <input type="number" step="0.1" data-sim-slot="${slotKey}" data-sim-field="coreValue" value="${slot.coreValue}">
+        </label>
+        <label>
+          <span>Attribute 1</span>
+          <select data-sim-slot="${slotKey}" data-sim-field="attribute1">${renderAttributeOptions(slot.attribute1)}</select>
+        </label>
+        <label>
+          <span>Value</span>
+          <input type="number" step="0.1" data-sim-slot="${slotKey}" data-sim-field="attribute1Value" value="${slot.attribute1Value}">
+        </label>
+        <label>
+          <span>Attribute 2</span>
+          <select data-sim-slot="${slotKey}" data-sim-field="attribute2">${renderAttributeOptions(slot.attribute2)}</select>
+        </label>
+        <label>
+          <span>Value</span>
+          <input type="number" step="0.1" data-sim-slot="${slotKey}" data-sim-field="attribute2Value" value="${slot.attribute2Value}">
+        </label>
+      </div>
+    </article>
+  `
+}
+
+function renderBuildSimulator(build) {
+  const stats = calculateBuildStats(build)
+  const { simulator, totals } = stats
+  return `
+    <section class="panel build-simulator-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Live build simulator</p>
+          <h2>Estimated character stats</h2>
+        </div>
+        <span class="build-score-badge">Build score ${stats.score}/100</span>
+      </div>
+
+      <p class="simulator-disclaimer">Enter the visible rolls from each piece. Damage is a comparison estimate before talents, amplified damage, enemy armor, headshots, expertise, and specialization bonuses.</p>
+
+      <div class="simulator-weapon-grid">
+        <label><span>Weapon base damage</span><input type="number" data-sim-weapon="baseDamage" value="${simulator.weapon.baseDamage}"></label>
+        <label><span>RPM</span><input type="number" data-sim-weapon="rpm" value="${simulator.weapon.rpm}"></label>
+        <label><span>Magazine</span><input type="number" data-sim-weapon="magazine" value="${simulator.weapon.magazine}"></label>
+        <label><span>Other weapon damage %</span><input type="number" step="0.1" data-sim-weapon="extraWeaponDamage" value="${simulator.weapon.extraWeaponDamage}"></label>
+        <label><span>Base armor</span><input type="number" data-sim-root="baseArmor" value="${simulator.baseArmor}"></label>
+      </div>
+
+      <div class="simulator-results-grid">
+        <article><span>Weapon damage</span><strong>${totals.weaponDamage.toFixed(1)}%</strong></article>
+        <article><span>Critical chance</span><strong>${totals.chc.toFixed(1)}%</strong><small>${stats.effectiveChc.toFixed(1)}% effective</small></article>
+        <article><span>Critical damage</span><strong>${totals.chd.toFixed(1)}%</strong></article>
+        <article><span>Armor</span><strong>${formatCompactNumber(totals.armor)}</strong></article>
+        <article><span>Skill tier</span><strong>${totals.skillTier.toFixed(0)}</strong></article>
+        <article><span>Est. burst DPS</span><strong>${formatCompactNumber(stats.burstDps)}</strong></article>
+        <article><span>Average shot</span><strong>${formatCompactNumber(stats.averageShot)}</strong></article>
+        <article><span>Magazine damage</span><strong>${formatCompactNumber(stats.magazineDamage)}</strong></article>
+        <article><span>Headshot damage</span><strong>${totals.hsd.toFixed(1)}%</strong></article>
+        <article><span>Skill damage</span><strong>${totals.skillDamage.toFixed(1)}%</strong></article>
+        <article><span>Skill haste</span><strong>${totals.skillHaste.toFixed(1)}%</strong></article>
+        <article><span>Repair skills</span><strong>${totals.repairSkills.toFixed(1)}%</strong></article>
+        <article><span>Armor regen</span><strong>${formatCompactNumber(totals.armorRegen)}</strong></article>
+        <article><span>Hazard protection</span><strong>${totals.hazard.toFixed(1)}%</strong></article>
+      </div>
+
+      ${stats.warnings.length ? `<div class="simulator-warnings">${stats.warnings.map((warning) => `<p>⚠ ${escapeHtml(warning)}</p>`).join('')}</div>` : ''}
+
+      <div class="simulator-slot-grid">
+        ${ARMOR_SLOT_KEYS.map((slotKey) => renderSimulatorSlot(build, slotKey)).join('')}
+      </div>
+
+      <div class="simulator-actions">
+        <button type="button" class="secondary-button" data-reset-simulator>Reset simulator rolls</button>
+      </div>
+    </section>
+  `
+}
+
 export function createEmptyBuildsState() {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     builds: [],
     updatedAt: null,
   }
@@ -178,7 +396,7 @@ export function normalizeBuildsState(value) {
   }
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     builds: Array.isArray(value.builds)
       ? value.builds.map((build) => ({
           id: String(build.id || createId()),
@@ -189,6 +407,7 @@ export function normalizeBuildsState(value) {
             build.slots && typeof build.slots === 'object'
               ? { ...build.slots }
               : {},
+          simulator: normalizeSimulatorState(build.simulator),
           createdAt: build.createdAt || new Date().toISOString(),
           updatedAt: build.updatedAt || new Date().toISOString(),
         }))
@@ -744,6 +963,8 @@ function renderBuildEditor(build, catalog, inventory, vendorData) {
       </div>
     </section>
 
+    ${renderBuildSimulator(build)}
+
     ${renderBuildIntelligence(build, inventory, vendorData)}
 
     ${renderBuildShoppingList(
@@ -945,6 +1166,7 @@ export function connectBuildsPage({
         notes: '',
         archetypeId: '',
         slots: {},
+        simulator: createDefaultSimulatorState(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
@@ -967,6 +1189,7 @@ export function connectBuildsPage({
           notes: template.description,
           archetypeId: template.id,
           slots: templateToSlots(template, catalog),
+          simulator: createDefaultSimulatorState(),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         }
@@ -1019,6 +1242,44 @@ export function connectBuildsPage({
         rerender()
       })
     })
+
+  selectedBuild.simulator = normalizeSimulatorState(selectedBuild.simulator)
+
+  document.querySelectorAll('[data-sim-slot]').forEach((control) => {
+    control.addEventListener('change', () => {
+      const slot = selectedBuild.simulator.slots[control.dataset.simSlot]
+      const field = control.dataset.simField
+      slot[field] = control.type === 'number' ? finiteNumber(control.value) : control.value
+      selectedBuild.updatedAt = new Date().toISOString()
+      onBuildsChange()
+      rerender()
+    })
+  })
+
+  document.querySelectorAll('[data-sim-weapon]').forEach((control) => {
+    control.addEventListener('change', () => {
+      selectedBuild.simulator.weapon[control.dataset.simWeapon] = finiteNumber(control.value)
+      selectedBuild.updatedAt = new Date().toISOString()
+      onBuildsChange()
+      rerender()
+    })
+  })
+
+  document.querySelectorAll('[data-sim-root]').forEach((control) => {
+    control.addEventListener('change', () => {
+      selectedBuild.simulator[control.dataset.simRoot] = finiteNumber(control.value)
+      selectedBuild.updatedAt = new Date().toISOString()
+      onBuildsChange()
+      rerender()
+    })
+  })
+
+  document.querySelector('[data-reset-simulator]')?.addEventListener('click', () => {
+    selectedBuild.simulator = createDefaultSimulatorState()
+    selectedBuild.updatedAt = new Date().toISOString()
+    onBuildsChange()
+    rerender()
+  })
 
   document
     .querySelector('[data-delete-build]')
