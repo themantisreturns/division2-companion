@@ -2,27 +2,27 @@
   "schemaVersion": 2,
   "status": "success",
   "source": "Ruben Alamina",
-  "lastCheckedAt": "2026-07-22T11:51:27.495Z",
-  "lastSuccessfulSyncAt": "2026-07-22T11:51:27.495Z",
-  "lastChangedAt": "2026-07-21T11:51:25.311Z",
-  "dataChanged": false,
+  "resetId": "2026-07-28T12-01-25-218Z",
+  "lastCheckedAt": "2026-07-28T12:01:25.218Z",
+  "lastSuccessfulSyncAt": "2026-07-28T12:01:25.218Z",
+  "lastChangedAt": "2026-07-28T12:01:25.218Z",
+  "dataChanged": true,
+  "comparison": {
+    "added": 132,
+    "removed": 128,
+    "changed": 13
+  },
+  "historyCount": 2,
   "counts": {
-    "gear": 48,
-    "weapons": 42,
+    "gear": 47,
+    "weapons": 46,
     "mods": 54,
-    "total": 144
+    "total": 147
   },
   "sourceUrls": {
     "gear": "https://rubenalamina.mx/division/gear.json",
     "weapons": "https://rubenalamina.mx/division/weapons.json",
     "mods": "https://rubenalamina.mx/division/mods.json"
   },
-  "error": null,
-  "resetId": "2026-07-22T11-51-27-495Z",
-  "historyCount": 1,
-  "comparison": {
-    "added": 0,
-    "changed": 0,
-    "removed": 0
-  }
+  "error": null
 }
