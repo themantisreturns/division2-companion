@@ -2,20 +2,20 @@
   "schemaVersion": 2,
   "status": "success",
   "source": "Ruben Alamina",
-  "resetId": "2026-08-04T12-05-05-319Z",
-  "lastCheckedAt": "2026-08-05T12:02:18.465Z",
-  "lastSuccessfulSyncAt": "2026-08-05T12:02:18.465Z",
-  "lastChangedAt": "2026-08-04T12:05:05.319Z",
-  "dataChanged": false,
+  "resetId": "2026-08-11T10-55-21-763Z",
+  "lastCheckedAt": "2026-08-11T10:55:21.763Z",
+  "lastSuccessfulSyncAt": "2026-08-11T10:55:21.763Z",
+  "lastChangedAt": "2026-08-11T10:55:21.763Z",
+  "dataChanged": true,
   "comparison": {
-    "added": 0,
-    "removed": 0,
-    "changed": 0
+    "added": 130,
+    "removed": 129,
+    "changed": 16
   },
-  "historyCount": 3,
+  "historyCount": 4,
   "counts": {
-    "gear": 51,
-    "weapons": 42,
+    "gear": 48,
+    "weapons": 45,
     "mods": 54,
     "total": 147
   },
