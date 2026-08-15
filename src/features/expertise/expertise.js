@@ -1,5 +1,6 @@
 import { defaultExpertiseProgress } from './expertiseData.js'
 import { migrateExpertiseProgress } from './expertiseMigration.js'
+import { mergeScreenshotSnapshot } from './expertiseScreenshotSnapshot.js'
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -28,7 +29,7 @@ function normalizeItems(items = []) {
 }
 
 export function mergeExpertiseProgress(saved = {}) {
-  const migrated = migrateExpertiseProgress(saved)
+  const migrated = mergeScreenshotSnapshot(migrateExpertiseProgress(saved))
 
   return {
     ...migrated,
@@ -57,6 +58,7 @@ export function mergeExpertiseProgress(saved = {}) {
     gearSets:
       migrated.ranks?.gearSets ??
       defaultExpertiseProgress.gearSets,
+    individualRanks: migrated.individualRanks ?? {},
   }
 }
 
@@ -68,6 +70,7 @@ export function serializeExpertiseProgress(progress) {
     levelProgress: structuredClone(progress.levelProgress ?? { current: 0, total: 200 }),
     proficient: structuredClone(progress.proficient ?? { current: 0, total: 0 }),
     individual: structuredClone(progress.individual ?? {}),
+    individualRanks: structuredClone(progress.individualRanks ?? {}),
     ranks: structuredClone(progress.ranks ?? {}),
     legacySummary: structuredClone(progress.legacySummary ?? {}),
     migration: structuredClone(progress.migration ?? {}),
@@ -83,42 +86,41 @@ function groupItems(items, groupKey, fallback = 'Other') {
   }, {})
 }
 
-function renderCheckboxRows(kind, items, selected) {
-  return items
-    .map((item) => {
-      const name = itemName(item)
-      return `
-        <label
-          class="expertise-check-item"
-          data-search-name="${escapeHtml(name.toLowerCase())}"
-        >
-          <input
-            type="checkbox"
-            class="expertise-item-checkbox"
-            data-expertise-kind="${kind}"
-            data-expertise-name="${escapeHtml(name)}"
-            data-counted-state="${selected[name] === true ? 'true' : 'false'}"
-            ${selected[name] === true ? 'checked' : ''}
-          >
-          <span>${escapeHtml(name)}</span>
-        </label>
-      `
-    })
-    .join('')
+function expertiseAction(kind, rank) {
+  if (rank >= 10) return { label: 'PROFICIENT', cls: 'done' }
+  if (rank >= 7) return { label: 'FINISH NOW', cls: 'finish' }
+  if (kind === 'skills' || kind === 'specializations') return { label: 'EQUIP', cls: 'equip' }
+  if (kind === 'namedGear' || kind === 'exotics') return { label: 'MATERIALS', cls: 'materials' }
+  return { label: 'DONATE COPIES', cls: 'copies' }
+}
+
+function renderRankRows(kind, items, ranks = {}) {
+  return items.map((item) => {
+    const name = itemName(item)
+    const rank = Math.max(0, Math.min(10, Number(ranks[name]) || 0))
+    const action = expertiseAction(kind, rank)
+    return `
+      <div class="expertise-rank-row" data-search-name="${escapeHtml(name.toLowerCase())}" data-expertise-row data-kind="${kind}" data-name="${escapeHtml(name)}">
+        <div class="expertise-rank-name"><strong>${escapeHtml(name)}</strong><span class="expertise-action ${action.cls}">${action.label}</span></div>
+        <div class="expertise-rank-control">
+          <button type="button" class="expertise-rank-step" data-rank-step="-1" aria-label="Decrease ${escapeHtml(name)} rank">−</button>
+          <input class="expertise-number expertise-individual-rank" type="number" min="0" max="10" value="${rank}" data-individual-rank-kind="${kind}" data-individual-rank-name="${escapeHtml(name)}">
+          <button type="button" class="expertise-rank-step" data-rank-step="1" aria-label="Increase ${escapeHtml(name)} rank">+</button>
+        </div>
+      </div>`
+  }).join('')
 }
 
 function renderGroupedChecklistSection({
   title,
   kind,
   items,
-  selected = {},
+  ranks = {},
   groupKey,
   groupOrder = [],
 }) {
   const normalized = normalizeItems(items)
-  const checkedCount = normalized.filter(
-    (item) => selected[item.name] === true,
-  ).length
+  const checkedCount = normalized.filter((item) => (Number(ranks[item.name]) || 0) >= 10).length
   const groups = groupItems(normalized, groupKey)
   const orderedGroups = [
     ...groupOrder.filter((name) => groups[name]),
@@ -149,9 +151,7 @@ function renderGroupedChecklistSection({
         ${orderedGroups
           .map((groupName, index) => {
             const groupItemsList = groups[groupName]
-            const groupChecked = groupItemsList.filter(
-              (item) => selected[item.name] === true,
-            ).length
+            const groupChecked = groupItemsList.filter((item) => (Number(ranks[item.name]) || 0) >= 10).length
 
             return `
               <details class="expertise-accordion" ${index === 0 ? 'open' : ''}>
@@ -160,7 +160,7 @@ function renderGroupedChecklistSection({
                   <span class="expertise-group-count">${groupChecked}/${groupItemsList.length}</span>
                 </summary>
                 <div class="expertise-checklist">
-                  ${renderCheckboxRows(kind, groupItemsList, selected)}
+                  ${renderRankRows(kind, groupItemsList, ranks)}
                 </div>
               </details>
             `
@@ -275,12 +275,21 @@ export function renderExpertisePage(progress, catalog) {
         <div class="expertise-scan-status" id="expertise-scan-status" hidden aria-live="polite"></div>
       </section>
 
+      <section class="expertise-planner" id="expertise-planner">
+        <div class="panel-heading">
+          <div><p class="eyebrow">Road to Expertise 30</p><h2>What should I work on next?</h2></div>
+          <span class="vendor-count" id="expertise-ranks-remaining">Calculating…</span>
+        </div>
+        <div class="expertise-plan-grid" id="expertise-plan-grid"></div>
+        <p class="metric-note">Finish rank 7–9 items first. Equip unfinished skills/brands/sets while playing; donate duplicate normal weapons and gear; save material donations for rare named/exotic items.</p>
+      </section>
+
       <div class="expertise-page-grid expertise-v2-grid">
         ${renderGroupedChecklistSection({
           title: 'Weapons',
           kind: 'weapons',
           items: catalog.weapons,
-          selected: progress.individual?.weapons,
+          ranks: progress.individualRanks?.weapons,
           groupKey: (item) => item.category,
           groupOrder: weaponOrder,
         })}
@@ -289,7 +298,7 @@ export function renderExpertisePage(progress, catalog) {
           title: 'Named Gear',
           kind: 'namedGear',
           items: catalog.namedGear,
-          selected: progress.individual?.namedGear,
+          ranks: progress.individualRanks?.namedGear,
           groupKey: (item) => item.slot,
           groupOrder: gearOrder,
         })}
@@ -298,7 +307,7 @@ export function renderExpertisePage(progress, catalog) {
           title: 'Exotic Gear',
           kind: 'exotics',
           items: catalog.exotics,
-          selected: progress.individual?.exotics,
+          ranks: progress.individualRanks?.exotics,
           groupKey: (item) => item.category,
           groupOrder: gearOrder,
         })}
@@ -307,7 +316,7 @@ export function renderExpertisePage(progress, catalog) {
           title: 'Skills',
           kind: 'skills',
           items: catalog.skills,
-          selected: progress.individual?.skills,
+          ranks: progress.individualRanks?.skills,
           groupKey: (item) => item.family,
         })}
 
@@ -315,7 +324,7 @@ export function renderExpertisePage(progress, catalog) {
           title: 'Specializations',
           kind: 'specializations',
           items: catalog.specializations,
-          selected: progress.individual?.specializations,
+          ranks: progress.individualRanks?.specializations,
           groupKey: () => 'Specialization Weapons',
           groupOrder: ['Specialization Weapons'],
         })}
@@ -325,6 +334,49 @@ export function renderExpertisePage(progress, catalog) {
       </div>
     </section>
   `
+}
+
+function collectPlannerRows() {
+  return [...document.querySelectorAll('[data-expertise-row]')].map((row) => {
+    const input = row.querySelector('.expertise-individual-rank')
+    return { row, kind: row.dataset.kind, name: row.dataset.name, rank: Math.max(0, Math.min(10, Number(input?.value) || 0)) }
+  })
+}
+
+export function updateExpertisePlanner() {
+  const rows = collectPlannerRows()
+  const brandRows = [...document.querySelectorAll('[data-rank-kind]')].map((input) => ({ kind: input.dataset.rankKind, name: input.dataset.rankName, rank: Math.max(0, Math.min(10, Number(input.value) || 0)) }))
+  const all = [...rows, ...brandRows]
+  const remaining = all.reduce((sum, item) => sum + (10 - item.rank), 0)
+  const remainingEl = document.querySelector('#expertise-ranks-remaining')
+  if (remainingEl) remainingEl.textContent = `${remaining.toLocaleString()} proficiency ranks remaining`
+
+  const quick = all.filter((x) => x.rank < 10).sort((a,b) => (10-a.rank)-(10-b.rank) || b.rank-a.rank).sort((a,b) => (10-a.rank) - (10-b.rank)).slice(0, 8)
+  const grid = document.querySelector('#expertise-plan-grid')
+  if (grid) grid.innerHTML = quick.length ? quick.map((item) => {
+    const action = expertiseAction(item.kind, item.rank)
+    return `<div class="expertise-plan-card"><span class="expertise-action ${action.cls}">${action.label}</span><strong>${escapeHtml(item.name)}</strong><span>Rank ${item.rank}/10 · ${10-item.rank} to go</span></div>`
+  }).join('') : '<div class="expertise-plan-card"><strong>Everything tracked is proficient.</strong><span>Nice work, Agent.</span></div>'
+
+  document.querySelectorAll('.expertise-rank-row').forEach((row) => {
+    const input = row.querySelector('.expertise-individual-rank')
+    const badge = row.querySelector('.expertise-action')
+    const action = expertiseAction(row.dataset.kind, Number(input?.value) || 0)
+    if (badge) { badge.textContent = action.label; badge.className = `expertise-action ${action.cls}` }
+  })
+}
+
+export function connectExpertiseRankControls(onChange) {
+  document.querySelectorAll('.expertise-rank-step').forEach((button) => {
+    button.addEventListener('click', () => {
+      const input = button.parentElement?.querySelector('.expertise-individual-rank')
+      if (!input) return
+      input.value = Math.max(0, Math.min(10, (Number(input.value) || 0) + Number(button.dataset.rankStep || 0)))
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+  })
+  document.querySelectorAll('.expertise-individual-rank, [data-rank-kind]').forEach((input) => input.addEventListener('input', () => { updateExpertisePlanner(); onChange?.() }))
+  updateExpertisePlanner()
 }
 
 export function connectExpertiseFilters() {
@@ -382,6 +434,17 @@ export function updateExpertiseLiveCounts(changedInput = null) {
 }
 
 export function connectExpertiseLiveCounts() {
+  updated.individualRanks ??= {}
+  document.querySelectorAll('.expertise-individual-rank').forEach((input) => {
+    const kind = input.dataset.individualRankKind
+    const name = input.dataset.individualRankName
+    updated.individualRanks[kind] ??= {}
+    const rank = Math.max(0, Math.min(10, Number(input.value) || 0))
+    updated.individualRanks[kind][name] = rank
+    updated.individual[kind] ??= {}
+    updated.individual[kind][name] = rank >= 10
+  })
+
   document.querySelectorAll('.expertise-item-checkbox').forEach((input) => {
     input.addEventListener('input', () => updateExpertiseLiveCounts(input))
   })
@@ -401,6 +464,17 @@ export function readExpertiseForm(progress) {
     current: Math.max(0, Number(document.querySelector('#expertise-proficient-current')?.value) || 0),
     total: Math.max(0, Number(document.querySelector('#expertise-proficient-total')?.value) || 0),
   }
+
+  updated.individualRanks ??= {}
+  document.querySelectorAll('.expertise-individual-rank').forEach((input) => {
+    const kind = input.dataset.individualRankKind
+    const name = input.dataset.individualRankName
+    updated.individualRanks[kind] ??= {}
+    const rank = Math.max(0, Math.min(10, Number(input.value) || 0))
+    updated.individualRanks[kind][name] = rank
+    updated.individual[kind] ??= {}
+    updated.individual[kind][name] = rank >= 10
+  })
 
   document.querySelectorAll('.expertise-item-checkbox').forEach((input) => {
     const kind = input.dataset.expertiseKind

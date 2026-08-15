@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-22T20:03:36.868Z",
+  "generatedAt": "2026-08-15T01:34:19.061Z",
   "expectedCounts": {
     "weapons": {
       "total": 271
@@ -19,7 +19,7 @@
   },
   "sourceSummary": {
     "weeklyGear": 48,
-    "weeklyWeapons": 42,
+    "weeklyWeapons": 45,
     "weeklyMods": 54,
     "manualWeapons": 271,
     "catalogWeaponRecords": 271,
@@ -46,9 +46,10 @@
       {
         "name": "93R",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "93r"
+        "id": "93r",
+        "itemType": "standard"
       },
       {
         "name": "Achilles",
@@ -61,10 +62,9 @@
       {
         "name": "ACR",
         "category": "Assault Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "acr",
-        "itemType": "standard"
+        "id": "acr"
       },
       {
         "name": "ACR SS",
@@ -76,9 +76,10 @@
       {
         "name": "ACR-E",
         "category": "Assault Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "acr-e"
+        "id": "acr-e",
+        "itemType": "standard"
       },
       {
         "name": "ACS-12",
@@ -158,10 +159,10 @@
       {
         "name": "Big Show",
         "category": "LMGs",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "big-show",
-        "itemType": "named"
+        "id": "big-show"
       },
       {
         "name": "Black Friday",
@@ -202,9 +203,10 @@
       {
         "name": "Black Market T821",
         "category": "SMGs",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "black-market-t821"
+        "id": "black-market-t821",
+        "itemType": "standard"
       },
       {
         "name": "Bluescreen",
@@ -217,10 +219,10 @@
       {
         "name": "Boomstick",
         "category": "Shotguns",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "boomstick"
+        "id": "boomstick",
+        "itemType": "named"
       },
       {
         "name": "Born Great",
@@ -233,10 +235,10 @@
       {
         "name": "Brutus",
         "category": "Marksman Rifles",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "brutus",
-        "itemType": "named"
+        "id": "brutus"
       },
       {
         "name": "Bullet King",
@@ -249,10 +251,10 @@
       {
         "name": "Burn Out",
         "category": "Assault Rifles",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "burn-out"
+        "id": "burn-out",
+        "itemType": "named"
       },
       {
         "name": "Busy Little Bee",
@@ -327,9 +329,10 @@
       {
         "name": "Classic M1A",
         "category": "Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "classic-m1a"
+        "id": "classic-m1a",
+        "itemType": "standard"
       },
       {
         "name": "Classic M44 Carbine",
@@ -370,10 +373,10 @@
       {
         "name": "Commando",
         "category": "Marksman Rifles",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "commando",
-        "itemType": "named"
+        "id": "commando"
       },
       {
         "name": "Converted SMG-9",
@@ -400,10 +403,10 @@
       {
         "name": "Cricket",
         "category": "LMGs",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "cricket"
+        "id": "cricket",
+        "itemType": "named"
       },
       {
         "name": "CTAR-21",
@@ -415,10 +418,10 @@
       {
         "name": "Cuélebre",
         "category": "Shotguns",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "cuelebre",
-        "itemType": "named"
+        "id": "cuelebre"
       },
       {
         "name": "Custom L86 A2",
@@ -451,9 +454,10 @@
       {
         "name": "Custom PF45",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "custom-pf45"
+        "id": "custom-pf45",
+        "itemType": "standard"
       },
       {
         "name": "D50",
@@ -465,10 +469,10 @@
       {
         "name": "Dare",
         "category": "LMGs",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "dare"
+        "id": "dare",
+        "itemType": "named"
       },
       {
         "name": "Dark Winter",
@@ -497,9 +501,10 @@
       {
         "name": "Diceros",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "diceros"
+        "id": "diceros",
+        "itemType": "standard"
       },
       {
         "name": "Diceros Special",
@@ -609,10 +614,9 @@
       {
         "name": "FAL SA-58",
         "category": "Assault Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "fal-sa-58",
-        "itemType": "standard"
+        "id": "fal-sa-58"
       },
       {
         "name": "FAL SA-58 Para",
@@ -624,10 +628,9 @@
       {
         "name": "FAMAS 2010",
         "category": "Assault Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "famas-2010",
-        "itemType": "standard"
+        "id": "famas-2010"
       },
       {
         "name": "Firestarter",
@@ -656,10 +659,9 @@
       {
         "name": "First Wave PF45",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "first-wave-pf45",
-        "itemType": "standard"
+        "id": "first-wave-pf45"
       },
       {
         "name": "Froth",
@@ -672,9 +674,10 @@
       {
         "name": "G28",
         "category": "Marksman Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "g28"
+        "id": "g28",
+        "itemType": "standard"
       },
       {
         "name": "G28 Marksman Rifle",
@@ -732,17 +735,18 @@
       {
         "name": "Good Times",
         "category": "LMGs",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "good-times"
+        "id": "good-times",
+        "itemType": "named"
       },
       {
         "name": "GR9",
         "category": "LMGs",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "gr9"
+        "id": "gr9",
+        "itemType": "standard"
       },
       {
         "name": "Grown Great",
@@ -785,9 +789,10 @@
       {
         "name": "Hunting M44",
         "category": "Marksman Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "hunting-m44"
+        "id": "hunting-m44",
+        "itemType": "standard"
       },
       {
         "name": "Huntsman",
@@ -847,9 +852,10 @@
       {
         "name": "KARD-45",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "kard-45"
+        "id": "kard-45",
+        "itemType": "standard"
       },
       {
         "name": "Kingbreaker",
@@ -884,10 +890,10 @@
       {
         "name": "Lefty",
         "category": "Shotguns",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "lefty",
-        "itemType": "named"
+        "id": "lefty"
       },
       {
         "name": "Lexington",
@@ -916,17 +922,18 @@
       {
         "name": "Lightweight M4",
         "category": "Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "lightweight-m4"
+        "id": "lightweight-m4",
+        "itemType": "standard"
       },
       {
         "name": "Like Glue",
         "category": "Shotguns",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "like-glue",
-        "itemType": "named"
+        "id": "like-glue"
       },
       {
         "name": "Lockdown",
@@ -955,10 +962,9 @@
       {
         "name": "LVOA-C",
         "category": "Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "lvoa-c",
-        "itemType": "standard"
+        "id": "lvoa-c"
       },
       {
         "name": "M16A2",
@@ -970,25 +976,24 @@
       {
         "name": "M1911",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "m1911",
-        "itemType": "standard"
+        "id": "m1911"
       },
       {
         "name": "M1928",
         "category": "SMGs",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "m1928",
-        "itemType": "standard"
+        "id": "m1928"
       },
       {
         "name": "M1A CQB",
         "category": "Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "m1a-cqb"
+        "id": "m1a-cqb",
+        "itemType": "standard"
       },
       {
         "name": "M249 B",
@@ -1000,18 +1005,16 @@
       {
         "name": "M45A1",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "m45a1",
-        "itemType": "standard"
+        "id": "m45a1"
       },
       {
         "name": "M700 Carbon",
         "category": "Marksman Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "m700-carbon",
-        "itemType": "standard"
+        "id": "m700-carbon"
       },
       {
         "name": "M700 Tactical",
@@ -1046,10 +1049,9 @@
       {
         "name": "Marine Super 90",
         "category": "Shotguns",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "marine-super-90",
-        "itemType": "standard"
+        "id": "marine-super-90"
       },
       {
         "name": "Maxim 9",
@@ -1077,10 +1079,9 @@
       {
         "name": "MG5",
         "category": "LMGs",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "mg5",
-        "itemType": "standard"
+        "id": "mg5"
       },
       {
         "name": "Military G36",
@@ -1170,9 +1171,10 @@
       {
         "name": "Model 700",
         "category": "Marksman Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "model-700"
+        "id": "model-700",
+        "itemType": "standard"
       },
       {
         "name": "Mosquito",
@@ -1207,10 +1209,9 @@
       {
         "name": "MP5A2",
         "category": "SMGs",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "mp5a2",
-        "itemType": "standard"
+        "id": "mp5a2"
       },
       {
         "name": "MP7",
@@ -1358,10 +1359,9 @@
       {
         "name": "Police 686 Magnum",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "police-686-magnum",
-        "itemType": "standard"
+        "id": "police-686-magnum"
       },
       {
         "name": "Police M4",
@@ -1388,10 +1388,9 @@
       {
         "name": "Police UMP-45",
         "category": "SMGs",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "police-ump-45",
-        "itemType": "standard"
+        "id": "police-ump-45"
       },
       {
         "name": "PP-19",
@@ -1403,10 +1402,10 @@
       {
         "name": "Prophet",
         "category": "Pistols",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "prophet"
+        "id": "prophet",
+        "itemType": "named"
       },
       {
         "name": "Purist",
@@ -1419,25 +1418,25 @@
       {
         "name": "Px4 Storm Type F",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "px4-storm-type-f",
-        "itemType": "standard"
+        "id": "px4-storm-type-f"
       },
       {
         "name": "Px4 Storm Type T",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "px4-storm-type-t"
+        "id": "px4-storm-type-t",
+        "itemType": "standard"
       },
       {
         "name": "Pyromaniac",
         "category": "Assault Rifles",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "pyromaniac",
-        "itemType": "named"
+        "id": "pyromaniac"
       },
       {
         "name": "Quickstep",
@@ -1521,10 +1520,9 @@
       {
         "name": "SASG-12",
         "category": "Shotguns",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "sasg-12",
-        "itemType": "standard"
+        "id": "sasg-12"
       },
       {
         "name": "Savage Wolverine",
@@ -1577,9 +1575,10 @@
       {
         "name": "SIG 556",
         "category": "Assault Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "sig-556"
+        "id": "sig-556",
+        "itemType": "standard"
       },
       {
         "name": "SIG 716",
@@ -1591,10 +1590,9 @@
       {
         "name": "SIG 716 CQB",
         "category": "Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "sig-716-cqb",
-        "itemType": "standard"
+        "id": "sig-716-cqb"
       },
       {
         "name": "SIX12",
@@ -1650,31 +1648,33 @@
       {
         "name": "SOCOM Mk20 SSR",
         "category": "Marksman Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "socom-mk20-ssr",
-        "itemType": "standard"
+        "id": "socom-mk20-ssr"
       },
       {
         "name": "SPAS-12",
         "category": "Shotguns",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "spas-12"
+        "id": "spas-12",
+        "itemType": "standard"
       },
       {
         "name": "SR-1",
         "category": "Marksman Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "sr-1"
+        "id": "sr-1",
+        "itemType": "standard"
       },
       {
         "name": "SRS A1",
         "category": "Marksman Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "srs-a1"
+        "id": "srs-a1",
+        "itemType": "standard"
       },
       {
         "name": "St. Elmo's Engine",
@@ -1725,10 +1725,9 @@
       {
         "name": "Surplus SVD",
         "category": "Marksman Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "surplus-svd",
-        "itemType": "standard"
+        "id": "surplus-svd"
       },
       {
         "name": "Survivalist D50",
@@ -1764,10 +1763,10 @@
       {
         "name": "Tabula Rasa",
         "category": "LMGs",
-        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "tabula-rasa"
+        "id": "tabula-rasa",
+        "itemType": "named"
       },
       {
         "name": "Tactical .308",
@@ -1801,9 +1800,10 @@
       {
         "name": "Tactical SASG-12 K",
         "category": "Shotguns",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "tactical-sasg-12-k"
+        "id": "tactical-sasg-12-k",
+        "itemType": "standard"
       },
       {
         "name": "Tactical UMP-45",
@@ -1815,16 +1815,18 @@
       {
         "name": "Tactical Vector SBR 9mm",
         "category": "SMGs",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "tactical-vector-sbr-9mm"
+        "id": "tactical-vector-sbr-9mm",
+        "itemType": "standard"
       },
       {
         "name": "TDI Kard Custom",
         "category": "Pistols",
-        "itemType": "standard",
+        "rarity": "header-named",
         "source": "expertise-catalog-v2",
-        "id": "tdi-kard-custom"
+        "id": "tdi-kard-custom",
+        "itemType": "standard"
       },
       {
         "name": "Tempest",
@@ -1973,10 +1975,10 @@
       {
         "name": "The White Death",
         "category": "Marksman Rifles",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "the-white-death",
-        "itemType": "named"
+        "id": "the-white-death"
       },
       {
         "name": "Thorn",
@@ -2019,24 +2021,25 @@
       {
         "name": "UIC15 MOD2",
         "category": "Rifles",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "uic15-mod2",
-        "itemType": "standard"
+        "id": "uic15-mod2"
       },
       {
         "name": "Urban MDR",
         "category": "Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "urban-mdr"
+        "id": "urban-mdr",
+        "itemType": "standard"
       },
       {
         "name": "USC .45 ACP",
         "category": "Rifles",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "usc-45-acp"
+        "id": "usc-45-acp",
+        "itemType": "standard"
       },
       {
         "name": "Vector SBR .45 ACP",
@@ -2048,9 +2051,10 @@
       {
         "name": "Vector SBR 9mm",
         "category": "SMGs",
-        "itemType": "standard",
+        "rarity": "header-he",
         "source": "expertise-catalog-v2",
-        "id": "vector-sbr-9mm"
+        "id": "vector-sbr-9mm",
+        "itemType": "standard"
       },
       {
         "name": "Vindicator",
@@ -2063,18 +2067,17 @@
       {
         "name": "Whisper",
         "category": "Rifles",
+        "itemType": "named",
         "rarity": "named",
         "source": "expertise-catalog-v2",
-        "id": "whisper",
-        "itemType": "named"
+        "id": "whisper"
       },
       {
         "name": "X-45",
         "category": "Pistols",
-        "rarity": "header-he",
+        "itemType": "standard",
         "source": "expertise-catalog-v2",
-        "id": "x-45",
-        "itemType": "standard"
+        "id": "x-45"
       },
       {
         "name": "X-45 Tactical",
@@ -2100,6 +2103,7 @@
       {
         "name": "Axel",
         "slot": "Backpack",
+        "brand": "Shiny Monkey Gear",
         "source": "prototrack-2026",
         "id": "axel"
       },
@@ -2136,6 +2140,7 @@
       {
         "name": "Caesar's Guard",
         "slot": "Chest",
+        "brand": "Empress International",
         "source": "prototrack-2026",
         "id": "caesar-s-guard"
       },
@@ -2214,7 +2219,6 @@
       {
         "name": "Door-Kicker's Knock",
         "slot": "Chest",
-        "brand": "Grupo Sombra S.A.",
         "source": "prototrack-2026",
         "id": "door-kicker-s-knock"
       },
@@ -2257,6 +2261,7 @@
       {
         "name": "Firm Handshake",
         "slot": "Gloves",
+        "brand": "Sokolov Concern",
         "source": "prototrack-2026",
         "id": "firm-handshake"
       },
@@ -2295,13 +2300,6 @@
         "slot": "Backpack",
         "source": "prototrack-2026",
         "id": "hermano"
-      },
-      {
-        "name": "Hermano Backpack",
-        "slot": "Backpack",
-        "brand": "Brazos de Arcabuz",
-        "source": "weekly-vendor-seed",
-        "id": "hermano-backpack"
       },
       {
         "name": "Hunter-Killer",
@@ -2403,7 +2401,6 @@
       {
         "name": "Sleight",
         "slot": "Chest",
-        "brand": "Urban Lookout",
         "source": "prototrack-2026",
         "id": "sleight"
       },
@@ -3181,16 +3178,28 @@
     ],
     "mods": [
       {
-        "name": "Carbon Fiber Frame",
+        "name": "Backpack Battery",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "carbon-fiber-frame"
+        "id": "backpack-battery"
       },
       {
-        "name": "Decoy Housing Shell",
+        "name": "Brushless DC-motor",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "decoy-housing-shell"
+        "id": "brushless-dc-motor"
+      },
+      {
+        "name": "Cementitious Material",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "cementitious-material"
+      },
+      {
+        "name": "Cooling Vents",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "cooling-vents"
       },
       {
         "name": "Decoy Projector Internals",
@@ -3217,16 +3226,16 @@
         "id": "defensive-system-mending"
       },
       {
-        "name": "Distributed Architecture",
+        "name": "Disintegrating Links",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "distributed-architecture"
+        "id": "disintegrating-links"
       },
       {
-        "name": "Electric Soldering Tool",
+        "name": "Ecotoxicology Research",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "electric-soldering-tool"
+        "id": "ecotoxicology-research"
       },
       {
         "name": "Exploded Blueprint",
@@ -3235,16 +3244,10 @@
         "id": "exploded-blueprint"
       },
       {
-        "name": "Extra Payload",
+        "name": "Freedom Package",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "extra-payload"
-      },
-      {
-        "name": "Feed Strip",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "feed-strip"
+        "id": "freedom-package"
       },
       {
         "name": "Gaffer Tape",
@@ -3253,28 +3256,10 @@
         "id": "gaffer-tape"
       },
       {
-        "name": "Graphene Battery",
+        "name": "Hardened Casing",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "graphene-battery"
-      },
-      {
-        "name": "Guiding System",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "guiding-system"
-      },
-      {
-        "name": "Hydrocloric Infusion",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "hydrocloric-infusion"
-      },
-      {
-        "name": "Improved Sticky Launcher",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "improved-sticky-launcher"
+        "id": "hardened-casing"
       },
       {
         "name": "Improved Sticky Payload",
@@ -3283,28 +3268,28 @@
         "id": "improved-sticky-payload"
       },
       {
-        "name": "Larrea Tridentata Infusion",
+        "name": "Magnetic Disc",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "larrea-tridentata-infusion"
+        "id": "magnetic-disc"
       },
       {
-        "name": "Magnetic Rail",
+        "name": "Micropulse Frequency",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "magnetic-rail"
+        "id": "micropulse-frequency"
       },
       {
-        "name": "Network Firewall",
+        "name": "Microwave Amplifier",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "network-firewall"
+        "id": "microwave-amplifier"
       },
       {
-        "name": "Nitroglycerin Mixture",
+        "name": "Nickel-Chromium Wire",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "nitroglycerin-mixture"
+        "id": "nickel-chromium-wire"
       },
       {
         "name": "Offensive Protocol: Critical",
@@ -3313,16 +3298,16 @@
         "id": "offensive-protocol-critical"
       },
       {
-        "name": "Offensive Protocol: Dexterity",
+        "name": "Offensive System: Dexterity",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "offensive-protocol-dexterity"
+        "id": "offensive-system-dexterity"
       },
       {
-        "name": "Offensive Protocol: Firearms",
+        "name": "Offensive System: Firearms",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "offensive-protocol-firearms"
+        "id": "offensive-system-firearms"
       },
       {
         "name": "Organic Circuits",
@@ -3331,40 +3316,46 @@
         "id": "organic-circuits"
       },
       {
-        "name": "Pharmacokinetic Enhancer",
-        "category": "mod",
-        "source": "weekly-vendor-seed",
-        "id": "pharmacokinetic-enhancer"
-      },
-      {
         "name": "Phosphorus Ingredient",
         "category": "mod",
         "source": "weekly-vendor-seed",
         "id": "phosphorus-ingredient"
       },
       {
-        "name": "Russian Doll Protocol",
+        "name": "Piranha Solution",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "russian-doll-protocol"
+        "id": "piranha-solution"
       },
       {
-        "name": "Shape-memory Alloy",
+        "name": "Propantriol Adhesive",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "shape-memory-alloy"
+        "id": "propantriol-adhesive"
       },
       {
-        "name": "Smart UHMWPE Lexicon",
+        "name": "Slip Fit Tube",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "smart-uhmwpe-lexicon"
+        "id": "slip-fit-tube"
       },
       {
-        "name": "Super Glue",
+        "name": "Steel Harness",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "super-glue"
+        "id": "steel-harness"
+      },
+      {
+        "name": "Swarm Control",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "swarm-control"
+      },
+      {
+        "name": "Terminal Ballistics",
+        "category": "mod",
+        "source": "weekly-vendor-seed",
+        "id": "terminal-ballistics"
       },
       {
         "name": "Titanium Reinforcement",
@@ -3385,10 +3376,10 @@
         "id": "trap-electronics-upgrade"
       },
       {
-        "name": "Trauma Analyzer",
+        "name": "Ultra-Thin Cartridges",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "trauma-analyzer"
+        "id": "ultra-thin-cartridges"
       },
       {
         "name": "Utility Protocol: Intensity",
@@ -3409,10 +3400,10 @@
         "id": "utility-system-electronics"
       },
       {
-        "name": "Vac Pack",
+        "name": "Weather Coating",
         "category": "mod",
         "source": "weekly-vendor-seed",
-        "id": "vac-pack"
+        "id": "weather-coating"
       }
     ]
   }
