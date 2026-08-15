@@ -1,3 +1,11 @@
+## v2.2.2 — Expertise Screenshot Inference
+
+- Reinterpreted the 66 Expertise screenshots using the clarification that weapons/gear not shown were already Proficient.
+- Inferred Rank 10 for catalog weapons, named gear, and exotic gear absent from the screenshot set.
+- Preserves all higher/newer saved ranks and never downgrades current progress.
+- Keeps screenshot-visible items editable when their exact rank was not confidently readable.
+- Added migration metadata so the revised snapshot applies once.
+
 # Changelog
 
 All notable changes to this project are documented here.
