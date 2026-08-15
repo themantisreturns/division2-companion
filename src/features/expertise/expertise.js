@@ -434,17 +434,8 @@ export function updateExpertiseLiveCounts(changedInput = null) {
 }
 
 export function connectExpertiseLiveCounts() {
-  updated.individualRanks ??= {}
-  document.querySelectorAll('.expertise-individual-rank').forEach((input) => {
-    const kind = input.dataset.individualRankKind
-    const name = input.dataset.individualRankName
-    updated.individualRanks[kind] ??= {}
-    const rank = Math.max(0, Math.min(10, Number(input.value) || 0))
-    updated.individualRanks[kind][name] = rank
-    updated.individual[kind] ??= {}
-    updated.individual[kind][name] = rank >= 10
-  })
-
+  // Rank inputs are handled by connectExpertiseRankControls().
+  // This listener remains for legacy checkbox-based catalog entries.
   document.querySelectorAll('.expertise-item-checkbox').forEach((input) => {
     input.addEventListener('input', () => updateExpertiseLiveCounts(input))
   })
