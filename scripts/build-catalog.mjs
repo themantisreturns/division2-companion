@@ -37,7 +37,7 @@ function uniqueByName(items) {
     const name = clean(item?.name ?? item)
     if (!name) continue
 
-    const key = name.toLocaleLowerCase()
+    const key = slug(name)
     const existing = map.get(key) ?? {}
 
     map.set(key, {

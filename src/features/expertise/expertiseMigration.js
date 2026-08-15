@@ -1,4 +1,4 @@
-const CURRENT_SCHEMA_VERSION = 2
+const CURRENT_SCHEMA_VERSION = 3
 
 function clone(value) {
   return structuredClone(value)
@@ -54,6 +54,14 @@ export function createEmptyExpertiseProfile() {
       specializations: {},
     },
 
+    individualRanks: {
+      weapons: {},
+      namedGear: {},
+      exotics: {},
+      skills: {},
+      specializations: {},
+    },
+
     ranks: {
       brands: {},
       gearSets: {},
@@ -76,8 +84,7 @@ export function migrateExpertiseProgress(savedProgress = {}) {
   const emptyProfile = createEmptyExpertiseProfile()
 
   if (
-    Number(savedProgress.schemaVersion) ===
-    CURRENT_SCHEMA_VERSION
+    [2, CURRENT_SCHEMA_VERSION].includes(Number(savedProgress.schemaVersion))
   ) {
     return {
       ...emptyProfile,
@@ -108,14 +115,17 @@ export function migrateExpertiseProgress(savedProgress = {}) {
         ),
       },
 
-      ranks: {
-        brands: normalizeRankMap(
-          savedProgress.ranks?.brands,
-        ),
+      individualRanks: {
+        weapons: normalizeRankMap(savedProgress.individualRanks?.weapons ?? Object.fromEntries(Object.entries(savedProgress.individual?.weapons ?? {}).map(([k,v]) => [k, v ? 10 : 0]))),
+        namedGear: normalizeRankMap(savedProgress.individualRanks?.namedGear ?? Object.fromEntries(Object.entries(savedProgress.individual?.namedGear ?? {}).map(([k,v]) => [k, v ? 10 : 0]))),
+        exotics: normalizeRankMap(savedProgress.individualRanks?.exotics ?? Object.fromEntries(Object.entries(savedProgress.individual?.exotics ?? {}).map(([k,v]) => [k, v ? 10 : 0]))),
+        skills: normalizeRankMap(savedProgress.individualRanks?.skills ?? Object.fromEntries(Object.entries(savedProgress.individual?.skills ?? {}).map(([k,v]) => [k, v ? 10 : 0]))),
+        specializations: normalizeRankMap(savedProgress.individualRanks?.specializations ?? Object.fromEntries(Object.entries(savedProgress.individual?.specializations ?? {}).map(([k,v]) => [k, v ? 10 : 0]))),
+      },
 
-        gearSets: normalizeRankMap(
-          savedProgress.ranks?.gearSets,
-        ),
+      ranks: {
+        brands: normalizeRankMap(savedProgress.ranks?.brands),
+        gearSets: normalizeRankMap(savedProgress.ranks?.gearSets),
       },
 
       legacySummary: {

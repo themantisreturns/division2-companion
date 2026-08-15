@@ -19,6 +19,8 @@ import {
 import {
   connectExpertiseFilters,
   connectExpertiseLiveCounts,
+  connectExpertiseRankControls,
+  updateExpertisePlanner,
   mergeExpertiseProgress,
   readExpertiseForm,
   renderExpertisePage,
@@ -198,10 +200,12 @@ async function openExpertisePage() {
 
   connectExpertiseFilters()
   connectExpertiseLiveCounts()
+  connectExpertiseRankControls(scheduleExpertiseSave)
+  updateExpertisePlanner()
   connectExpertiseScanner()
 
   document
-    .querySelectorAll('.expertise-item-checkbox, .expertise-number, #expertise-level-input, #expertise-progress-current, #expertise-progress-total, #expertise-proficient-current, #expertise-proficient-total, #expertise-shd-level')
+    .querySelectorAll('.expertise-item-checkbox, .expertise-number:not(.expertise-individual-rank), #expertise-level-input, #expertise-progress-current, #expertise-progress-total, #expertise-proficient-current, #expertise-proficient-total, #expertise-shd-level')
     .forEach((input) => input.addEventListener('input', scheduleExpertiseSave))
 }
 
