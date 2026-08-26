@@ -1,7 +1,23 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-08-25T10:38:46.066Z",
+  "updatedAt": "2026-08-26T10:39:18.393Z",
   "entries": [
+    {
+      "id": "2026-08-26T10-39-18-393Z",
+      "capturedAt": "2026-08-26T10:39:18.393Z",
+      "file": "2026-08-26T10-39-18-393Z.json",
+      "counts": {
+        "gear": 38,
+        "weapons": 38,
+        "mods": 52,
+        "total": 128
+      },
+      "comparison": {
+        "added": 115,
+        "removed": 130,
+        "changed": 13
+      }
+    },
     {
       "id": "2026-08-25T10-38-46-066Z",
       "capturedAt": "2026-08-25T10:38:46.066Z",
