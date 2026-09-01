@@ -3,14 +3,14 @@
   "status": "success",
   "source": "Ruben Alamina",
   "resetId": "2026-08-26T10-39-18-393Z",
-  "lastCheckedAt": "2026-08-26T10:39:18.393Z",
-  "lastSuccessfulSyncAt": "2026-08-26T10:39:18.393Z",
+  "lastCheckedAt": "2026-09-01T14:39:40.575Z",
+  "lastSuccessfulSyncAt": "2026-09-01T14:39:40.575Z",
   "lastChangedAt": "2026-08-26T10:39:18.393Z",
-  "dataChanged": true,
+  "dataChanged": false,
   "comparison": {
-    "added": 115,
-    "removed": 130,
-    "changed": 13
+    "added": 0,
+    "removed": 0,
+    "changed": 0
   },
   "historyCount": 7,
   "counts": {
