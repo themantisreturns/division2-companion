@@ -414,5 +414,21 @@
     "level": 40,
     "name": "Trap Electronics Upgrade",
     "attributes": " Trap<br/>6.0% Duration"
+  },
+  {
+    "type": "mod",
+    "rarity": "header-offensive",
+    "vendor": "Cassie",
+    "level": 40,
+    "name": "Offensive Protocol: Critical",
+    "attributes": "7.9% Headshot Damage "
+  },
+  {
+    "type": "mod",
+    "rarity": "header-he",
+    "vendor": "Cassie",
+    "level": 40,
+    "name": "Weaved Aramid Fiber",
+    "attributes": " Shield<br/>4.0 Damage Bonus Per Enemy"
   }
 ]
